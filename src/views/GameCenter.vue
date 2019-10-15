@@ -22,11 +22,11 @@
                 </div>
             </div>
             <div class="type">
-                <select v-model="selected" name="type" id="">
-                    <option value="clever">所有类型</option>
-                    <option value="clever">益智</option>
-                    <option value="smallGame">小游戏</option>
-                    <option value="shoot">射击</option>
+                <select v-model="selected" name="type" id="" @change="selectType(selected)">
+                    <option value="all" >所有类型</option>
+                    <option value="clever" >益智</option>
+                    <option value="smallGame" >小游戏</option>
+                    <option value="shoot" >射击</option>
                 </select>
             </div>
             <div class="toRanking" @click="toRanking">
@@ -39,7 +39,7 @@
                     <img src="../assets/images/gameLibrary/left.png" alt="向左">
                 </div>
                 <div class="middle">
-                    <div class="item" v-for="(item,index) in searchType(selected)" :key="index" @click="toDetails(index)">
+                    <div class="item" v-for="(item,index) in list" :key="index" @click="toDetails(index)">
                         <img :src="item.goodsImg" alt="游戏图片">
                         {{item.info}}
                     </div>
@@ -55,7 +55,7 @@
                     :class="[flag==index?'active':'']" 
                     v-for="(item,index) in 6" 
                     :key="index"
-                    @click="flag=index">
+                    @click="pageChange(index)">
                         {{item}}
                     </li>
                 </ul>
@@ -69,12 +69,26 @@ export default {
     data(){
         return{
             total:100,
+            //分页样式的判断
             flag:0,
+            //搜索框v-model
             search:'',
-            selected:'clever',
+            //搜索类型
+            selected:'all',
+            //搜索快那个的显式隐藏
             searchDisplay:false,
+            //定义当前页码
+            pageNow:1,
+            //存放查询后的结果
             list:[],
+            //存放进入页面请求的数据
             gameList:[
+                {
+                    id:1,
+                    goodsImg:'http://image.namedq.com/uploads/20190105/23/1546702937-UVQsqprDtH.jpg',
+                    info:'疾风剑豪',
+                    type:'clever'
+                },
                 {
                     id:1,
                     goodsImg:'http://image.namedq.com/uploads/20190105/23/1546702937-UVQsqprDtH.jpg',
@@ -223,6 +237,14 @@ export default {
             newList:[]
         }
     },
+    mounted() {
+        //页面加载时将list存入8条数据，作为默认显示
+        this.gameList.forEach((item,index) => {
+            if(index%3==0&&index<24){
+                this.list.push(this.gameList[index])
+            }
+        });
+    },
     methods:{
         //相应的路由跳转
         goHome(){
@@ -234,13 +256,66 @@ export default {
         toDetails(index){
             this.$router.push('/GameInfo')
         },
-        //分类
-        searchType(type){
-            return this.gameList.filter(item=>{
-                if(item.type.includes(type)){
-                    return item
+        //点击分页切换内容
+        pageChange(index){
+            this.flag=index;
+            this.pageNow=index+1
+            this.selectType(this.selected)
+        },
+        //点击分类渲染相应的内容区
+        selectType(type){
+            var list4=[]
+            var list5=[]
+            //首先将判断类型分为两类
+            if(type=='all'){
+                list5=[]
+                this.list=this.gameList
+                //判断数据的条数，如果大于八条数据，
+                if(this.list.length>8){
+                    if(this.pageNow>Math.ceil(this.list.length/8)){
+                        alert("没有更所游戏了，抱歉~")
+                    }else{
+                        //匹配当前页的数据，将当前页的数据添加到数组
+                        for(var i=(this.pageNow-1)*8;i<(this.pageNow-1)*8+8;i++){
+                            list5.push(this.list[i]||'')
+                        }
+                    }
+                    this.list=list5 
+                }  
+            }
+            else{
+                //每次进来先置空list 首先先根据type得到相应的数据
+                list5=[]
+                this.gameList.filter(item=>{
+                    if(item.type.includes(type)){
+                        list4.push(item)
+                    }
+                })
+                this.list=list4
+                //根据数据是否超过八条，进行不同的操作
+                if(this.list.length>8){
+                    // console.log("走了其他类型的大于八条数据")
+                    if(this.pageNow>Math.ceil(this.list.length/8)){
+                        // console.log("走了上边")
+                        alert("没有更多游戏了，抱歉~")
+                    }
+                    else{
+                        // console.log("走了下边")
+                        //匹配当前页的数据，将当前页的数据添加到数组
+                        for(var i=(this.pageNow-1)*8;i<(this.pageNow-1)*8+8;i++){
+                            list5.push(this.list[i]||'')
+                        }
+                    }
+                    this.list=list5 
                 }
-            })
+                else{
+                    if(this.pageNow>Math.ceil(this.list.length/8)){
+                        alert("没有更多游戏了，抱歉~")
+                    }
+                    // this.list=list4
+                } 
+            }
+            
         },
         //点击搜索，渲染content中的内容
         searchGames(value){
@@ -250,16 +325,16 @@ export default {
                     list3.push(item)
                 }
             })
-            this.gameList=list3
-            return this.gameList
+            this.list=list3
         },
         //分页左右按钮
         left(){
-            console.log(this.flag)
             if(this.flag<1){
                 return
             }else{
                 this.flag--
+                this.pageNow--
+                this.selectType(this.selected)
             }
         },
         right(){
@@ -268,10 +343,13 @@ export default {
                 return
             }else{
                 this.flag++
+                this.pageNow++
+                this.selectType(this.selected)
             }
         },
         //点击选择下拉框内容到input框
         updateSearch(index,value){
+            //先匹配到输入内容中的所有元素，然后从现有的元素中选取第几个作为内容放到输入框
             this.search=this.searchList(value)[index]
             this.searchDisplay=false
         },
@@ -281,9 +359,11 @@ export default {
                 this.searchDisplay=true
             }
         },
+        //输入内容时下拉框的内容
         searchList(value){
+            //定义一个可以暂时存放数据的容器
             var a=[]
-            this.list.filter(item=>{
+            this.gameList.filter(item=>{
                 if(item.info.includes(value)){
                     a.push(item.info)
                 }
@@ -291,16 +371,13 @@ export default {
             return a
         }
     },
-    mounted() {
-        this.list=this.gameList
-    },
 }
 </script>
 <style lang="scss" scoped>
     .game-library{
         width: 100%;height: 100%;
         background: url(../assets/images/home/bg.png)no-repeat;
-        background-size: 100%;
+        background-size: 100% 100%;
         .head{
             width: 100%;height: 150px;
             background:url(../assets/images/home/bg.png)no-repeat;
@@ -308,7 +385,7 @@ export default {
             display: flex;
             justify-content: space-around;
             .logo{
-                width: 300px;height: 80px;
+                width: 23%;height: 80px;
                 margin: 20px 0 0 50px;
                 cursor: pointer;
                 img{
@@ -316,9 +393,9 @@ export default {
                 }
             }
             .search{
-                width: 400px;height: 50px;
+                width: 30%;height: 50px;
                 position: relative;
-                margin: 15px 0 0 200px;
+                margin-top: 15px;
                 display: flex;
                 align-items: center;
                 input{
@@ -359,10 +436,11 @@ export default {
                 }
             }
             .type{
-                width: 350px;height: 50px;
-                margin: 25px 0 0 190px;
+                width: 25%;height: 50px;
+                // margin: 25px 0 0 190px;
+                margin-top: 25px;
                 select{
-                    width: 200px;height: 30px;
+                    width: 80%;height: 30px;
                     background: rgba($color: #000, $alpha: 0.5);
                     color: white;
                     border: 1px solid rgb(184, 182, 182);
@@ -388,11 +466,12 @@ export default {
             }
         }
         .content{
-            width: 1000px;height: 500px;
+            width: 75%;height: 500px;
             // margin-top: -20px;
             border:1px solid rgb(184, 182, 182);
             background-color: rgba(255,255,255,0.2);
             border-radius: 5px;
+            box-shadow: 0 0 10px 1px #d6c7c7ad;
             margin: 0 auto;
             .content-top{
                 width: 100%;height: 420px;
@@ -403,7 +482,7 @@ export default {
                     align-items: center;
                     justify-content: center;
                     &:hover{
-                        background-image: linear-gradient(to left,rgba(0,0,0,.7),rgba(0,0,0,.4));
+                        background-image: linear-gradient(to left,rgba(0,0,0,.1),rgba(0,0,0,.2));
                         cursor: pointer;
                     }
                 }
@@ -424,6 +503,10 @@ export default {
                             width: 90%;
                             border-radius: 10px;
                         }
+                        &:hover{
+                            transform: scale(1.2,1.3)
+                        }
+                        transition: transform .5s ease;
                     }
                 }
                 .right{
@@ -432,7 +515,7 @@ export default {
                     align-items: center;
                     justify-content: center;
                     &:hover{
-                        background-image: linear-gradient(to left,rgba(0,0,0,.7),rgba(0,0,0,.4));
+                        background-image: linear-gradient(to left,rgba(0,0,0,.2),rgba(0,0,0,.1));
                         cursor: pointer;
                     }
                     img{
