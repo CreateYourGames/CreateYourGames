@@ -43,9 +43,8 @@ export default {
     }
 .nav-tel{
     width: 800px;
-    // border: 1px solid red;
+
     margin-top: 200px;
-    // margin-right: 100px;
     text-align: right;
     form{
         div{
