@@ -83,7 +83,7 @@ export default {
             this.$router.push('/RankingList')
         },
         toDetails(index){
-            this.$router.push('/details')
+            this.$router.push('/GameInfo')
         },
         //分页左右按钮
         left(){
