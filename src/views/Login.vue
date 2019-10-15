@@ -25,6 +25,9 @@
 
 <style scoped lang="scss">
     .login{
+        width: 100%;height: 600px;
+        background-image: url("../assets/images/home/bg.png");
+        // background: url(../assets/images/home/bg.png)no-repeat
         div{
             cursor: pointer;
         }
