@@ -14,7 +14,7 @@
                 <label for="" class="special">游戏图标：</label>
                 <div class="container">
                     <img class="game-img" src="@/assets/images/personal/104.jpg" alt="">
-                    <div class="up-gm-img" @click="">
+                    <div class="up-gm-img" >
                         <img src="@/assets/images/personal/z.png" alt="">
                     </div>
                 </div>
