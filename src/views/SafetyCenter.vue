@@ -1,0 +1,324 @@
+<template>
+  <div class="container">
+    <el-page-header content="安全中心"></el-page-header>
+    <div class="content">
+      <el-steps :active="active" process-status="wait" align-center>
+        <el-step title="填写账号"></el-step>
+        <el-step title="身份验证"></el-step>
+        <el-step title="设置新密码"></el-step>
+        <el-step title="完成"></el-step>
+      </el-steps>
+
+      <div class="personal-Name" v-if="active===1">
+        <el-form
+          :model="ruleForm"
+          status-icon
+          :rules="rules"
+          ref="ruleForm"
+          label-width="60px"
+          class="demo-ruleForm"
+        >
+          <el-form-item label="账号" prop="userName">
+            <el-input type="text" v-model="ruleForm.userName" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+
+        <el-button @click="next('ruleForm')">下一步</el-button>
+      </div>
+
+      <div class="personal-Info" v-if="active===2">
+        <el-form
+          :model="ruleForm"
+          status-icon
+          :rules="rules"
+          ref="ruleForm"
+          label-width="60px"
+          class="demo-ruleForm"
+        >
+          <P class="Verification">
+            <span v-bind:class="{active:tabType==1}" @click="tab(1)">邮箱验证</span>
+            <span v-bind:class="{active:tabType==2}" @click="tab(2)">手机验证</span>
+          </P>
+
+          <el-form-item label="邮箱" prop="Email" v-if="tabType===1" class="Verification-info">
+            <el-input type="text" v-model="ruleForm.Email" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="验证码" v-if="tabType===1" class="Verification-info">
+            <div class="buttonItem">
+              <input v-model="vercode" type="text" placeholder="输入验证码" />
+              <div class="red sendCode" @click="sendMessage">{{btnText}}</div>
+            </div>
+          </el-form-item>
+
+          <el-form-item label="手机" prop="Phone" v-if="tabType===2" class="Verification-info">
+            <el-input type="text" v-model="ruleForm.Phone" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="验证码" v-if="tabType===2" class="Verification-info">
+            <div class="buttonItem">
+              <input v-model="vercode" type="text" placeholder="输入验证码" />
+              <div class="red sendCode" @click="sendMessage">{{btnText}}</div>
+            </div>
+          </el-form-item>
+        </el-form>
+        <el-button @click="next('ruleForm')">下一步</el-button>
+      </div>
+
+      <div class="personal-Pwd" v-if="active===3">
+        <el-form
+          :model="ruleForm"
+          status-icon
+          :rules="rules"
+          ref="ruleForm"
+          label-width="80px"
+          class="demo-ruleForm"
+        >
+          <el-form-item label="新密码" prop="Pass">
+            <el-input type="password" v-model="ruleForm.Pass" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码" prop="checkPass">
+            <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <el-button @click="next('ruleForm')">下一步</el-button>
+      </div>
+
+      <div class="personal-Finish" v-if="active===4">
+        <el-button @click="submitForm()">设置成功</el-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="find-password1">
+        <div @click="next">下一步 => 2</div>
+  </div>-->
+</template>
+
+<script>
+export default {
+  // name: "find-password1",
+  data() {
+    var NameValue = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("账号不能为空"));
+      }
+    };
+    var CheckPass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.ruleForm.Pass) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
+    return {
+      vercode: "",
+      btnDisabled: false,
+      btnText: "获取验证码",
+
+      active: 1,
+      tabType: 1,
+      ruleForm: {
+        Name: "",
+        Phone: "",
+        Email: "",
+        userName: "",
+        Pass: "",
+        checkPass: "",
+        code: ""
+      },
+      rules: {
+        Name: [
+          {
+            validator: NameValue,
+            required: true,
+            trigger: "blur"
+          }
+        ],
+        Phone: [
+          { required: true, trigger: "blur" },
+          {
+            pattern: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,
+            message: "手机格式不对"
+          }
+        ],
+        Email: [
+          { required: true, trigger: "blur" },
+          {
+            pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/,
+            message: "请输入有效的邮箱"
+          }
+        ],
+        userName: [
+          { required: true, message: "请输入账号", trigger: "blur" },
+          { min: 3, max: 7, message: "账号长度为3-7个字符", trigger: "blur" }
+        ],
+        Pass: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 6, max: 16, message: "密码长度为6-16个字符", trigger: "blur" }
+        ],
+        checkPass: [
+          { required: true, validator: CheckPass, message: "", trigger: "blur" }
+        ]
+      }
+    };
+  },
+
+  methods: {
+    next(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert("submit!");
+          if (this.active++ > 3) this.active = 0;
+          // this.$router.push("/login").catch(err => console.log(err));
+        } else {
+          alert("error submit!!");
+          return false;
+        }
+      });
+    },
+    submitForm() {
+      this.$router.push("/login").catch(err => console.log(err));
+    },
+    tab(index) {
+      this.tabType = index;
+    },
+
+    // 验证码的点击事件
+    sendMessage() {
+      if (this.btnDisabled) {
+        return;
+      }
+      this.getSecond(60);
+    },
+    //发送验证码
+    getSecond(wait) {
+      let _this = this;
+      let _wait = wait;
+      if (wait == 0) {
+        this.btnDisabled = false;
+        this.btnText = "获取验证码";
+        wait = _wait;
+      } else {
+        this.btnDisabled = true;
+        this.btnText = "验证码(" + wait + "s)";
+        wait--;
+        setTimeout(function() {
+          _this.getSecond(wait);
+        }, 1000);
+      }
+    },
+    // next() {
+    //   this.$router.push("/Login/FindPassword2");
+    // }
+  }
+};
+</script>
+<style lang="scss" scoped>
+.container {
+  width: 100%;
+  height: 100%;
+  background-image: url("../assets/images/home/bg.png");
+  // background-repeat: repeat;
+
+  .el-page-header {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    background-color: white;
+    text-align: center;
+  }
+
+  .content {
+    margin: 0 auto;
+    width: 800px;
+    height: 450px;
+    position: relative;
+    // 步骤条
+    .el-steps {
+      position: absolute;
+      width: 50%;
+      top: 15%;
+      left: 50%;
+      transform: translate(-50%, -10%);
+      // margin-top: 30px;
+    }
+
+    .el-form {
+      width: 400px;
+      padding: 20px 20px 20px 0;
+      background-color: #fff;
+      position: absolute;
+      margin-top: 30px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -40%);
+      border-radius: 10px;
+
+      // 手机验证、邮箱验证-标题
+      .Verification {
+        width: 100%;
+        text-align: center;
+        span {
+          margin-right: 30px;
+        }
+      }
+      // 手机验证、邮箱验证-内容
+      .Verification-info {
+        width: 400px;
+        .el-input {
+          width: 320px;
+        }
+        // 验证码样式的设置 start
+        .buttonItem {
+          border-radius: 5px;
+          background-color: #fff;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0 10px;
+          border: 1px solid #ddd;
+          width: 320px;
+          input {
+            width: 210px;
+            height: 40px;
+            font-size: 1rem;
+            padding-left: 10px;
+            border: 0;
+            outline: none;
+          }
+          .sendCode {
+            width: 80px;
+            border: 0;
+            outline: none;
+            background-color: #fff;
+            cursor: pointer;
+          }
+        }
+        // 验证码样式的设置 end
+
+        .checkinfo {
+          font-size: 5px;
+          margin-left: 18px;
+        }
+      }
+      .el-form-item {
+        margin-top: 30px;
+      }
+      .el-input {
+        height: 30px;
+      }
+    }
+
+    // 下一步按钮、完成按钮
+    .el-button {
+      position: absolute;
+      top: 98%;
+      left: 50%;
+      transform: translate(-50%, -20%);
+      width: 200px;
+      border-radius: 50px;
+    }
+  }
+}
+</style>

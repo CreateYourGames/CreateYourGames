@@ -23,11 +23,17 @@ export default new Router({
             name: 'Register',
             component: () => import('./views/Register.vue')
         },
+         // 注册完善页
+         {
+            path: '/RegisterPerfect',
+            name: 'RegisterPerfect',
+            component: () => import('./views/RegisterPerfect.vue')
+        },
         // 找回密码
         {
-            path: '/Login/FindPassword',
-            name: 'FindPassword',
-            component: () => import('./views/Login-FindPassword.vue')
+            path: '/Login/SafetyCenter',
+            name: 'SafetyCenter',
+            component: () => import('./views/SafetyCenter.vue')
         },
         // 游戏库
         {
@@ -94,6 +100,12 @@ export default new Router({
             path: '/Personal/UpdateGameInfo',
             name: 'UpdateGameInfo',
             component: () => import('./views/Personal-UpdateGameInfo.vue')
+        },
+         // 开发者测试提示页
+         {
+            path: '/Developer',
+            name: 'Developer',
+            component: () => import('./views/Developer.vue')
         },
         // 开发者测试页
         {

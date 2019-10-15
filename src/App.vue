@@ -9,8 +9,7 @@
         padding: 0;
         margin: 0;
     }
-
-    #app,html,body {
+    :root,body,#app {
         height: 100%;
     }
 
