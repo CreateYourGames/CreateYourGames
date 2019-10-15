@@ -41,13 +41,13 @@
     <!-- <div class="develop-test">
       <div @click="backHome">我不做了！</div>
       <div @click="backHome">提交试题</div>
-    </div> -->
+    </div>-->
   </div>
 </template>
 
 <script>
 export default {
-//   name: "developer-test",
+  //   name: "developer-test",
   data() {
     return {
       minutes: 30,
@@ -144,7 +144,7 @@ export default {
 
     goBack() {
       console.log("go back");
-    },
+    }
     // backHome() {
     //   this.$router.push("/");
     // }
@@ -213,17 +213,32 @@ export default {
       .el-button-group {
         display: flex;
         width: 640px;
-        position: absolute;
-        left: 50%;
-        top: 90%;
-        // transform: translate(-50%, -90%);
+        
+
         // text-align: center;
         justify-content: space-around;
 
-        .el-button {
+        .el-button:first-of-type {
           width: 300px;
-          // margin: 10px;
+          position: absolute;
+          left: 21%;
+          top: 90%;
+          transform: translate(-21%, -90%);
+          margin-right: 100px;
         }
+        .el-button:last-of-type {
+          width: 300px;
+          position: absolute;
+          left: 82%;
+          top: 90%;
+          transform: translate(-82%, -90%);
+          margin-right: 100px;
+        }
+
+        // .el-button {
+        //   width: 300px;
+        //   margin: 10px;
+        // }
       }
     }
   }
