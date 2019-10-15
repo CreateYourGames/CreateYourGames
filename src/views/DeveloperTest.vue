@@ -211,16 +211,18 @@ export default {
         border: solid 1px red;
       }
       .el-button-group {
+        display: flex;
         width: 640px;
         position: absolute;
         left: 50%;
         top: 90%;
-        transform: translate(-50%, -90%);
+        // transform: translate(-50%, -90%);
         // text-align: center;
+        justify-content: space-around;
 
         .el-button {
           width: 300px;
-          margin: 10px;
+          // margin: 10px;
         }
       }
     }

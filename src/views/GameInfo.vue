@@ -4,7 +4,7 @@
             <div class="logo" @click="goHome" :plain="true">
                 <img src="@/assets/images/home/logo.png" alt="Logo"> 
             </div>
-            <div class="back">
+            <div class="back" @click="toGameCenter">
                 <span>回游戏库</span>
             </div>
         </div>
@@ -167,6 +167,10 @@ export default {
         goHome(){
             this.$router.push('/')
         },
+        //返回游戏库
+        toGameCenter(){
+            this.$router.push('/GameCenter')
+        },
         //添加到喜欢
         addToLove(){
             this.imgFlag=!this.imgFlag
@@ -244,6 +248,7 @@ export default {
             position: absolute;
             top: -10px;
             right: 15%;
+            cursor: pointer;
         }
     }
     .content{
