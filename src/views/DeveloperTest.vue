@@ -212,6 +212,7 @@ export default {
       }
       .el-button-group {
         width: 640px;
+        
 
         // text-align: center;
 
