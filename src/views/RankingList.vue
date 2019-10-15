@@ -15,7 +15,7 @@
                 this.$router.push('/')
             },
             toGameCenter(){
-                this.$router.push('/GameInfo')
+                this.$router.push('/GameCenter')
             }
         }
     }
