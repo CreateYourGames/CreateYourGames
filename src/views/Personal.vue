@@ -2,77 +2,58 @@
     <div>
         <!-- 顶部盒子 -->
         <div class="nav">
-            <div @click="backHome">返回主页</div>
             <div class="nav-bottom">
+                <div class="nav-bottom-img"></div>
                 <img src="@/assets/images/personal/01.png" alt="">
                 <div class="info">
                     <p style="font-size:22px;font-weight:100;margin-bottom:10px;">用户名字</p>
                     <p style="font-size:14px;">这个人很懒什么都没留下</p>
                 </div>
                 <button @click="go">编辑资料</button>
+                <div class="return" @click="goHome">首页</div>
             </div>
         </div>
-
+     
         <!-- content -->
         <div class="content">
             <div class="publish">
                 <span>发布的游戏</span>
-                <ul>
-                    <li>
-                        <img @click="toGameInfo" src="@/assets/images/personal/103.jpg" alt="">
-                    <p class="details" @click="toGameInfo">查看详情</p>
-                    <div class="ud">
-                        <p class="update" @click="toUpdateGameInfo">修改信息&nbsp;</p><p class="delete">&nbsp;删除游戏</p>
-                    </div>
-                    </li>
-                   <li>
-                        <img src="@/assets/images/personal/103.jpg" alt="">
-                        <p class="details">查看详情</p>
-                        <div class="ud">
-                            <p class="update">修改信息&nbsp;</p><p class="delete">&nbsp;删除游戏</p>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="@/assets/images/personal/103.jpg" alt="">
-                        <p class="details">查看详情</p>
-                        <div class="ud">
-                            <p class="update">修改信息&nbsp;</p><p class="delete">&nbsp;删除游戏</p>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="@/assets/images/personal/103.jpg" alt="">
-                        <p class="details">查看详情</p>
-                        <div class="ud">
-                            <p class="update">修改信息&nbsp;</p><p class="delete">&nbsp;删除游戏</p>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="@/assets/images/personal/103.jpg" alt="">
-                        <p class="details">查看详情</p>
-                        <div class="ud">
-                            <p class="update">修改信息&nbsp;</p><p class="delete">&nbsp;删除游戏</p>
-                        </div>
-                    </li>
-                </ul>
+                <div class="block">
+                        <el-carousel height="250px">
+                        <el-carousel-item v-for="publish in publishList" :key="publish.id">
+                             <ul>
+                                <li>
+                                    <!-- <img :src="publishList[id].img" alt=""> -->
+                                    <img :src="publishList[1].img" alt="">
+                                    <img :src="publishList[2].img" alt="">
+                                    <p class="details">查看详情</p>
+                                    <div class="ud">
+                                        <p class="update" @click="jumpGame()">修改信息&nbsp;</p><p class="delete">&nbsp;删除游戏</p>
+                                    </div>
+                                </li>
+                             </ul>
+                        </el-carousel-item>
+                        </el-carousel>
+                </div>
             </div>
             <div class="rl">
                 <div class="recently">
                     <span>最近的游戏</span>
                     <ul>
                         <li>
-                            <img src="@/assets/images/personal/104.jpg" alt="">
+                            <img :src="img104" alt="">
                             <p class="gameName">游戏名称</p>
                         </li>
                         <li>
-                            <img src="@/assets/images/personal/104.jpg" alt="">
+                            <img :src="img104" alt="">
                             <p class="gameName">游戏名称</p>
                         </li>
                         <li>
-                            <img src="@/assets/images/personal/104.jpg" alt="">
+                            <img :src="img104" alt="">
                             <p class="gameName">游戏名称</p>
                         </li>
                         <li>
-                            <img src="@/assets/images/personal/104.jpg" alt="">
+                            <img :src="img104" alt="">
                             <p class="gameName">游戏名称</p>
                         </li>
                     </ul>
@@ -81,57 +62,101 @@
                     <span>喜欢的游戏</span>
                     <ul>
                         <li>
-                            <img src="@/assets/images/personal/105.jpg" alt="">
+                            <img src="../assets/images/personal/105.jpg" alt="">
                             <p class="gameName">游戏名称</p>
                         </li>
                         <li>
-                            <img src="@/assets/images/personal/105.jpg" alt="">
+                            <img src="../assets/images/personal/105.jpg" alt="">
                             <p class="gameName">游戏名称</p>
                         </li>
                         <li>
-                            <img src="@/assets/images/personal/105.jpg" alt="">
+                            <img src="../assets/images/personal/105.jpg" alt="">
                             <p class="gameName">游戏名称</p>
                         </li>
                         <li>
-                            <img src="@/assets/images/personal/105.jpg" alt="">
+                            <img src="../assets/images/personal/105.jpg" alt="">
                             <p class="gameName">游戏名称</p>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-        <router-view></router-view>
+
+                    
+                    
+                  
     </div>
 </template>
 
 <script>
 export default {
+    data(){
+        return {
+            img104 : require("../assets/images/personal/104.jpg"),
+            publishList:[
+                {
+                id:1,
+                img:require('@/assets/images/personal/104.jpg')
+                },
+                {
+                id:2,
+                img:require('@/assets/images/personal/105.jpg')
+                },
+                {
+                id:3,
+                img:require('@/assets/images/personal/103.jpg')
+                },
+                {
+                id:4,
+                img:require('@/assets/images/personal/01.png')
+                },
+            ]
+        }
+    },
     methods:{
         go(){
-            this.$router.push('/Personal/UpdateInfo');
-            // location.href='personal/updateInfo'
+            this.$router.push('/Personal/UpdateInfo').catch(err => console.log(err))
         },
-        backHome(){
+        jumpGame(){
+            this.$router.push('/Personal/UpdateGameInfo').catch(err => console.log(err))
+        },
+        goHome(){
             this.$router.push('/')
-        },
-        toGameInfo(){
-            this.$router.push('/GameInfo')
-        },
-        toUpdateGameInfo(){
-            this.$router.push('/Personal/UpdateGameInfo')
         }
     }
 }
 </script> 
 
 <style lang="scss" scoped>
+.block{
+    width: 850px;
+    margin-top: 40px;
+}
+ .el-carousel__item h3 {
+    // color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 150px;
+    margin: 0;
+  }
+
+//   .el-carousel__item:nth-child(2n) {
+//     //  background-color: #99a9bf;
+//   }
+  
+//   .el-carousel__item:nth-child(2n+1) {
+//     //  background-color: #d3dce6;
+//   }
+
+
+
 
 // 顶部
 .nav{
     height: 250px;
     width: 100%;
     background-color: pink;
-    background-image: url(../assets/images/personal/bg.png);
+    background-image: url('../assets/images/personal/bg.png');
     background-repeat:no-repeat;
     position: relative;
     .nav-bottom{
@@ -140,6 +165,20 @@ export default {
         background-color: rgba(128,128,128,0.4);
         position: absolute;
         bottom: 0px;
+        .return{
+            color: #fff;
+            left: 90%;
+            cursor: pointer;
+        }
+    }
+    .nav-bottom-img{
+        width: 150px;
+        height: 150px;
+        border-radius: 10px;
+        position: absolute;
+        background-image: ('../assets/images/personal/01.png');
+        bottom: 20px;
+        left: 200px;
     }
     .nav-bottom>img{
         width: 150px;
@@ -166,6 +205,8 @@ export default {
         position: absolute;
         right: 300px;
         top: 25px;
+        outline: none;
+        cursor: pointer;
     }
 } 
 
@@ -183,6 +224,7 @@ export default {
         display: flex;
         justify-content: space-around;
         position: relative;
+        // border: 1px solid red;
         span{
             height: 23px;
             border-bottom: 2px solid #FEC003;
@@ -192,11 +234,13 @@ export default {
             line-height: 20px;
             font-size: 20px;
             position: absolute;
-            left: 75px;
+            // left: 75px;
+            left: 130px;
         }
         ul li{
             display: inline-block;
-            margin-right: 20px;
+            // margin-right: 20px;
+            margin-left: 100px;
             margin-top: 40px;
             img{
                 width: 150px;
@@ -227,9 +271,10 @@ export default {
     }
     // 最近和喜欢
     .rl{
+        // border: 1px solid red;
         width: 850px;
         display: flex;
-        margin: 80px auto;
+        margin: 120px 16%;
         .recently{
             // border: 1px solid blue;
             width: 400px;
