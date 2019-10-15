@@ -152,5 +152,78 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scope>
+.container {
+  width: 100%;
+  height: 100%;
+  background-image: url("../assets/images/home/bg.png");
+
+  .el-page-header {
+    background-color: white;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .content {
+    width: 100%;
+    height: 530px;
+    position: relative;
+
+    .test {
+      width: 800px;
+      height: 500px;
+      background-color: white;
+      position: absolute;
+      left: 50%;
+      top: 65%;
+      transform: translate(-50%, -65%);
+
+      .progress {
+        width: 600px;
+        // border: solid 1px red;
+        position: absolute;
+        left: 50%;
+        top: 5%;
+        transform: translate(-50%, -5%);
+      }
+
+      // 倒计时
+      .countdown {
+        width: 80px;
+        text-align: center;
+        border: solid 1px black;
+        background-color: white;
+
+        position: absolute;
+        left: 50%;
+        top: 15%;
+        transform: translate(-50%, -15%);
+      }
+
+      .question {
+        width: 80%;
+        height: 50%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border: solid 1px red;
+      }
+      .el-button-group {
+        width: 640px;
+        position: absolute;
+        left: 50%;
+        top: 90%;
+        transform: translate(-50%, -90%);
+        // text-align: center;
+
+        .el-button {
+          width: 300px;
+          margin: 10px;
+        }
+      }
+    }
+  }
+}
 </style>
