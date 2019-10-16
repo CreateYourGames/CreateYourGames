@@ -158,7 +158,7 @@
         background-image: url("../assets/images/home/bg.png");
         background-attachment: fixed;
         background-size: 100% 100%;
-        padding: 50px 50px 0;
+        padding: 30px 50px 0;
         box-sizing: border-box;
         color: #ffffff;
         .header {
@@ -203,7 +203,7 @@
             padding: 0 50px;
             .banner {
                 display: flex;
-                margin: 70px 0 50px 40px;
+                margin: 70px 0 50px 30px;
                 padding: 0 70px;
                 /*justify-content: center;*/
                 align-items: center;
@@ -247,9 +247,9 @@
                     font-size: 16px;
                     opacity: 0.8;
                     cursor: pointer;
-                    margin: 20px 60px 40px;
+                    margin: 20px 60px 50px;
                     img {
-                        width: 50px;
+                        width: 40px;
                     }
                     &:hover {
                         opacity: 1;
