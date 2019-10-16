@@ -15,7 +15,7 @@
 export default {
   methods: {
     goTo(){
-      this.$router.push("/DeveloperTest").catch(err=>console.log(err));
+      this.$router.push("/DeveloperTest");
     }
   },
 };
