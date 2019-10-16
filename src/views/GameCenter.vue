@@ -254,7 +254,7 @@ export default {
             this.$router.push('/RankingList')
         },
         toDetails(index){
-            this.$router.push('/GameInfo')
+            this.$router.push('/GameInfo?id='+this.gameList[index].id)
         },
         //点击分页切换内容
         pageChange(index){

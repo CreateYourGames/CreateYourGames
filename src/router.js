@@ -7,6 +7,11 @@ Vue.use(Router);
 export default new Router({
     routes: [
         {
+            path:'/ceshi',
+            name:'ceshi',
+            component:()=>import('./views/ceshi.vue')
+        },
+        {
             path: '/',
             name: 'home',
             component: Home

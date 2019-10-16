@@ -44,7 +44,14 @@
                 </div>
                 <div class="share">
                     <span>分享游戏到：</span>
-                    <span><img src="@/assets/images/details/qq.png" alt=""></span>
+                    <a 
+                    :href="'https://connect.qq.com/widget/shareqq/index.html?url='+url+'&pics='+pics+'&desc='+desc+'&summary='+summary+'&flash=&site=&style=201&width=50&height=32'" 
+                    target="_blank"
+                    @mouseenter='qqFlag=false'
+                    @mouseleave="qqFlag=true">
+                    <img v-if="qqFlag" src="@/assets/images/details/qq.png" alt="">
+                    <img v-else src="@/assets/images/details/qqAlive.png" alt="">
+                    </a>
                 </div>
             </div>
         </div>
@@ -107,6 +114,11 @@ export default {
             value: null,
             imgFlag:true,
             goodImgFlag:false,
+            qqFlag:true,
+            url:'https://blog.csdn.net/QPC908694753/article/details/81137975',
+            pics:"https://goss1.veer.com/creative/vcg/veer/612/veer-104218671.jpg",
+            summary:"是兄弟就来砍我",
+            desc:'快来跟我一起玩游戏吧',
             userImg:require('../assets/images/home/01.png'),
             //给请求来的数据加两个标识符，用来判断每个是否在点击状态
             commentList:[
@@ -159,13 +171,27 @@ export default {
                 {num:5,img:require('../assets/images/home/01.png'),grade:89},
                 {num:6,img:require('../assets/images/home/01.png'),grade:86},
                 {num:7,img:require('../assets/images/home/01.png'),grade:73},
-            ]
+            ],
+            id:''
         }
+    },
+    created(){
+        console.log(this.$route)
+        this.id=this.$route.query.id
     },
     methods:{
         //返回首页
         goHome(){
             this.$router.push('/')
+        },
+        //qq分享功能
+        shareGames(){
+            console.log("aaa")
+            this.$router.replace('https://connect.qq.com/widget/shareqq/index.html&flash=&site=&style=201&width=32&height=32&url='+this.gameDetails[0].url)
+            // this.$router.push({
+            //     url:'https://connect.qq.com/widget/shareqq/index.html',
+            //     pics:this.gameDetails[0].pics
+            // })
         },
         //返回游戏库
         toGameCenter(){
