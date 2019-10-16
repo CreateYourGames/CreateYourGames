@@ -315,8 +315,10 @@ export default {
         }
       }
       .el-button-group {
+        display: flex;
         width: 640px;
         // text-align: center;
+        justify-content: space-around;
 
         .el-button:first-of-type {
           width: 300px;
