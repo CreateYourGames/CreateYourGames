@@ -31,12 +31,12 @@
             <li
               v-for="(publish,index) in publishList"
               :key="index"
-              v-bind:class="{style:i === index}"
+              :class="{style:i === index}"
               @mouseover="overStyle(index)"
               @mouseout="outStyle(index)"
             >
               <img :src="publish.img" alt />
-              <div :class="{cacher:cacher===index||cacher==true}">
+              <div v-show="publish.flag">
                 <p class="details">查看详情</p>
                 <div class="ud">
                   <p class="update" @click="jumpGame()">修改信息&nbsp;</p>
@@ -65,12 +65,13 @@
               :key="index"
               v-bind:class="{active:ind === index}"
               @mouseover="addStyle(index)"
-              @mouseout="removeStyle(index)"
-            >
+              @mouseout="removeStyle(index)">
               <img :src="favor.img" alt />
-              <div class="bot">
-                <p class="detail" @click="jumpGameDetails">查看详情&nbsp;</p>
-                <p class="cancel" @click="cancelFavor(index)">&nbsp;取消喜欢</p>
+              <div id='bot' v-show="favor.flag">
+                <div class="bot">
+                  <p class="detail" @click="jumpGameDetails">查看详情&nbsp;</p>
+                  <p class="cancel" @click="cancelFavor(favor.id)">&nbsp;取消喜欢</p>
+                </div>
               </div>
             </li>
           </ul>
@@ -91,35 +92,43 @@ export default {
       publishList: [
         {
           id: 1,
-          img: require("@/assets/images/personal/104.jpg")
+          img: require("@/assets/images/personal/104.jpg"),
+          flag: false
         },
         {
           id: 2,
-          img: require("@/assets/images/personal/105.jpg")
+          img: require("@/assets/images/personal/105.jpg"),
+          flag: false
         },
         {
           id: 3,
-          img: require("@/assets/images/personal/103.jpg")
+          img: require("@/assets/images/personal/103.jpg"),
+          flag: false
         },
         {
           id: 4,
-          img: require("@/assets/images/personal/01.png")
+          img: require("@/assets/images/personal/01.png"),
+          flag: false
         },
         {
           id: 5,
-          img: require("@/assets/images/personal/game1.png")
+          img: require("@/assets/images/personal/game1.png"),
+          flag: false
         },
         {
           id: 6,
-          img: require("@/assets/images/personal/info2.jpg")
+          img: require("@/assets/images/personal/info2.jpg"),
+          flag: false
         },
         {
           id: 7,
-          img: require("@/assets/images/personal/game2.png")
+          img: require("@/assets/images/personal/game2.png"),
+          flag: false
         },
         {
           id: 8,
-          img: require("@/assets/images/personal/info.jpg")
+          img: require("@/assets/images/personal/info.jpg"),
+          flag: false
         }
       ],
       gameList: [
@@ -148,22 +157,26 @@ export default {
         {
           id: 1,
           name: "游戏1",
-          img: require("@/assets/images/personal/love1.jpg")
+          img: require("@/assets/images/personal/love1.jpg"),
+          flag:false
         },
         {
           id: 2,
           name: "游戏2",
-          img: require("@/assets/images/personal/love2.jpg")
+          img: require("@/assets/images/personal/love2.jpg"),
+          flag:false
         },
         {
           id: 3,
           name: "游戏3",
-          img: require("@/assets/images/personal/love3.jpg")
+          img: require("@/assets/images/personal/love3.jpg"),
+          flag:false
         },
         {
           id: 4,
           name: "游戏4",
-          img: require("@/assets/images/personal/love4.jpg")
+          img: require("@/assets/images/personal/love4.jpg"),
+          flag:false
         }
       ]
     };
@@ -188,38 +201,43 @@ export default {
     jumpGameDetails() {
       this.$router.push("/GameInfo");
     },
-    cancelFavor(index) {
-      console.log(this.favorList.splice(index, 1));
+    cancelFavor(id) {
+      this.favorList.forEach((item,index)=>{
+        if(item.id==id){
+        console.log(this.favorList.splice(0, 1));
+        }
+      })
     },
 
     //发布的游戏 手表移动事件
     overStyle(index) {
+      this.publishList[index].flag = !this.publishList[index].flag;
       this.i = index;
-      this.cacher = index
     },
     outStyle(index) {
-      this.i = "";
-      this.cacher = ""
+      this.publishList[index].flag = !this.publishList[index].flag;
+      this.i = ''
     },
 
 
     // 点击自定义轮播推动
-    left: function() {
+    left() {
       var newList1 = this.publishList.shift();
       this.publishList.push(newList1);
     },
-    right: function() {
+    right() {
       var newList2 = this.publishList.pop();
       this.publishList.unshift(newList2);
     },
 
     // 喜欢的游戏     鼠标滑入滑出事件
     addStyle(index) {
-      console.log(index);
       this.ind = index;
+      this.favorList[index].flag = !this.favorList[index].flag
     },
     removeStyle(index) {
       this.ind = "";
+      this.favorList[index].flag = !this.favorList[index].flag
     }
   }
 };
@@ -315,12 +333,14 @@ export default {
     justify-content: space-around;
     position: relative;
     left: -5px;
+    // border:1px solid black;
     .block {
       height: 250px;
       width: 800px;
       margin-top: 40px;
       overflow: hidden;
       padding-left: 20px;
+      // border:1px solid blue;
     }
     span {
       height: 23px;
@@ -334,8 +354,11 @@ export default {
       left: 118px;
     }
     ul li {
+      height: 200px;
       display: inline-block;
       margin-right: 40px;
+      vertical-align: middle;
+      // border:1px solid red;
       .cacher{
           display: none;
       }
@@ -348,23 +371,24 @@ export default {
         width: 120px;
         height: 120px;
         border-radius: 30px;
+        vertical-align: middle;
       }
       .details {
         text-align: center;
-        font-size: 12px;
+        font-size: 11px;
         cursor: pointer;
       }
       .ud {
         text-align: center;
         .update {
           display: inline-block;
-          font-size: 12px;
+          font-size: 11px;
           cursor: pointer;
         }
         .delete {
           display: inline-block;
           border-left: 1px solid #fec003;
-          font-size: 12px;
+          font-size: 11px;
           cursor: pointer;
         }
       }
@@ -409,7 +433,6 @@ export default {
     .like {
       width: 400px;
       height: 500px;
-      // border: 1px solid blue;
       position: relative;
       span {
         height: 23px;
@@ -422,14 +445,22 @@ export default {
         position: absolute;
         left: 0px;
       }
+      ul{
+        padding-top: 40px;
+      }
       ul li {
         display: inline-block;
         margin-right: 40px;
-        margin-top: 40px;
+        height: 160px;
+        margin-bottom: 20px;
+        vertical-align: middle;
         &.active {
           opacity: 1;
           transform: scale(1.2, 1.2);
           transition: all 0.6s;
+        }
+        #bott{
+           display: none;
         }
         .bot {
           text-align: center;

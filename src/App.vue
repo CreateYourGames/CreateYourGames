@@ -16,6 +16,7 @@ input{
 }
 textarea{
 	-webkit-user-select:auto; /*webkit浏览器*/
+}
 * {
   padding: 0;
   margin: 0;
