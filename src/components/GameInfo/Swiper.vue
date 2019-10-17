@@ -1,7 +1,6 @@
 <template>
   <el-carousel :interval="5000" arrow="always">
     <el-carousel-item v-for="item in 4" :key="item">
-      <h3>{{ item }}</h3>
     </el-carousel-item>
   </el-carousel>
 </template>
@@ -22,13 +21,19 @@ export default {
     line-height: 300px;
     margin: 0;
   }
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
+  .el-carousel__item:nth-of-type(1) {
+    background:url('http://00.minipic.eastday.com/20170815/20170815145451_d41d8cd98f00b204e9800998ecf8427e_10.jpeg');
     height:100%;
   }
-  
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
+  .el-carousel__item:nth-of-type(2) {
+    background:url('http://bpic.588ku.com/back_pic/17/05/15/91f9419e062608c137a7ce9a4e797671.jpg');
+    height:100%;
+  }
+  .el-carousel__item:nth-of-type(3) {
+    background:url('http://img0.imgtn.bdimg.com/it/u=2600038704,2545588318&fm=11&gp=0.jpg');
+    height:100%;
+  }.el-carousel__item:nth-of-type(4) {
+    background:url('http://00.minipic.eastday.com/20170815/20170815145451_d41d8cd98f00b204e9800998ecf8427e_10.jpeg');
     height:100%;
   }
 </style>
