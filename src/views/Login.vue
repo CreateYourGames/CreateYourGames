@@ -1,55 +1,58 @@
 <template>
-  <div class="login">
-       <div class="container">
-    <el-form
-      :model="ruleForm"
-      status-icon
-      :rules="rules"
-      ref="ruleForm"
-      label-width="75px"
-      class="demo-ruleForm"
-    >
-      <p>Create Your Games</p>
-      <el-form-item label="账号" prop="userName">
-        <el-input type="text" v-model="ruleForm.userName" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="checkPass">
-        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
-      </el-form-item>
-      <p class="check">
-        <input type="checkbox" id="check-pwd" />
-        <span>记住密码</span>
-        <span @click="Password()">找回密码</span>
-      </p>
-      <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">SIGN IN</el-button>
-        <el-button type="primary" @click="Register()">REGISTER</el-button>
-        <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
-      </el-form-item>
-    </el-form>
+  <div class="container">
+    <div class="left">
+      <div class="txt">
+        <p>Welcome Back!</p>
+        <p>To keep connected with please login with your presonal ifon</p>
+      </div>
+    </div>
 
-    <!-- <div class="login">
-      <div @click="register">去注册</div>
-      <div @click="findPass">找回密码</div>
-      <div @click="backHome">返回主页</div> 
-    </div> -->
-  </div>
+    <div class="right">
+      <el-form
+        :model="ruleForm"
+        status-icon
+        :rules="rules"
+        ref="ruleForm"
+        label-width="75px"
+        class="demo-ruleForm"
+      >
+        <p class="title">Create Your Games</p>
+        <el-form-item prop="userName" class="form" label-width="38px">
+          <span>账号</span>
+          <el-input type="text" v-model="ruleForm.userName" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item prop="checkPass" class="form" label-width="38px">
+          <span>密码</span>
+          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <p class="check">
+          <input type="checkbox" id="check-pwd" v-model="ruleForm.rem" />
+          <span>记住密码</span>
+          <span @click="Password">找回密码</span>
+        </p>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm')">SIGN IN</el-button>
+          <el-button type="primary" @click="Register()">REGISTER</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-//   name: "login",
   data() {
     return {
       ruleForm: {
         userName: "",
-        checkPass: ""
+        checkPass: "",
+        rem: false
       },
       rules: {
         userName: [
           { required: true, message: "请输入账号", trigger: "blur" },
-          { min: 3, max: 7, message: "账号长度为3-7个字符", trigger: "blur" }
+          { min: 3, max: 10, message: "账号长度为3-10个字符", trigger: "blur" }
         ],
         checkPass: [
           { required: true, message: "请输入密码", trigger: "blur" },
@@ -58,99 +61,228 @@ export default {
       }
     };
   },
+  mounted() {
+    // 记住密码
+    this.getCookie();
+  },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
           this.$router.push("/").catch(err => console.log(err));
         } else {
-          alert("error submit!!");
+          return false;
+        }
+      });
+
+      // 记住密码
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // 判断复选框是否被勾选 勾选则调用配置cookie方法
+          if (this.ruleForm.rem == true) {
+            console.log("checked == true");
+            // 传入账号名，密码，和保存天数3个参数
+            this.setCookie(
+              this.ruleForm.username,
+              this.ruleForm.checkPass,
+              this.ruleForm.rem,
+              7
+            );
+          } else {
+            console.log("清空Cookie");
+            // 清空Cookie
+            this.clearCookie();
+          }
+
+          // 与后端请求代码
+          // console.log("登陆成功");
+          // this.$axios
+          //   .post("/public/user/login", {
+          //     pwd: this.ruleForm.checkPass,
+          //     username: this.ruleForm.userName
+          //   })
+          //   .then(res => {
+          //     if (res.data.code === this.$webConfig.httpSuccessStatus) {
+          //       localStorage.accountName = res.data.data.real_name;
+          //       this.$ls.set(this.$webConfig.authTokenName, res.data.data);
+          //     } else {
+          //       this.$message(res.data.message);
+          //     }
+          //     this.submitState = false;
+          //   })
+          //   .catch(() => {
+          //     this.submitState = false;
+          //   });
+
+          this.$router.push("/").catch(err => console.log(err));
+        } else {
           return false;
         }
       });
     },
+    //设置cookie
+    setCookie(c_name, c_pwd, c_status, exdays) {
+      var exdate = new Date(); //获取时间
+      exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
+      //字符串拼接cookie
+      window.document.cookie =
+        "userName=" + c_name + ";path=/;expires=" + exdate.toGMTString();
+      window.document.cookie =
+        "userPwd=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
+      window.document.cookie =
+        "userPwdStatus=" + c_status + ";path/;expires=" + exdate.toGMTString();
+    },
+    //读取cookie
+    getCookie() {
+      if (document.cookie.length > 0) {
+        // 先获取cookie字符串，再将字符串切割
+        var arr = document.cookie.split("; "); //这里显示的格式需要切割一下自己可输出看下 // console.log(arr)
+        for (var i = 0; i < arr.length; i++) {
+          var arr2 = arr[i].split("="); //再次切割 //判断查找相对应的值
+          console.log(arr, arr2);
+          if (arr2[0] == "userName") {
+            this.ruleForm.userName = arr2[1]; //保存到保存数据的地方
+          } else if (arr2[0] == "userPwd") {
+            this.ruleForm.checkPass = arr2[1];
+          } else if (arr2[0] == "userPwdStatus") {
+            if (arr2[1] == "true") {
+              this.ruleForm.rem = true;
+            } else {
+              this.ruleForm.rem = false;
+            }
+          }
+        }
+      }
+    },
+    //清除cookie
+    clearCookie() {
+      this.setCookie("", "", -1); //修改2值都为空，天数为负1天就好了
+    },
     Register() {
-       this.$router.push("/Register");
+      this.$router.push("/Register");
     },
     Password() {
       this.$router.push("/Login/SafetyCenter");
-    },
-
-
-    // findPass() {
-    //   this.$router.push("/Login/FindPassword1");
-    // },
-    // register() {
-    //   this.$router.push("/Register");
-    // },
-    // backHome() {
-    //   this.$router.push("/");
-    // }
+    }
   }
 };
 </script>
 
 <style scoped lang="scss">
-.login{
-    width: 100%;
+.container {
+  width: 100%;
   height: 100%;
   background-image: url("../assets/images/home/bg.png");
- .container {
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 
+  .left {
+    width: 380px;
+    height: 420px;
+    background-color: white;
+    border-right: solid 0.2px #d1d1d1;
+    // margin-right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .txt {
+      width: 300px;
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
 
-  .el-form {
-    width: 400px;
-    padding: 20px 20px 20px 0;
-    background-color: #fff;
-    position: absolute;
-    margin-top: 30px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 10px;
-    .el-form-item__label {
-      margin-left: -60px;
-    }
-    .check {
-      height: 42px;
-      margin-top: -24px;
-      margin-bottom: 14px;
-      span {
-        margin-top: -30px;
-        line-height: 42px;
+      p:first-of-type {
+        color: #c8a080;
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 75px;
+      }
+      p:last-of-type {
+        color: #a7856b;
         font-size: 14px;
-        margin-right: 75px;
+        text-align: center;
+        line-height: 28px;
       }
     }
-    p {
-      width: 100%;
-      height: 42px;
-      line-height: 42px;
-      text-align: center;
-      font-size: 32px;
-      color: black;
-      font-weight: bold;
-    }
-    .el-form-item:first-of-type {
-      margin-top: 30px;
-    }
+  }
+  .right {
+    .el-form {
+      width: 380px;
+      height: 420px;
+      padding: 20px 20px 20px 0;
+      background-color: #fff;
 
-    .el-input {
-      height: 30px;
-    }
+      //文字：createyourgames
+      p:first-of-type {
+        width: 100%;
+        height: 100px;
+        line-height: 100px;
+        text-align: center;
+        font-size: 28px;
+        color: black;
+        font-weight: bold;
+        margin-left: 10px;
+      }
 
-    .el-button{
-      width: 120px;
-      margin-right: 10px;
+      //input的设置:账号距离上面的距离
+      .el-form-item:first-of-type {
+        margin-top: 25px;
+      }
+      //   .el-form-item__error {
+      //     margin-left: 125px !important;
+      //   }
+
+      //input的设置:账号、密码
+      .form {
+        span {
+          margin-right: 25px;
+        }
+        .el-input {
+          width: 240px;
+          height: 30px;
+        }
+      }
+
+      //文字：记住密码，找回密码的设置
+      p.check {
+        width: 100%;
+        height: 42px;
+        line-height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        input {
+          margin-left: 15px;
+          margin-right: 5px;
+          width: 16px;
+          height: 16px;
+        }
+        span:first-of-type {
+          margin-right: 60px;
+        }
+        span {
+          line-height: 42px;
+          font-size: 14px;
+          color: black;
+        }
+      }
+
+      //button按钮的设置,signin register
+      .el-form-item:last-of-type {
+        margin-top: 20px;
+        margin-left: -20px;
+      }
+      .el-button {
+        width: 120px;
+        margin-right: 20px;
+      }
     }
   }
 }
-}
-
-// .login {
-//   div {
-//     cursor: pointer;
-//   }
-// }
 </style>

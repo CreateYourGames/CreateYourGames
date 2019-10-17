@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-    <el-page-header content="安全中心"></el-page-header>
+    <div class="top">
+      <Header></Header>
+    </div>
+
+    <!-- <el-page-header content="安全中心"></el-page-header> -->
     <div class="content">
       <el-steps :active="active" process-status="wait" align-center>
         <el-step title="填写账号"></el-step>
@@ -94,6 +98,7 @@
 </template>
 
 <script>
+import Header from "../components/SafetyCenter/Header";
 export default {
   // name: "find-password1",
   data() {
@@ -168,11 +173,9 @@ export default {
     next(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
           if (this.active++ > 3) this.active = 0;
           // this.$router.push("/login").catch(err => console.log(err));
         } else {
-          alert("error submit!!");
           return false;
         }
       });
@@ -207,10 +210,13 @@ export default {
           _this.getSecond(wait);
         }, 1000);
       }
-    },
+    }
     // next() {
     //   this.$router.push("/Login/FindPassword2");
     // }
+  },
+  components: {
+    Header
   }
 };
 </script>
@@ -219,7 +225,8 @@ export default {
   width: 100%;
   height: 100%;
   background-image: url("../assets/images/home/bg.png");
-  // background-repeat: repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
 
   .el-page-header {
     width: 100%;
@@ -261,6 +268,13 @@ export default {
         text-align: center;
         span {
           margin-right: 30px;
+          color: black;
+        }
+        &.active {
+          span {
+            color: red;
+            border: solid 1px red;
+          }
         }
       }
       // 手机验证、邮箱验证-内容
