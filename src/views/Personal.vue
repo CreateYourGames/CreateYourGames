@@ -23,8 +23,8 @@
         <span>发布的游戏</span>
         <div class="block">
           <div v-if="publishList.length>5">
-            <button v-on:click="left">left</button>
-            <button v-on:click="right">right</button>
+            <img class="left" @mouseover="leftOver()" @mouseout="leftOut()" v-on:click="left" :src="hover1?img1:img2">
+            <img class="right" @mouseover="rightOver()" @mouseout="rightOut()" v-on:click="right" :src="hover2?img3:img4">
           </div>
           <div v-else></div>
           <ul ref="ul">
@@ -85,6 +85,16 @@
 export default {
   data() {
     return {
+      // 切换左图判定值
+      hover1:true,
+      // 切换右图标判定值
+      hover2:true,
+      // 切换图标
+      img1:require('@/assets/images/personal/left1.png'),
+      img2:require('@/assets/images/personal/left2.png'),
+      img3:require('@/assets/images/personal/right1.png'),
+      img4:require('@/assets/images/personal/right2.png'),
+      // 放大放小索引值
       newInd:'',
       i: "",
       ind: "",
@@ -219,7 +229,6 @@ export default {
       this.i = ''
     },
 
-
     // 点击自定义轮播推动
     left() {
       var newList1 = this.publishList.shift();
@@ -238,7 +247,23 @@ export default {
     removeStyle(index) {
       this.ind = "";
       this.newInd = '';
+    },
+
+
+    // 判定切换
+    leftOver(){
+      this.hover1 = false
+    },
+    leftOut(){
+      this.hover1 = true
+    },
+    rightOver(){
+      this.hover2 = false
+    },
+    rightOut(){
+      this.hover2 = true
     }
+
   }
 };
 </script> 
@@ -333,14 +358,27 @@ export default {
     justify-content: space-around;
     position: relative;
     left: -5px;
-    // border:1px solid black;
     .block {
       height: 250px;
       width: 800px;
-      margin-top: 40px;
+      margin-top: 30px;
       overflow: hidden;
       padding-left: 20px;
-      // border:1px solid blue;
+      padding-top: 20px;
+      .left{
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        left: 50px;
+        top: 80px;
+      }
+      .right{
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        right: 50px;
+        top: 80px;
+      }
     }
     span {
       height: 23px;
