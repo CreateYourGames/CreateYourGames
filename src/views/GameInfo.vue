@@ -62,8 +62,8 @@
                     <div class="textarea">
                         <form class="form" action="" method="post">
                             <div class="userImg"><img :src="userImg" alt="用户头像"></div>
-                            <textarea placeholder="请输入您的评论：" name="comment-text" id="" cols="65" rows="7"></textarea>
-                            <input type="button" value="发布">
+                            <textarea v-model="comment" placeholder="请输入您的评论：" name="comment-text" id="" cols="65" rows="7"></textarea>
+                            <input type="button" value="发布" @click="publish">
                         </form>    
                     </div>
                 </div>
@@ -108,6 +108,7 @@
 </template>
 <script>
 import Swiper from '../components/GameInfo/Swiper'
+// import {request} from '../network/request'
 export default {
     data(){
         return {
@@ -115,6 +116,8 @@ export default {
             imgFlag:true,
             goodImgFlag:false,
             qqFlag:true,
+            comment:'',
+            //分享功能动态传参
             url:'https://blog.csdn.net/QPC908694753/article/details/81137975',
             pics:"https://goss1.veer.com/creative/vcg/veer/612/veer-104218671.jpg",
             summary:"是兄弟就来砍我",
@@ -172,26 +175,20 @@ export default {
                 {num:6,img:require('../assets/images/home/01.png'),grade:86},
                 {num:7,img:require('../assets/images/home/01.png'),grade:73},
             ],
-            id:''
+            id:'',
+            ceshi:[]
         }
     },
     created(){
-        console.log(this.$route)
         this.id=this.$route.query.id
+        axios.get('/double/showEnterpriseInfo').then(res=>{
+            console.log(res)
+        }).catch(err=>console.log(err))
     },
     methods:{
         //返回首页
         goHome(){
             this.$router.push('/')
-        },
-        //qq分享功能
-        shareGames(){
-            console.log("aaa")
-            this.$router.replace('https://connect.qq.com/widget/shareqq/index.html&flash=&site=&style=201&width=32&height=32&url='+this.gameDetails[0].url)
-            // this.$router.push({
-            //     url:'https://connect.qq.com/widget/shareqq/index.html',
-            //     pics:this.gameDetails[0].pics
-            // })
         },
         //返回游戏库
         toGameCenter(){
@@ -205,6 +202,23 @@ export default {
             }else{
                 this.$message('加入喜欢成功');
             }
+        },
+        //发表评论
+        publish(){
+            const date=new Date()
+            const now=date.getFullYear()+"-"+(date.getMonth()+1).toString().padStart(2,'0')+"-"+date.getDate().toString().padStart(2,'0')
+            const obj={
+                img:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1338782153,119777043&fm=26&gp=0.jpg',
+                name:'孙永祥',
+                date:now,
+                good:0,
+                bad:0,
+                goodImgFlag:true,
+                badImgFlag:true,
+                comment:this.comment,
+            }
+            this.commentList.unshift(obj)
+            this.comment=''
         },
         //点赞
         goodIncrease(index){
