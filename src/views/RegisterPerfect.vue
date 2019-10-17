@@ -177,7 +177,7 @@ export default {
 .container {
   width: 100%;
   height:100%;
-  background-image: url("../assets/images/home/bg.png");
+  background-image: url("../assets/images/login/bg.jpg");
   background-attachment: fixed;
   background-size: 100% 100%;
 
@@ -188,7 +188,8 @@ export default {
       width: 500px;
       height: 100%;
       padding: 20px 70px;
-      background-color: #fff;
+      background: rgba(255, 255, 255, 0.6);
+      // background-color: #fff;
       margin-top: 15px;
 
       // 头像设置 start

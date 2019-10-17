@@ -51,12 +51,12 @@ export default {
       },
       rules: {
         userName: [
-          { required: true, message: "请输入账号", trigger: "blur" },
-          { min: 3, max: 10, message: "账号长度为3-10个字符", trigger: "blur" }
+          { required: true, message: "请输入账号", trigger: "blur" }
+          // { min: 3, max: 10, message: "账号长度为3-10个字符", trigger: "blur" }
         ],
         checkPass: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, max: 16, message: "密码长度为6-16个字符", trigger: "blur" }
+          { required: true, message: "请输入密码", trigger: "blur" }
+          // { min: 6, max: 16, message: "密码长度为6-16个字符", trigger: "blur" }
         ]
       }
     };
@@ -83,7 +83,7 @@ export default {
             console.log("checked == true");
             // 传入账号名，密码，和保存天数3个参数
             this.setCookie(
-              this.ruleForm.username,
+              this.ruleForm.userName,
               this.ruleForm.checkPass,
               this.ruleForm.rem,
               7
@@ -93,11 +93,14 @@ export default {
             // 清空Cookie
             this.clearCookie();
           }
-
-          // 与后端请求代码
-          // console.log("登陆成功");
+          if (this.ruleForm.userName === "") {
+            this.ruleForm.checkPass=''
+            this.ruleForm.rem=false
+          }
+          //与后端请求代码
+          console.log("登陆成功");
           // this.$axios
-          //   .post("/public/user/login", {
+          //   .post("/user/login.json", {
           //     pwd: this.ruleForm.checkPass,
           //     username: this.ruleForm.userName
           //   })
@@ -112,7 +115,7 @@ export default {
           //   })
           //   .catch(() => {
           //     this.submitState = false;
-          //   });
+          // });
 
           this.$router.push("/").catch(err => console.log(err));
         } else {
@@ -127,6 +130,8 @@ export default {
       //字符串拼接cookie
       window.document.cookie =
         "userName=" + c_name + ";path=/;expires=" + exdate.toGMTString();
+      // console.log("yyyy"+c_name);
+      // console.log("xxxxxx"+window.document.cookie+"<br/>");
       window.document.cookie =
         "userPwd=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
       window.document.cookie =
@@ -136,7 +141,7 @@ export default {
     getCookie() {
       if (document.cookie.length > 0) {
         // 先获取cookie字符串，再将字符串切割
-        var arr = document.cookie.split("; "); //这里显示的格式需要切割一下自己可输出看下 // console.log(arr)
+        var arr = document.cookie.split("; "); //这里显示的格式需要切割// console.log(arr)
         for (var i = 0; i < arr.length; i++) {
           var arr2 = arr[i].split("="); //再次切割 //判断查找相对应的值
           console.log(arr, arr2);
@@ -172,7 +177,7 @@ export default {
 .container {
   width: 100%;
   height: 100%;
-  background-image: url("../assets/images/home/bg.png");
+  background-image: url("../assets/images/login/bg.jpg");
   background-attachment: fixed;
   background-size: 100% 100%;
   display: flex;
@@ -181,9 +186,10 @@ export default {
   justify-content: center;
 
   .left {
+    background: rgba(255, 255, 255, 0.6);
     width: 380px;
-    height: 420px;
-    background-color: white;
+    height: 480px;
+    // background-color: white;
     border-right: solid 0.2px #d1d1d1;
     // margin-right: 30px;
     display: flex;
@@ -214,13 +220,15 @@ export default {
   .right {
     .el-form {
       width: 380px;
-      height: 420px;
+      height: 480px;
       padding: 20px 20px 20px 0;
-      background-color: #fff;
+      background: rgba(255, 255, 255, 0.6);
+      // background-color: #fff;
 
       //文字：createyourgames
       p:first-of-type {
         width: 100%;
+        margin-top: 10px;
         height: 100px;
         line-height: 100px;
         text-align: center;
@@ -232,7 +240,7 @@ export default {
 
       //input的设置:账号距离上面的距离
       .el-form-item:first-of-type {
-        margin-top: 25px;
+        margin-top: 35px;
       }
       //   .el-form-item__error {
       //     margin-left: 125px !important;
@@ -251,6 +259,7 @@ export default {
 
       //文字：记住密码，找回密码的设置
       p.check {
+        margin-top: 30px;
         width: 100%;
         height: 42px;
         line-height: 42px;
@@ -275,7 +284,7 @@ export default {
 
       //button按钮的设置,signin register
       .el-form-item:last-of-type {
-        margin-top: 20px;
+        margin-top: 30px;
         margin-left: -20px;
       }
       .el-button {

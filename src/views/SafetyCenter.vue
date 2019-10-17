@@ -13,6 +13,7 @@
         <el-step title="完成"></el-step>
       </el-steps>
 
+      <!-- 填写账号 -->
       <div class="personal-Name" v-if="active===1">
         <el-form
           :model="ruleForm"
@@ -22,7 +23,8 @@
           label-width="60px"
           class="demo-ruleForm"
         >
-          <el-form-item label="账号" prop="userName">
+          <el-form-item prop="userName" label-width="31px">
+            <span>账号</span>
             <el-input type="text" v-model="ruleForm.userName" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
@@ -30,6 +32,7 @@
         <el-button @click="next('ruleForm')">下一步</el-button>
       </div>
 
+      <!-- 邮箱/短信验证 -->
       <div class="personal-Info" v-if="active===2">
         <el-form
           :model="ruleForm"
@@ -67,6 +70,7 @@
         <el-button @click="next('ruleForm')">下一步</el-button>
       </div>
 
+      <!-- 设置新密码 -->
       <div class="personal-Pwd" v-if="active===3">
         <el-form
           :model="ruleForm"
@@ -86,6 +90,7 @@
         <el-button @click="next('ruleForm')">下一步</el-button>
       </div>
 
+      <!-- 设置成功 -->
       <div class="personal-Finish" v-if="active===4">
         <el-button @click="submitForm()">设置成功</el-button>
       </div>
@@ -224,7 +229,7 @@ export default {
 .container {
   width: 100%;
   height: 100%;
-  background-image: url("../assets/images/home/bg.png");
+  background-image: url("../assets/images/login/t4.jpg");
   background-attachment: fixed;
   background-size: 100% 100%;
 
@@ -232,6 +237,7 @@ export default {
     width: 100%;
     height: 50px;
     line-height: 50px;
+     background: rgba(255, 255, 255, 0.3);
     background-color: white;
     text-align: center;
   }
@@ -254,7 +260,8 @@ export default {
     .el-form {
       width: 400px;
       padding: 20px 20px 20px 0;
-      background-color: #fff;
+      background: rgba(255, 255, 255, 0.3);
+      // background-color: #fff;
       position: absolute;
       margin-top: 30px;
       top: 50%;
@@ -316,11 +323,18 @@ export default {
           margin-left: 18px;
         }
       }
+
       .el-form-item {
-        margin-top: 30px;
-      }
-      .el-input {
-        height: 30px;
+        margin-top: 24px;
+        span {
+          color: black;
+          font-size: 16px;
+          margin-right: 20px;
+        }
+        .el-input {
+          width: 280px;
+          height: 30px;
+        }
       }
     }
 

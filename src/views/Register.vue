@@ -97,7 +97,7 @@ export default {
 .container {
   width: 100%;
   height: 100%;
-  background-image: url("../assets/images/home/bg.png");
+  background-image: url("../assets/images/login/bg.jpg");
   background-attachment: fixed;
   background-size: 100% 100%;
 
