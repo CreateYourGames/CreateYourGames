@@ -46,7 +46,28 @@
                 <input type="button" value=">" @click='right'>
             </div>
         </div>
-    </div> 
+        <div class="middle">
+          <div class="item" v-for="(item,index) in 8" :key="index" @click="toDetails(index)">
+            {{item}}
+            <p>描述</p>
+          </div>
+        </div>
+        <div class="right" @click="right">
+          <img src="../assets/images/gameLibrary/left.png" alt="向左" />
+        </div>
+      <div class="content-pagination">
+        <input type="button" value="<" @click="left" />
+        <ul>
+          <li
+            :class="[flag==index?'active':'']"
+            v-for="(item,index) in 6"
+            :key="index"
+            @click="flag=index"
+          >{{item}}</li>
+        </ul>
+        <input type="button" value=">" @click="right" />
+      </div>
+  </div>
 </template>
 <script>
 import Search from '../components/search'
@@ -382,7 +403,7 @@ export default {
                 position: absolute;
                 top: 80px;right: 0;
             }
-        }
+          }
         .content{
             width: 75%;height: 500px;
             // margin-top: -20px;
@@ -474,5 +495,36 @@ export default {
                 }
             }
         }
+    }
+    .content-pagination {
+      width: 100%;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      input {
+        width: 30px;
+        height: 30px;
+        border: none;
+        background-color: rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+      }
+      ul {
+        overflow: hidden;
+        li {
+          width: 30px;
+          height: 30px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: 1px solid rgb(201, 201, 201);
+          float: left;
+          margin: 0 5px;
+          cursor: pointer;
+          &.active {
+            background-color: yellow;
+            color: white;
+          }
+        }
+      }
     }
 </style>

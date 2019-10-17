@@ -6,6 +6,12 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/scss/index.scss'
 import axios from 'axios'
+
+import VueCookies from 'vue-cookies'
+
+Vue.use(VueCookies)
+
+
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 window.axios=axios

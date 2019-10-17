@@ -22,12 +22,14 @@
                         <img src="@/assets/images/personal/103.jpg" alt="">
                         <img class="del-img" src="@/assets/images/personal/shanchu.png" alt="">
                     </li>
-                    <li><img src="@/assets/images/personal/105.jpg" alt="">
+                    <li>
+                        <img src="@/assets/images/personal/105.jpg" alt="">
                         <img class="del-img" src="@/assets/images/personal/shanchu.png" alt="">
                     </li>
                 </ul>
                 <label for="">游戏源码文件：</label>
-                <input type="file" name="" id="" style="border:none;">
+                <input type="file" name="" id="" style="border:none;display:none" >
+                <div class="file"></div>
             </form>
             <button class="modify" @click="go1()">确认修改</button>
             <button class="cancel" @click="go2()">取消</button>
@@ -55,7 +57,7 @@ export default {
 .game{
     // background-image: url('../assets/images/personal/bg.png');
     background-size:100% 100%;
-    border: 1px solid black;
+    // border: 1px solid black;
 }
 .nav-game{
     width: 600px;
@@ -64,6 +66,12 @@ export default {
     // background-color: rgba(252, 249, 249, 0.2);
     margin: 200px 510px;
     position: relative;
+    .file{
+        background-image:url('../assets/images/personal/anniu.png');
+        border: 1px solid red;
+        width: 100px;
+        height: 50px;
+    }
     label{
         font-size: 20px;
     }

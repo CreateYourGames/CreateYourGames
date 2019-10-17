@@ -6,10 +6,14 @@
             <i class="left"></i>去玩游戏
         </div>
         <div class="ranking">
-            <div class="ranking-nav" :style="{backgroundColor:rankingNavColor[rankingFlag.rank2]}">
+            <div class="ranking-nav" :style="{backgroundColor:rankingNavColor[rankingFlag.leftRank2 == 0 ? rankingFlag.rightRank2 : rankingFlag.leftRank2]}">
                 <p class="nav-title">{{ rankingName }}</p>
                 <div class="ranking-tab">
-                    <p v-for="item in 3"></p>
+                    <p
+                            v-for="item in 3"
+                            :class="{active: rankingFlag.leftRank2 == 0 ? rankingFlag.rightRank2 == item : rankingFlag.leftRank2 == item}"
+                            @click="tabChangeRank(item)"
+                    ></p>
                 </div>
             </div>
             <div class="ranking-box">
@@ -17,11 +21,15 @@
                     <img src="../assets/images/rankingList/ranking-left.png" alt="">
                 </div>
                 <div class="ranking-card"
-                     :class="{rank1: rankingFlag.rank1 == (index+1), rank2: rankingFlag.rank2 == (index+1), rank3: rankingFlag.rank3 == (index+1)}"
+                     :class="{
+                    leftRank1: rankingFlag.leftRank1 == (index+1),
+                    leftRank2: rankingFlag.leftRank2 == (index+1),
+                    leftRank3: rankingFlag.leftRank3 == (index+1),
+                    rightRank1: rankingFlag.rightRank1 == (index+1),
+                    rightRank2: rankingFlag.rightRank2 == (index+1),
+                    rightRank3: rankingFlag.rightRank3 == (index+1),
+                }"
                      v-for="(item, index) in rankingArray" @click="rankingCardChange(index)">
-                    <div class="ranking-title">
-                        {{ item.name }}
-                    </div>
                     <!--游戏榜单-->
                     <div class="list-item game-rank" v-if="li.value" v-for="(li, index) in item.data">
                         <div class="list-index">
@@ -53,7 +61,7 @@
             <div class="title">为您推荐</div>
             <p>————————</p>
         </div>
-        <div class="hot-games">
+        <div class="more-games">
             <div class="title">热门游戏</div>
             <div class="game-box">
                 <div class="game" v-for="item in hotGameArray">
@@ -61,14 +69,19 @@
                     <p>{{ item.name }}</p>
                 </div>
             </div>
-        </div>
-        <div class="new-games">
+            <div class="divide-line"></div>
             <div class="title">最新游戏</div>
             <div class="game-box">
                 <div class="game" v-for="item in newGameArray">
                     <img :src="item.url" alt="">
                     <p>{{ item.name }}</p>
                 </div>
+            </div>
+        </div>
+        <div class="toTop">
+            <div class="content" @click="scrollToTop">
+                <div class="icon"></div>
+                <div class="tips">返回顶部</div>
             </div>
         </div>
     </div>
@@ -236,12 +249,15 @@
                     },
                 ],
                 rankingFlag: {
-                    rank1: 1,
-                    rank2: 2,
-                    rank3: 3
+                    leftRank1: 1,
+                    leftRank2: 2,
+                    leftRank3: 3,
+                    rightRank1: 1,
+                    rightRank2: 2,
+                    rightRank3: 3
                 },
                 rankingNavColor: {
-                    1: '#881362',
+                    1: '#0B4C37',
                     2: '#3a7385',
                     3: '#123c7e',
 
@@ -292,36 +308,86 @@
             toGameCenter() {
                 this.$router.push('/GameCenter')
             },
+            tabChangeRank(item){
+                const now = this.rankingFlag.leftRank2 == 0 ? this.rankingFlag.rightRank2 : this.rankingFlag.leftRank2
+                const direction = item - now;
+                switch (direction){
+                    case -1 :
+                    case 2 :
+                        this.rankingLeft();
+                        break;
+                    case 1 :
+                    case -2 :
+                        this.rankingRight();
+                        break;
+                }
+            },
             rankingLeft() {
-                // this.rankingFlag.rank1 == 0 ? this.rankingFlag.rank1 = 1 :
-                    this.rankingFlag.rank1 == 1 ? this.rankingFlag.rank1 = 3 : this.rankingFlag.rank1--;
-                // this.rankingFlag.rank2 == 0 ? this.rankingFlag.rank2 = 2 :
-                    this.rankingFlag.rank2 == 1 ? this.rankingFlag.rank2 = 3 : this.rankingFlag.rank2--;
-                // this.rankingFlag.rank3 == 0 ? this.rankingFlag.rank3 = 3 :
-                    this.rankingFlag.rank3 == 1 ? this.rankingFlag.rank3 = 3 : this.rankingFlag.rank3--;
+                if(this.rankingFlag.leftRank1 == 0){
+                    this.rankingFlag.leftRank1 = this.rankingFlag.rightRank1;
+                }
+                if(this.rankingFlag.leftRank2 == 0){
+                    this.rankingFlag.leftRank2 = this.rankingFlag.rightRank2;
+                }
+                if(this.rankingFlag.leftRank3 == 0){
+                    this.rankingFlag.leftRank3 = this.rankingFlag.rightRank3;
+                }
+                this.rankingFlag.rightRank1 = 0;
+                this.rankingFlag.rightRank2 = 0;
+                this.rankingFlag.rightRank3 = 0;
+                // this.rankingFlag.leftRank1 == 0 ? this.rankingFlag.leftRank1 = 1 :
+                    this.rankingFlag.leftRank1 == 1 ? this.rankingFlag.leftRank1 = 3 : this.rankingFlag.leftRank1--;
+                // this.rankingFlag.leftRank2 == 0 ? this.rankingFlag.leftRank2 = 2 :
+                    this.rankingFlag.leftRank2 == 1 ? this.rankingFlag.leftRank2 = 3 : this.rankingFlag.leftRank2--;
+                // this.rankingFlag.leftRank3 == 0 ? this.rankingFlag.leftRank3 = 3 :
+                    this.rankingFlag.leftRank3 == 1 ? this.rankingFlag.leftRank3 = 3 : this.rankingFlag.leftRank3--;
                 console.log(this.rankingFlag);
             },
             rankingRight(){
-                // this.rankingFlag.rank1 == 0 ? this.rankingFlag.rank1 = 1 :
-                this.rankingFlag.rank1 == 3 ? this.rankingFlag.rank1 = 1 : this.rankingFlag.rank1++;
-                // this.rankingFlag.rank2 == 0 ? this.rankingFlag.rank2 = 2 :
-                this.rankingFlag.rank2 == 3 ? this.rankingFlag.rank2 = 1 : this.rankingFlag.rank2++;
-                // this.rankingFlag.rank3 == 0 ? this.rankingFlag.rank3 = 3 :
-                this.rankingFlag.rank3 == 3 ? this.rankingFlag.rank3 = 1 : this.rankingFlag.rank3++;
+                if(this.rankingFlag.rightRank1 == 0){
+                    this.rankingFlag.rightRank1 = this.rankingFlag.leftRank1;
+                }
+                if(this.rankingFlag.rightRank2 == 0){
+                    this.rankingFlag.rightRank2 = this.rankingFlag.leftRank2;
+                }
+                if(this.rankingFlag.rightRank3 == 0){
+                    this.rankingFlag.rightRank3 = this.rankingFlag.leftRank3;
+                }
+                this.rankingFlag.leftRank1 = 0;
+                this.rankingFlag.leftRank2 = 0;
+                this.rankingFlag.leftRank3 = 0;
+                // this.rankingFlag.leftRank1 == 0 ? this.rankingFlag.leftRank1 = 1 :
+                this.rankingFlag.rightRank1 == 3 ? this.rankingFlag.rightRank1 = 1 : this.rankingFlag.rightRank1++;
+                // this.rankingFlag.leftRank2 == 0 ? this.rankingFlag.leftRank2 = 2 :
+                this.rankingFlag.rightRank2 == 3 ? this.rankingFlag.rightRank2 = 1 : this.rankingFlag.rightRank2++;
+                // this.rankingFlag.leftRank3 == 0 ? this.rankingFlag.leftRank3 = 3 :
+                this.rankingFlag.rightRank3 == 3 ? this.rankingFlag.rightRank3 = 1 : this.rankingFlag.rightRank3++;
                 console.log(this.rankingFlag);
             },
             rankingCardChange(index){
-                if(this.rankingFlag.rank1 == (index+1)){
+                if(this.rankingFlag.leftRank1 == (index+1) || this.rankingFlag.rightRank1 == (index+1)){
                     this.rankingLeft();
                 }
-                if(this.rankingFlag.rank3 == (index+1)){
+                if(this.rankingFlag.leftRank3 == (index+1) || this.rankingFlag.rightRank3 == (index+1)){
                     this.rankingRight();
                 }
+            },
+            scrollToTop(){
+                window.scrollTo(0, 0)
             }
         },
         computed: {
             rankingName(){
-                return this.rankingArray[this.rankingFlag.rank2 - 1].name;
+                let index = 1;
+                if(this.rankingFlag.leftRank2 == 0){
+                    index = this.rankingFlag.rightRank2 - 1;
+                }
+                else if(this.rankingFlag.rightRank2 == 0){
+                    index = this.rankingFlag.leftRank2 - 1;
+                }
+
+                const rankName = this.rankingArray[index].name;
+                return rankName;
             }
         }
     }
@@ -342,6 +408,7 @@
             background-image: url("../assets/images/home/logo.png");
             background-size: 100% 100%;
             opacity: 0.8;
+            cursor: pointer;
         }
         .toGameCenter {
             display: flex;
@@ -355,6 +422,7 @@
             border-left: none;
             text-align: center;
             border-radius: 0 10px 10px 0;
+            cursor: pointer;
             .left {
                 display: block;
                 width: 15px;
@@ -391,8 +459,11 @@
                         width: 65px;
                         height: 5px;
                         border-radius: 5px;
-                        background-color: #ababab;
+                        background-color: #898989;
                         cursor: pointer;
+                        &.active{
+                            background-color: #e4e4e4;
+                        }
                     }
                 }
             }
@@ -402,6 +473,7 @@
                 justify-content: center;
                 align-items: center;
                 height: 525px;
+                margin-top: -10px;
                 .ranking-card {
                     position: absolute;
                     width: 300px;
@@ -411,11 +483,7 @@
                     box-sizing: border-box;
                     padding: 0 0 5px;
                     opacity: 0.7;
-                    .ranking-title {
-                        line-height: 40px;
-                        font-size: 22px;
-                        text-align: center;
-                    }
+                    color: #d3d3d3;
                     .list-item {
                         height: 55px;
                         display: flex;
@@ -428,7 +496,7 @@
                             align-items: center;
                             p {
                                 margin-right: 15px;
-                                font-size: 20px;
+                                font-size: 17px;
                             }
                             .user-icon {
                                 width: 40px;
@@ -474,7 +542,7 @@
                             transform: scale(0.9, 0.9) translateX(-260px);
                         }
                         100% {
-                            opacity: 1;
+                            opacity: 0.95;
                             z-index: 999;
                             transform: scale(1, 1) translateX(0);
                         }
@@ -503,57 +571,105 @@
                             transform: scale(0.9, 0.9) translateX(-260px);
                         }
                     }
+                    @keyframes rightR1toR3 {
+                        0% {
+                            z-index: 0;
+                            opacity: 0.7;
+                            transform: scale(0.9, 0.9) translateX(-260px);
+                        }
+                        100% {
+                            z-index: 0;
+                            opacity: 0.7;
+                            transform: scale(0.9, 0.9) translateX(260px);
+                        }
+                    }
+                    @keyframes rightR2toR1 {
+                        0% {
+                            opacity: 1;
+                            z-index: 999;
+                            transform: scale(1, 1) translateX(0);
+                        }
+                        100% {
+                            z-index: 0;
+                            opacity: 0.7;
+                            transform: scale(0.9, 0.9) translateX(-260px);
+                        }
+                    }
+                    @keyframes rightR3toR2 {
+                        0% {
+                            z-index: 0;
+                            opacity: 0.7;
+                            transform: scale(0.9, 0.9) translateX(260px);
+                        }
+                        100% {
+                            opacity: 0.95;
+                            z-index: 999;
+                            transform: scale(1, 1) translateX(0);
+                        }
+                    }
                     &:nth-of-type(3n+1){
                         background-color: #123c7e;
+                        background-size: 100% 100%;
                         transform: scale(0.9, 0.9) translateX(260px);
                     }
                     &:nth-of-type(3n+2){
-                        background-color: #881362;
+                        background-color: #0B4C37;
                         transform: scale(0.9, 0.9) translateX(-260px);
                     }
                     &:nth-of-type(3n+3){
                         background-color: #3a7385;
                         z-index: 999;
                     }
-                    &.rank1 {
+                    &.leftRank1 {
                         cursor: pointer;
                         animation: leftR3toR1 1s linear forwards;
                     }
-                    &.rank2 {
+                    &.leftRank2 {
                         animation: leftR1toR2 1s linear forwards;
                     }
-                    &.rank3 {
+                    &.leftRank3 {
                         cursor: pointer;
                         animation: leftR2toR3 1s linear forwards;
                     }
-                    .list-item:nth-of-type(8n + 2) {
+                    &.rightRank1{
+                        cursor: pointer;
+                        animation: rightR2toR1 1s linear forwards;
+                    }
+                    &.rightRank2{
+                        animation: rightR3toR2 1s linear forwards;
+                    }
+                    &.rightRank3{
+                        cursor: pointer;
+                        animation: rightR1toR3 1s linear forwards;
+                    }
+                    .list-item:nth-of-type(8n + 1) {
                         .list-index {
                             p {
-                                color: #ff0004;
+                                color: #fffe02;
                             }
                         }
                     }
-                    .list-item:nth-of-type(8n + 3) {
-                        .list-index {
-                            p {
-                                color: #ff6c03;
-                            }
-                        }
-                    }
-                    .list-item:nth-of-type(8n + 4) {
-                        .list-index {
-                            p {
-                                color: #ffd712;
-                            }
-                        }
-                    }
+                    /*.list-item:nth-of-type(8n + 2) {*/
+                        /*.list-index {*/
+                            /*p {*/
+                                /*color: #ffca3e;*/
+                            /*}*/
+                        /*}*/
+                    /*}*/
+                    /*.list-item:nth-of-type(8n + 3) {*/
+                        /*.list-index {*/
+                            /*p {*/
+                                /*color: #f3b228;*/
+                            /*}*/
+                        /*}*/
+                    /*}*/
                 }
                 .ranking-left {
                     display: flex;
                     align-items: center;
                     height: 100px;
                     border-radius: 10px 0 0 10px;
-                    margin-right: 500px;
+                    margin-right: 450px;
                     background-color: rgba(0, 0, 0, 0.2);
                     cursor: pointer;
                     img {
@@ -568,7 +684,7 @@
                     align-items: center;
                     height: 100px;
                     border-radius: 0 10px 10px 0;
-                    margin-left: 500px;
+                    margin-left: 450px;
                     background-color: rgba(0, 0, 0, 0.2);
                     cursor: pointer;
                     img {
@@ -590,15 +706,13 @@
                 margin: 0 20px;
             }
         }
-        .hot-games,
-        .new-games{
+        .more-games{
             width: 80%;
-            /*height: 320px;*/
             background-color: rgba(255, 255, 255, 0.7);
             margin: 40px auto;
             box-sizing: border-box;
             padding: 15px;
-            border-radius: 20px;
+            border-radius: 5px;
             .title{
                 font-size: 20px;
                 margin-bottom: 10px;
@@ -621,9 +735,48 @@
                     }
                 }
             }
+            .divide-line{
+                height: 1px;
+                width: 90%;
+                background-color: #ababab;
+                margin: 20px auto;
+            }
         }
-        .new-games{
-            margin: 0 auto 80px;
+        .toTop{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            .content{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                cursor: pointer;
+                .icon{
+                    width: 60px;
+                    height: 60px;
+                    background-image: url("../assets/images/rankingList/toTop.png");
+                    background-size: 100% 100%;
+                }
+                .tips{
+                    color: #ffffff;
+                    font-size: 20px;
+                }
+                @keyframes jump {
+                    0%{
+                        transform: translateY(0);
+                    }
+                    50%{
+                        transform: translateY(-10px);
+                    }
+                    100%{
+                        transform: translateY(0px);
+                    }
+                }
+                &:hover{
+                    animation: jump 0.3s linear forwards;
+                }
+            }
         }
     }
 </style>

@@ -14,10 +14,10 @@
 <script>
 export default {
   methods: {
-    goTo(){
+    goTo() {
       this.$router.push("/DeveloperTest");
     }
-  },
+  }
 };
 </script>
 
@@ -25,10 +25,11 @@ export default {
 .container {
   width: 100%;
   height: 100%;
-  background-image: url("../assets/images/home/bg.png");
+  background: url("../assets/images/home/bg.png");
+  background-attachment: fixed;
+  background-size: 100% 100%;
 
   .el-page-header {
-    background-color: white;
     width: 100%;
     height: 50px;
     line-height: 50px;
