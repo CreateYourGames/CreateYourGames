@@ -67,7 +67,7 @@
               @mouseover="addStyle(index)"
               @mouseout="removeStyle(index)">
               <img :src="favor.img" alt />
-              <div id='bot' v-show="favor.flag">
+              <div v-bind:class="{bott:!(newInd===index)}">
                 <div class="bot">
                   <p class="detail" @click="jumpGameDetails">查看详情&nbsp;</p>
                   <p class="cancel" @click="cancelFavor(favor.id)">&nbsp;取消喜欢</p>
@@ -85,7 +85,7 @@
 export default {
   data() {
     return {
-      cacher:true,
+      newInd:'',
       i: "",
       ind: "",
       img104: require("../assets/images/personal/104.jpg"),
@@ -233,11 +233,11 @@ export default {
     // 喜欢的游戏     鼠标滑入滑出事件
     addStyle(index) {
       this.ind = index;
-      this.favorList[index].flag = !this.favorList[index].flag
+      this.newInd = index;
     },
     removeStyle(index) {
       this.ind = "";
-      this.favorList[index].flag = !this.favorList[index].flag
+      this.newInd = '';
     }
   }
 };
@@ -459,7 +459,7 @@ export default {
           transform: scale(1.2, 1.2);
           transition: all 0.6s;
         }
-        #bott{
+        .bott{
            display: none;
         }
         .bot {
