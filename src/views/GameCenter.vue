@@ -46,27 +46,6 @@
                 <input type="button" value=">" @click='right'>
             </div>
         </div>
-        <div class="middle">
-          <div class="item" v-for="(item,index) in 8" :key="index" @click="toDetails(index)">
-            {{item}}
-            <p>描述</p>
-          </div>
-        </div>
-        <div class="right" @click="right">
-          <img src="../assets/images/gameLibrary/left.png" alt="向左" />
-        </div>
-      <div class="content-pagination">
-        <input type="button" value="<" @click="left" />
-        <ul>
-          <li
-            :class="[flag==index?'active':'']"
-            v-for="(item,index) in 6"
-            :key="index"
-            @click="flag=index"
-          >{{item}}</li>
-        </ul>
-        <input type="button" value=">" @click="right" />
-      </div>
   </div>
 </template>
 <script>
@@ -239,7 +218,7 @@ export default {
             newList:[]
         }
     },
-    mounted() {
+    created() {
         //页面加载时将list存入8条数据，作为默认显示
         this.gameList.forEach((item,index) => {
             if(index%3==0&&index<24){
