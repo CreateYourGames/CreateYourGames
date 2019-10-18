@@ -17,14 +17,28 @@
       </div>
     </div>
 
+    <conform></conform>
+
     <!-- content -->
     <div class="content">
       <div class="publish">
         <span>发布的游戏</span>
         <div class="block">
           <div v-if="publishList.length>5">
-            <img class="left" @mouseover="leftOver()" @mouseout="leftOut()" v-on:click="left" :src="hover1?img1:img2">
-            <img class="right" @mouseover="rightOver()" @mouseout="rightOut()" v-on:click="right" :src="hover2?img3:img4">
+            <img
+              class="left"
+              @mouseover="leftOver()"
+              @mouseout="leftOut()"
+              v-on:click="left"
+              :src="hover1?img1:img2"
+            />
+            <img
+              class="right"
+              @mouseover="rightOver()"
+              @mouseout="rightOut()"
+              v-on:click="right"
+              :src="hover2?img3:img4"
+            />
           </div>
           <div v-else></div>
           <ul ref="ul">
@@ -42,7 +56,7 @@
                   <p class="update" @click="jumpGame()">修改信息&nbsp;</p>
                   <p class="delete">&nbsp;删除游戏</p>
                 </div>
-             </div>
+              </div>
             </li>
           </ul>
         </div>
@@ -65,7 +79,8 @@
               :key="index"
               v-bind:class="{active:ind === index}"
               @mouseover="addStyle(index)"
-              @mouseout="removeStyle(index)">
+              @mouseout="removeStyle(index)"
+            >
               <img :src="favor.img" alt />
               <div v-bind:class="{bott:!(newInd===index)}">
                 <div class="bot">
@@ -82,20 +97,24 @@
 </template>
 
 <script>
+import Conform from "@/components/personal/Conform";
 export default {
+  components: {
+    Conform
+  },
   data() {
     return {
       // 切换左图判定值
-      hover1:true,
+      hover1: true,
       // 切换右图标判定值
-      hover2:true,
+      hover2: true,
       // 切换图标
-      img1:require('@/assets/images/personal/left1.png'),
-      img2:require('@/assets/images/personal/left2.png'),
-      img3:require('@/assets/images/personal/right1.png'),
-      img4:require('@/assets/images/personal/right2.png'),
+      img1: require("@/assets/images/personal/left1.png"),
+      img2: require("@/assets/images/personal/left2.png"),
+      img3: require("@/assets/images/personal/right1.png"),
+      img4: require("@/assets/images/personal/right2.png"),
       // 放大放小索引值
-      newInd:'',
+      newInd: "",
       i: "",
       ind: "",
       img104: require("../assets/images/personal/104.jpg"),
@@ -168,25 +187,25 @@ export default {
           id: 1,
           name: "游戏1",
           img: require("@/assets/images/personal/love1.jpg"),
-          flag:false
+          flag: false
         },
         {
           id: 2,
           name: "游戏2",
           img: require("@/assets/images/personal/love2.jpg"),
-          flag:false
+          flag: false
         },
         {
           id: 3,
           name: "游戏3",
           img: require("@/assets/images/personal/love3.jpg"),
-          flag:false
+          flag: false
         },
         {
           id: 4,
           name: "游戏4",
           img: require("@/assets/images/personal/love4.jpg"),
-          flag:false
+          flag: false
         }
       ]
     };
@@ -212,11 +231,11 @@ export default {
       this.$router.push("/GameInfo");
     },
     cancelFavor(id) {
-      this.favorList.forEach((item,index)=>{
-        if(item.id==id){
-        console.log(this.favorList.splice(0, 1));
+      this.favorList.forEach((item, index) => {
+        if (item.id == id) {
+          console.log(this.favorList.splice(0, 1));
         }
-      })
+      });
     },
 
     //发布的游戏 手表移动事件
@@ -226,7 +245,7 @@ export default {
     },
     outStyle(index) {
       this.publishList[index].flag = !this.publishList[index].flag;
-      this.i = ''
+      this.i = "";
     },
 
     // 点击自定义轮播推动
@@ -246,24 +265,22 @@ export default {
     },
     removeStyle(index) {
       this.ind = "";
-      this.newInd = '';
+      this.newInd = "";
     },
-
 
     // 判定切换
-    leftOver(){
-      this.hover1 = false
+    leftOver() {
+      this.hover1 = false;
     },
-    leftOut(){
-      this.hover1 = true
+    leftOut() {
+      this.hover1 = true;
     },
-    rightOver(){
-      this.hover2 = false
+    rightOver() {
+      this.hover2 = false;
     },
-    rightOut(){
-      this.hover2 = true
+    rightOut() {
+      this.hover2 = true;
     }
-
   }
 };
 </script> 
@@ -365,14 +382,14 @@ export default {
       overflow: hidden;
       padding-left: 20px;
       padding-top: 20px;
-      .left{
+      .left {
         position: absolute;
         width: 40px;
         height: 40px;
         left: 50px;
         top: 80px;
       }
-      .right{
+      .right {
         position: absolute;
         width: 40px;
         height: 40px;
@@ -397,8 +414,8 @@ export default {
       margin-right: 40px;
       vertical-align: middle;
       // border:1px solid red;
-      .cacher{
-          display: none;
+      .cacher {
+        display: none;
       }
       &.style {
         opacity: 1;
@@ -483,7 +500,7 @@ export default {
         position: absolute;
         left: 0px;
       }
-      ul{
+      ul {
         padding-top: 40px;
       }
       ul li {
@@ -497,8 +514,8 @@ export default {
           transform: scale(1.2, 1.2);
           transition: all 0.6s;
         }
-        .bott{
-           display: none;
+        .bott {
+          display: none;
         }
         .bot {
           text-align: center;
