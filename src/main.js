@@ -6,7 +6,9 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/scss/index.scss'
 import axios from 'axios'
-
+import api from './api/index'
+//将这个api注册到vue的原型上
+Vue.prototype.$api=api
 import VueCookies from 'vue-cookies'
 
 Vue.use(VueCookies)

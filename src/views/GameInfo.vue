@@ -108,7 +108,6 @@
 </template>
 <script>
 import Swiper from '../components/GameInfo/Swiper'
-// import {request} from '../network/request'
 export default {
     data(){
         return {
@@ -181,9 +180,10 @@ export default {
     },
     created(){
         this.id=this.$route.query.id
-        axios.get('/double/showEnterpriseInfo').then(res=>{
+        //调用后台接口
+        this.$api.gameInfo.ceshi().then(res=>{
             console.log(res)
-        }).catch(err=>console.log(err))
+        })
     },
     methods:{
         //返回首页
