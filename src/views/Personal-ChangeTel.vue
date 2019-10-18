@@ -4,11 +4,12 @@
       <form action>
         <div>
           <label for>原手机号码：</label>
-          <input type="text" name id placeholder="请输入您原先绑定的手机号" />
+          <input v-model="oldPhone" @blur="oldBlur" type="text" name id placeholder="请输入您原先绑定的手机号" />
+          <span v-if="!regFlag">手机号格式不正确</span>
         </div>
         <div>
           <label for>现手机号码：</label>
-          <input type="text" name id placeholder="请输入您现在需要绑定的手机号" />
+          <input type="text"  name id placeholder="请输入您现在需要绑定的手机号" />
           <button class="code">获取验证码</button>
         </div>
         <div>
@@ -27,9 +28,26 @@
 
 <script>
 export default {
+  data() {
+    return {
+      oldPhone:'',
+      newPhone: "",
+      regFlag: true,
+      rules: {
+        phone: [
+          { required: true, message: "请填写手机号码", trigger: "change" }
+        ]
+      }
+    };
+  },
   methods: {
     go() {
       this.$router.push("/Personal/UpdateInfo").catch(err => console.log(err));
+    },
+    oldBlur(){
+      var telReg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+      this.regFlag = telReg.test(this.oldPhone);
+
     }
   }
 };

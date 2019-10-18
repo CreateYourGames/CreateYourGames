@@ -220,7 +220,7 @@ export default {
 .container {
   width: 100%;
   height: 100%;
-  background-image: url("../assets/images/home/bg.png");
+  background-image: url("../assets/images/login/tp.jpg");
   .contant {
     background: rgba(255, 255, 255, 0.3);
     display: flex;

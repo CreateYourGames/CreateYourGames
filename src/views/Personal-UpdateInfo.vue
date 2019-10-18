@@ -1,11 +1,17 @@
 <template>
   <div class="info">
-    <!-- 顶部 --> 
+    <!-- 顶部 -->
     <div class="info-nav" ref="style">
       <input type="file" ref="input" name id style="display:none;" />
       <div>
         <img src="@/assets/images/personal/01.png" alt width="100" height="100" />
-        <div class="origin" v-bind:class="{style:enable}" @click="fileClick" @mouseover="addStyle" @mouseout="removeStyle"></div>
+        <div
+          class="origin"
+          v-bind:class="{style:enable}"
+          @click="fileClick"
+          @mouseover="addStyle"
+          @mouseout="removeStyle"
+        ></div>
       </div>
       <div class="butt">
         <button @click="save()">保存</button>
@@ -14,22 +20,29 @@
     </div>
 
     <!-- 内容 -->
-    <div class="content">
-      <form action="">
-        <label for>用户名：</label>
-        <input type="text" v-model="personalInfo[0].name" readonly style="border:none;"/>
-        <br />
-        <label for>邮箱：</label>
-        <input type="text" v-model="personalInfo[0].emil" />
-        <br />
-        <label for>手机号：</label>
-        <input type="text" v-model="personalInfo[0].phone" />
-        <br />
-        <label for class="special">个人简介：</label>
-        <textarea cols="30" rows="10" v-model="personalInfo[0].intro"></textarea>
-      </form>
-      <p class="upEmil" @click="jumpEmil()">修改绑定邮箱</p>
-      <p class="upTel" @click="jumpTel()">修改绑定手机</p>
+    <div class="info-out">
+      <div class="content">
+        <form action>
+          <div>
+            <label for>用户名：</label>
+            <input type="text" v-model="personalInfo[0].name" readonly style="border:none;" />
+          </div>
+          <div>
+            <label for>邮箱：</label>
+            <input type="text" v-model="personalInfo[0].emil" />
+            <p @click="jumpEmil()">修改绑定邮箱</p>
+          </div>
+          <div>
+            <label for>手机号：</label>
+            <input type="text" v-model="personalInfo[0].phone" />
+            <p @click="jumpTel()">修改绑定手机</p>
+          </div>
+          <div>
+            <label for class="special">个人简介：</label>
+            <textarea cols="30" rows="10" v-model="personalInfo[0].intro"></textarea>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -39,13 +52,13 @@ export default {
   data() {
     return {
       enable: false,
-      personalInfo:[
-          {
-              name:'孙永祥是憨批',
-              emil:'1461523882@qq.com',
-              phone:'1461523882',
-              intro:'东方不亮西方亮，憨批啥样祥哥啥样'
-          }
+      personalInfo: [
+        {
+          name: "孙永祥是憨批",
+          emil: "1461523882@qq.com",
+          phone: "1461523882",
+          intro: "东方不亮西方亮，憨批啥样祥哥啥样"
+        }
       ]
     };
   },
@@ -76,30 +89,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.info{
-    background-image: url('../assets/images/personal/texture.png');
-    background-color: #eeeeee;
-    background-size: cover;
-
+.info {
+  background-image: url("../assets/images/personal/texture.png");
+  background-color: #eeeeee;
+  background-size: cover;
 }
 
 // top
 .info-nav {
-//   width: 100%;
   height: 200px;
   background-color: gray;
   text-align: center;
   position: relative;
   background-image: url("../assets/images/personal/info.jpg");
-//   background-repeat: no-repeat;
-//   background-size: 100% 100%;
+  //   background-repeat: no-repeat;
+  //   background-size: 100% 100%;
   img {
     width: 150px;
     height: 150px;
     border-radius: 100px;
     margin-top: 30px;
   }
-  .origin{
+  .origin {
     width: 150px;
     height: 150px;
     border-radius: 100px;
@@ -141,53 +152,63 @@ export default {
   }
 }
 
+//表单开始
+.info-out {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 // content
 .content {
-  width: 400px;
+  width: 800px;
   height: 600px;
-  margin: 50px 34%;
   text-align: right;
-//   form{
-//       background-color:rgba(42,37,37, 0.1);
-//   }
+  // border: 1px solid red;
+  form {
+    div {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      p{
+        cursor: pointer;
+        height: 40px;
+        vertical-align: middle;
+        line-height: 45px;
+        margin-left: 20px;
+      }
+    }
+  }
   .special {
-    display: block;
-    margin-left: 10px;
-    margin-top: 20px;
-    float: left;
-  }
-  .upEmil {
-    position: absolute;
-    right: 30%;
-    margin-top: -310px;
-    cursor: pointer;
-  }
-  .upTel {
-    position: absolute;
-    right: 30%;
-    margin-top: -260px;
-    cursor: pointer;
+    margin-top: -150px;
+    width: 250px;
+    text-align: right;
   }
   label {
     font-size: 20px;
+    width: 250px;
+    text-align: right;
   }
   input {
     width: 290px;
     height: 40px;
-    margin-top: 20px;
-    top: -50px;
+    margin-top: 10px;
     outline: none;
-    background-color:#eeeeee;
+    background-color: #eeeeee;
     border: 1px solid gray;
-    border-radius: 15px;
+    border-radius: 20px;
+    padding-left: 10px;
   }
   textarea {
     width: 290px;
-    margin-top: 20px;
+    height: 200px;
+    margin-top: 10px;
     font-size: 16px;
     font-family: 微软雅黑;
-    background-color:#eeeeee;
+    background-color: #eeeeee;
     outline: none;
+    border-radius: 20px;
+    padding-left: 10px;
   }
 }
 </style>
