@@ -121,12 +121,12 @@ export default {
             pics:"https://goss1.veer.com/creative/vcg/veer/612/veer-104218671.jpg",
             summary:"是兄弟就来砍我",
             desc:'快来跟我一起玩游戏吧',
-            userImg:require('../assets/images/home/01.png'),
+            userImg:require('../assets/images/home/user.png'),
             //给请求来的数据加两个标识符，用来判断每个是否在点击状态
             gameDetail:'',
             commentList:[
                 {
-                    img:require('../assets/images/home/01.png'),
+                    img:require('../assets/images/home/user.png'),
                     name:'江小白',
                     comment:'大家好，我是渣渣辉，一起来贪玩蓝月，是兄弟！就来砍我!',
                     date:'2019-01-03',
@@ -136,7 +136,7 @@ export default {
                     bad:1
                 },
                 {
-                    img:require('../assets/images/home/01.png'),
+                    img:require('../assets/images/home/user.png'),
                     name:'江小白',
                     comment:'大家好，我是渣渣辉，一起来贪玩蓝月，是兄弟！就来砍我！大家好，我是渣渣辉，一起来贪玩蓝月，是兄弟！就来砍我!',
                     date:'2019-01-03',
@@ -146,7 +146,7 @@ export default {
                     bad:1
                 },
                 {
-                    img:require('../assets/images/home/01.png'),
+                    img:require('../assets/images/home/user.png'),
                     name:'江小白',
                     comment:'大家好，我是渣渣辉，一起来贪玩蓝月，是兄弟！就来砍我！大家好，我是渣渣辉，一起来贪玩蓝月，是兄弟！就来砍我!',
                     date:'2019-01-03',
@@ -156,7 +156,7 @@ export default {
                     bad:1
                 },
                 {
-                    img:require('../assets/images/home/01.png'),
+                    img:require('../assets/images/home/user.png'),
                     name:'江小白',
                     comment:'大家好，我是渣渣辉，一起来贪玩蓝月，是兄弟！就来砍我！',
                     date:'2019-01-03',
@@ -167,13 +167,13 @@ export default {
                 }
             ],
             rankingList:[
-                {num:1,img:require('../assets/images/home/01.png'),grade:100},
-                {num:2,img:require('../assets/images/home/01.png'),grade:98},
-                {num:3,img:require('../assets/images/home/01.png'),grade:97},
-                {num:4,img:require('../assets/images/home/01.png'),grade:96},
-                {num:5,img:require('../assets/images/home/01.png'),grade:89},
-                {num:6,img:require('../assets/images/home/01.png'),grade:86},
-                {num:7,img:require('../assets/images/home/01.png'),grade:73},
+                {num:1,img:require('../assets/images/home/user.png'),grade:100},
+                {num:2,img:require('../assets/images/home/user.png'),grade:98},
+                {num:3,img:require('../assets/images/home/user.png'),grade:97},
+                {num:4,img:require('../assets/images/home/user.png'),grade:96},
+                {num:5,img:require('../assets/images/home/user.png'),grade:89},
+                {num:6,img:require('../assets/images/home/user.png'),grade:86},
+                {num:7,img:require('../assets/images/home/user.png'),grade:73},
             ],
             id:'',
             ceshi:[]
