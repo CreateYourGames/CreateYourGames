@@ -236,7 +236,6 @@ export default {
                     this.list.push(item)
                 })
             }
-            
         },200)    
     },
     methods:{
@@ -271,7 +270,7 @@ export default {
                 //判断数据的条数，如果大于八条数据，
                 if(this.list.length>8){
                     if(this.pageNow>Math.ceil(this.list.length/8)){
-                        alert("没有更所游戏了，抱歉~")
+                        alert("没有更多游戏了，抱歉~")
                     }else{
                         //匹配当前页的数据，将当前页的数据添加到数组
                         for(var i=(this.pageNow-1)*8;i<(this.pageNow-1)*8+8;i++){

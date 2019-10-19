@@ -19,14 +19,23 @@
     >
       <p>欢迎注册Create Your Games</p>
       <el-form-item prop="userName" label-width="0">
-        <span>用户名</span>
-        <el-input type="text" v-model="ruleForm.userName" autocomplete="off"></el-input>
+        <span>手机号</span>
+        <el-input type="text" v-model="ruleForm.userPhone" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item prop="Pass" label-width="0">
+      <el-form-item class="Verification-info" label-width="0px" style="margin-top:-15px;">
+        <span>验证码</span>
+        <div class="buttonItem">
+          <input type="text" placeholder="输入验证码" />
+          <div @click="sendMessage">{{btnText}}</div>
+        </div>
+
+        <!-- <el-input type="text" v-model="ruleForm.userName" autocomplete="off"></el-input> -->
+      </el-form-item>
+      <el-form-item prop="Pass" label-width="0" style="margin-top:-15px;">
         <span>密码</span>
-        <el-input type="password" v-model="ruleForm.Pass" autocomplete="off"></el-input>
+        <el-input type="password" name="password" v-model="ruleForm.Pass" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item prop="checkPass" label-width="0">
+      <el-form-item prop="checkPass" label-width="0" style="margin-top:-10px;">
         <span>确认密码</span>
         <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
       </el-form-item>
@@ -52,18 +61,19 @@ export default {
       }
     };
     return {
+      btnText: "获取验证码",
       pictureList: [
         { id: 1, img: require("@/assets/images/login/yx1.png") },
         { id: 2, img: require("@/assets/images/login/yx2.png") },
         { id: 3, img: require("@/assets/images/login/yx3.png") }
       ],
       ruleForm: {
-        userName: "",
+        userPhone: "",
         Pass: "",
         checkPass: ""
       },
       rules: {
-        userName: [
+        userPhone: [
           { required: true, message: "请输入账号", trigger: "blur" },
           { min: 3, max: 7, message: "账号长度为3-7个字符", trigger: "blur" }
         ],
@@ -79,6 +89,7 @@ export default {
   },
   methods: {
     submitForm(formName) {
+      this.$api.register.register({loginName:this.ruleForm.userPhone,pwd:this.ruleForm.Pass})
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$router.push("/RegisterPerfect").catch(err => console.log(err));
@@ -86,6 +97,31 @@ export default {
           return false;
         }
       });
+
+    },
+    // 验证码的点击事件
+    sendMessage() {
+      if (this.btnDisabled) {
+        return;
+      }
+      this.getSecond(60);
+    },
+    //发送验证码
+    getSecond(wait) {
+      let _this = this;
+      let _wait = wait;
+      if (wait == 0) {
+        this.btnDisabled = false;
+        this.btnText = "获取验证码";
+        wait = _wait;
+      } else {
+        this.btnDisabled = true;
+        this.btnText = "验证码(" + wait + "s)";
+        wait--;
+        setTimeout(function() {
+          _this.getSecond(wait);
+        }, 1000);
+      }
     }
     // backHome(){
     //     this.$router.push('/')
@@ -93,6 +129,7 @@ export default {
   }
 };
 </script>
+
 <style lang="scss" scoped>
 .container {
   width: 100%;
@@ -137,7 +174,7 @@ export default {
       }
     }
     .el-form-item:first-of-type {
-      margin-top: 24px;
+      margin-top: 15px;
     }
 
     p {
@@ -154,6 +191,37 @@ export default {
       width: 200px;
       border-radius: 50px;
       margin-top: 24px;
+    }
+  }
+
+  // 手机验证、邮箱验证-内容
+  .Verification-info {
+    width: 400px;
+    // 验证码样式的设置 start
+    .buttonItem {
+      border-radius: 5px;
+      background-color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid #ddd;
+      width: 360px;
+      input {
+        width: 210px;
+        height: 40px;
+        font-size: 1rem;
+        padding-left: 10px;
+        border: 0;
+        outline: none;
+      }
+      .sendCode {
+        width: 80px;
+        border: 0;
+        outline: none;
+        background-color: #fff;
+        cursor: pointer;
+      }
     }
   }
 }

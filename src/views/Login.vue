@@ -17,9 +17,9 @@
         class="demo-ruleForm"
       >
         <p class="title">Create Your Games</p>
-        <el-form-item prop="userName" class="form" label-width="38px">
-          <span>账号</span>
-          <el-input type="text" v-model="ruleForm.userName" autocomplete="off"></el-input>
+        <el-form-item prop="userPhone" class="form" label-width="24px">
+          <span>手机号</span>
+          <el-input type="text" v-model="ruleForm.userPhone" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item prop="checkPass" class="form" label-width="38px">
           <span>密码</span>
@@ -45,13 +45,13 @@ export default {
   data() {
     return {
       ruleForm: {
-        userName: "",
+        userPhone: "",
         checkPass: "",
         rem: false
       },
       rules: {
-        userName: [
-          { required: true, message: "请输入账号", trigger: "blur" }
+        userPhone: [
+          { required: true, message: "请输入手机号", trigger: "blur" }
           // { min: 3, max: 10, message: "账号长度为3-10个字符", trigger: "blur" }
         ],
         checkPass: [
@@ -67,14 +67,6 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      // this.$refs[formName].validate(valid => {
-      //   if (valid) {
-      //     this.$router.push("/").catch(err => console.log(err));
-      //   } else {
-      //     return false;
-      //   }
-      // });
-
       // 记住密码
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -83,7 +75,7 @@ export default {
             console.log("checked == true");
             // 传入账号名，密码，和保存天数3个参数
             this.setCookie(
-              this.ruleForm.userName,
+              this.ruleForm.userPhone,
               this.ruleForm.checkPass,
               this.ruleForm.rem,
               7
@@ -93,9 +85,9 @@ export default {
             // 清空Cookie
             this.clearCookie();
           }
-          if (this.ruleForm.userName === "") {
-            this.ruleForm.checkPass=''
-            this.ruleForm.rem=false
+          if (this.ruleForm.userPhone === "") {
+            this.ruleForm.checkPass = "";
+            this.ruleForm.rem = false;
           }
           //与后端请求代码
           console.log("登陆成功");
@@ -129,9 +121,7 @@ export default {
       exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
       //字符串拼接cookie`
       window.document.cookie =
-        "userName=" + c_name + ";path=/;expires=" + exdate.toGMTString();
-      // console.log("yyyy"+c_name);
-      // console.log("xxxxxx"+window.document.cookie+"<br/>");
+        "userPhone=" + c_name + ";path=/;expires=" + exdate.toGMTString();
       window.document.cookie =
         "userPwd=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
       window.document.cookie =
@@ -145,8 +135,8 @@ export default {
         for (var i = 0; i < arr.length; i++) {
           var arr2 = arr[i].split("="); //再次切割 //判断查找相对应的值
           console.log(arr, arr2);
-          if (arr2[0] == "userName") {
-            this.ruleForm.userName = arr2[1]; //保存到保存数据的地方
+          if (arr2[0] == "userPhone") {
+            this.ruleForm.userPhone = arr2[1]; //保存到保存数据的地方
           } else if (arr2[0] == "userPwd") {
             this.ruleForm.checkPass = arr2[1];
           } else if (arr2[0] == "userPwdStatus") {
@@ -169,6 +159,13 @@ export default {
     Password() {
       this.$router.push("/Login/SafetyCenter");
     }
+  },
+  created() {
+    this.$api.login
+      .login({ Id: this.ruleForm.userPhone, Pwd: this.ruleForm.checkPass })
+      .then(res => {
+        console.log(res);
+      });
   }
 };
 </script>
