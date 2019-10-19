@@ -53,7 +53,6 @@
         align-items: center;
         height: 60px;
         background-color: rgba(27, 27, 27, 0.7);
-        margin-bottom: 60px;
         z-index: 9999;
         .logo {
             position: absolute;
