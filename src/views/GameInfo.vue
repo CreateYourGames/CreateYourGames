@@ -16,7 +16,7 @@
                 <div class="game">
                     <div class="game-info">
                         <span>游戏简介</span>
-                        <p>游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介</p>
+                        <p>{{gameDetail}}</p>
                     </div>
                     <div class="game-start">
                         <el-row>
@@ -71,23 +71,23 @@
                     <p>评论区</p>
                     <div class="item" v-for="(item,index) in commentList" :key="index">
                         <div class="item-userInfo">
-                            <img :src="item.img" alt="用户头像">
-                            <span>{{item.name}}:</span>
+                            <img :src="item.picture" alt="用户头像">
+                            <span>{{item.userName}}:</span>
                         </div>
-                        <div class="item-comment">{{item.comment}}</div>
+                        <div class="item-comment">{{item.comDetail}}</div>
                         <div class="item-bottom">
                             <div class="good" @click="goodIncrease(index)">
                                 <img v-if="item.goodImgFlag" src="../assets/images/details/good.png" alt="点赞数">
                                 <img v-else src="../assets/images/details/goodActive.png" alt="点赞数">
-                                {{item.good}}
+                                {{item.goodNum}}
                             </div>
                             <div class="bad" @click="badIncrease(index)">
                                 <img v-if="item.badImgFlag" src="../assets/images/details/good.png" alt="点赞数">
                                 <img v-else src="../assets/images/details/goodActive.png" alt="点赞数">
-                                {{item.bad}}
+                                {{item.badNum}}
                             </div>
                             <div class="time">
-                                {{item.date}}
+                                {{item.comTime|formDate}}
                             </div>
                         </div>
                     </div>
@@ -123,6 +123,7 @@ export default {
             desc:'快来跟我一起玩游戏吧',
             userImg:require('../assets/images/home/01.png'),
             //给请求来的数据加两个标识符，用来判断每个是否在点击状态
+            gameDetail:'',
             commentList:[
                 {
                     img:require('../assets/images/home/01.png'),
@@ -180,7 +181,10 @@ export default {
     },
     created(){
         this.id=this.$route.query.id
-        this.$api.gameCenter.showAllGames(this.id).then(res=>{
+        this.$api.gameInfo.gameInfoApi(this.id).then(res=>{
+            this.gameDetail=res.gameInfo[0].gameDetail
+            this.commentList=res.commentList
+            this.rankingList=res.rankingList
             console.log(res)
         })
     },
@@ -207,49 +211,53 @@ export default {
             const date=new Date()
             const now=date.getFullYear()+"-"+(date.getMonth()+1).toString().padStart(2,'0')+"-"+date.getDate().toString().padStart(2,'0')
             const obj={
-                img:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1338782153,119777043&fm=26&gp=0.jpg',
-                name:'孙永祥',
-                date:now,
-                good:0,
-                bad:0,
+                picture:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1338782153,119777043&fm=26&gp=0.jpg',
+                userName:'孙永祥',
+                comTime:now,
+                goodNum:0,
+                badNum:0,
                 goodImgFlag:true,
                 badImgFlag:true,
-                comment:this.comment,
+                comDetail:this.comment,
             }
             this.commentList.unshift(obj)
+            // this.$api.gameInfo.comPublish(obj)
             this.comment=''
         },
         //点赞
         goodIncrease(index){
-            if(this.commentList[index].goodImgFlag==true){
+            if(this.commentList[index].goodImgFlag==false){
+                this.commentList[index].goodImgFlag=true
+                this.commentList[index].goodNum-=1
+            }
+            else{
                 this.commentList[index].goodImgFlag=false
-                this.commentList[index].good+=1
+                this.commentList[index].goodNum+=1
                 //判断点赞和差评，不能同时存在，并且数量上要相应的变化
                 if( this.commentList[index].badImgFlag==false){
                     this.commentList[index].badImgFlag=true
-                    this.commentList[index].bad-=1
+                    this.commentList[index].badNum-=1
                 }
-            }
-            else{
-               this.commentList[index].goodImgFlag=true
-                this.commentList[index].good-=1
             }
         },
         //差评
         badIncrease(index){
-            if(this.commentList[index].badImgFlag==true){
+            if(this.commentList[index].badImgFlag==false){
+                this.commentList[index].badImgFlag=true
+                this.commentList[index].badNum-=1
+            }else{
                 this.commentList[index].badImgFlag=false
-                this.commentList[index].bad+=1
+                this.commentList[index].badNum+=1
                 if(this.commentList[index].goodImgFlag==false){
                     this.commentList[index].goodImgFlag=true
-                    this.commentList[index].good-=1
+                    this.commentList[index].goodNum-=1
                 }
-
-            }else{
-                this.commentList[index].badImgFlag=true
-                this.commentList[index].bad-=1
-
             }
+        }
+    },
+    filters:{
+        formDate:function(msg=''){
+            return msg.substr(0,10)
         }
     },
     components:{
