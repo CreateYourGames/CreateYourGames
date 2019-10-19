@@ -1,7 +1,6 @@
 <template>
     <div class="ranking-list">
-        <div class="logo" @click="backHome">
-        </div>
+        <topNav></topNav>
         <div class="toGameCenter" @click="toGameCenter">
             <i class="left"></i>去玩游戏
         </div>
@@ -88,6 +87,7 @@
 </template>
 
 <script>
+    import topNav from '../components/topNav';
     export default {
         name: "ranking-list",
         data() {
@@ -308,10 +308,10 @@
             toGameCenter() {
                 this.$router.push('/GameCenter')
             },
-            tabChangeRank(item){
+            tabChangeRank(item) {
                 const now = this.rankingFlag.leftRank2 == 0 ? this.rankingFlag.rightRank2 : this.rankingFlag.leftRank2
                 const direction = item - now;
-                switch (direction){
+                switch (direction) {
                     case -1 :
                     case 2 :
                         this.rankingLeft();
@@ -323,34 +323,34 @@
                 }
             },
             rankingLeft() {
-                if(this.rankingFlag.leftRank1 == 0){
+                if (this.rankingFlag.leftRank1 == 0) {
                     this.rankingFlag.leftRank1 = this.rankingFlag.rightRank1;
                 }
-                if(this.rankingFlag.leftRank2 == 0){
+                if (this.rankingFlag.leftRank2 == 0) {
                     this.rankingFlag.leftRank2 = this.rankingFlag.rightRank2;
                 }
-                if(this.rankingFlag.leftRank3 == 0){
+                if (this.rankingFlag.leftRank3 == 0) {
                     this.rankingFlag.leftRank3 = this.rankingFlag.rightRank3;
                 }
                 this.rankingFlag.rightRank1 = 0;
                 this.rankingFlag.rightRank2 = 0;
                 this.rankingFlag.rightRank3 = 0;
                 // this.rankingFlag.leftRank1 == 0 ? this.rankingFlag.leftRank1 = 1 :
-                    this.rankingFlag.leftRank1 == 1 ? this.rankingFlag.leftRank1 = 3 : this.rankingFlag.leftRank1--;
+                this.rankingFlag.leftRank1 == 1 ? this.rankingFlag.leftRank1 = 3 : this.rankingFlag.leftRank1--;
                 // this.rankingFlag.leftRank2 == 0 ? this.rankingFlag.leftRank2 = 2 :
-                    this.rankingFlag.leftRank2 == 1 ? this.rankingFlag.leftRank2 = 3 : this.rankingFlag.leftRank2--;
+                this.rankingFlag.leftRank2 == 1 ? this.rankingFlag.leftRank2 = 3 : this.rankingFlag.leftRank2--;
                 // this.rankingFlag.leftRank3 == 0 ? this.rankingFlag.leftRank3 = 3 :
-                    this.rankingFlag.leftRank3 == 1 ? this.rankingFlag.leftRank3 = 3 : this.rankingFlag.leftRank3--;
+                this.rankingFlag.leftRank3 == 1 ? this.rankingFlag.leftRank3 = 3 : this.rankingFlag.leftRank3--;
                 console.log(this.rankingFlag);
             },
-            rankingRight(){
-                if(this.rankingFlag.rightRank1 == 0){
+            rankingRight() {
+                if (this.rankingFlag.rightRank1 == 0) {
                     this.rankingFlag.rightRank1 = this.rankingFlag.leftRank1;
                 }
-                if(this.rankingFlag.rightRank2 == 0){
+                if (this.rankingFlag.rightRank2 == 0) {
                     this.rankingFlag.rightRank2 = this.rankingFlag.leftRank2;
                 }
-                if(this.rankingFlag.rightRank3 == 0){
+                if (this.rankingFlag.rightRank3 == 0) {
                     this.rankingFlag.rightRank3 = this.rankingFlag.leftRank3;
                 }
                 this.rankingFlag.leftRank1 = 0;
@@ -364,31 +364,34 @@
                 this.rankingFlag.rightRank3 == 3 ? this.rankingFlag.rightRank3 = 1 : this.rankingFlag.rightRank3++;
                 console.log(this.rankingFlag);
             },
-            rankingCardChange(index){
-                if(this.rankingFlag.leftRank1 == (index+1) || this.rankingFlag.rightRank1 == (index+1)){
+            rankingCardChange(index) {
+                if (this.rankingFlag.leftRank1 == (index + 1) || this.rankingFlag.rightRank1 == (index + 1)) {
                     this.rankingLeft();
                 }
-                if(this.rankingFlag.leftRank3 == (index+1) || this.rankingFlag.rightRank3 == (index+1)){
+                if (this.rankingFlag.leftRank3 == (index + 1) || this.rankingFlag.rightRank3 == (index + 1)) {
                     this.rankingRight();
                 }
             },
-            scrollToTop(){
+            scrollToTop() {
                 window.scrollTo(0, 0)
             }
         },
         computed: {
-            rankingName(){
+            rankingName() {
                 let index = 1;
-                if(this.rankingFlag.leftRank2 == 0){
+                if (this.rankingFlag.leftRank2 == 0) {
                     index = this.rankingFlag.rightRank2 - 1;
                 }
-                else if(this.rankingFlag.rightRank2 == 0){
+                else if (this.rankingFlag.rightRank2 == 0) {
                     index = this.rankingFlag.leftRank2 - 1;
                 }
 
                 const rankName = this.rankingArray[index].name;
                 return rankName;
             }
+        },
+        components: {
+            topNav
         }
     }
 </script>
@@ -400,7 +403,7 @@
         background-image: url("../assets/images/rankingList/bg.jpg");
         background-attachment: fixed;
         background-size: 100% 100%;
-        padding: 30px 50px 0;
+        /*padding: 30px 50px 0;*/
         box-sizing: border-box;
         .logo {
             width: 400px;
@@ -417,7 +420,7 @@
             width: 100px;
             line-height: 30px;
             color: #ffffff;
-            margin: 40px 0 0 -50px;
+            margin: 40px 0 0 0;
             border: 1px solid #ffffff;
             border-left: none;
             text-align: center;
