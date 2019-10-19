@@ -222,9 +222,7 @@ export default {
     created() {
         this.$api.gameCenter.showAllGames().then(res=>{
             this.gameList=res.data
-        })
-        //页面加载时将list存入8条数据，作为默认显示 延时是为了在数据取到后再执行该操作
-        setTimeout(()=>{
+            //页面加载时将list存入8条数据，作为默认显示 延时是为了在数据取到后再执行该操作 
             if(this.gameList.length>8){
                 this.gameList.forEach((item,index) => {
                     if(index%3==0&&index<24){
@@ -236,7 +234,8 @@ export default {
                     this.list.push(item)
                 })
             }
-        },200)    
+        })
+       
     },
     methods:{
         //相应的路由跳转

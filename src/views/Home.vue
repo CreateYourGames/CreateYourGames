@@ -7,7 +7,7 @@
                     前往登录
                 </div>
                 <div class="user-img" @click="toPersonal">
-                    <img src="@/assets/images/home/01.png" alt="">
+                    <img src="@/assets/images/home/user.png" alt="">
                 </div>
                 <div class="user-name">YugiAsuna</div>
             </div>
@@ -47,22 +47,34 @@
                     <div class="progress-now"></div>
                 </div>
                 <div class="new-game-list">
-                    <div class="game-card" v-for="item in newGameArr">
-                        <img :src="item.url" alt="">
-                        <div class="game-info">
-                            <p class="game-name">{{ item.name }}</p>
-                            <p class="game-desc">{{ item.description }}</p>
+                    <div class="game-card" v-for="(item, index) in newGameArr" @click="inverseCard(index)"
+                         :class="{inverse: item.inverseFlag}">
+                        <div class="front-info">
+                            <img :src="item.url" alt="" v-show="!item.inverseFlag">
+                            <div class="game-info" v-show="!item.inverseFlag">
+                                <p class="game-name">{{ item.name }}</p>
+                                <p class="game-desc">{{ item.description }}</p>
+                            </div>
+                        </div>
+                        <div class="inverse-info">
+                            <img :src="item.url" alt="">
+                            <div class="inverse-game-info">
+                                {{ item.inverseInfo}}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="feature">
-                <div class="feature-card" v-for="item in featureArr">
-                    <img :src="item.url" alt="">
+                <div class="finger"></div>
+                <div class="feature-card" v-for="(item, index) in featureArr">
+                    <img :src="item.url" alt="" :class="{'feature-jump': item.jumpFlag}" @click="cardJump(index)">
                     <div class="feature-desc">
                         <p>{{ item.desc1 }}</p>
                         <p>{{ item.desc2 }}</p>
                     </div>
+                    <img class="jump-img" :src="item.jumpImg" alt="" :class="{'icon-jump': item.jumpFlag}"
+                         @click="cardJump(index)">
                 </div>
             </div>
         </div>
@@ -89,65 +101,110 @@
                         name: '妖刀姬',
                         description: '12月10日震撼上线',
                         url: require('../assets/images/home/newGame01.jpg'),
+                        inverseFlag: false,
+                        inverseInfo: '人类和我完全不一样，他们很弱。但我却觉得有些熟悉。我平时很少说话，也不知道要怎么诉说。可是我想试着和他们交谈，也想试着靠近他们，还想试着去理解他们。也许那么做之后，我就能知道为什么我会觉得那么熟悉了。'
                     },
                     {
                         name: '不知火',
                         description: '12月10日震撼上线',
                         url: require('../assets/images/home/newGame02.jpg'),
+                        inverseFlag: false,
+                        inverseInfo: '原本黑寂的海面上，突然出现了一束火光。火光分裂，滋生，最终成百上千，沿着海面直达天际。这便是大妖怪不知火的传说，它深深地烙印在每一个杏原人的脑海里。每过数十年，不知火便会降临在杏原的海面，带来福祉抑或灾难。'
                     },
                     {
                         name: '阴阳师',
                         description: '12月10日震撼上线',
                         url: require('../assets/images/home/newGame03.jpg'),
+                        inverseFlag: false,
+                        inverseInfo: '原本黑寂的海面上，突然出现了一束火光。火光分裂，滋生，最终成百上千，沿着海面直达天际。这便是大妖怪不知火的传说，它深深地烙印在每一个杏原人的脑海里。每过数十年，不知火便会降临在杏原的海面，带来福祉抑或灾难。不知火便会降临在杏原的海面，带来福祉抑或灾难。不知火便会降临在杏原的海面，带来福祉抑或灾难。'
                     },
                     {
                         name: '御馔津',
                         description: '12月10日震撼上线',
                         url: require('../assets/images/home/newGame04.jpg'),
+                        inverseFlag: false,
+                        inverseInfo: '在出发前，那位大人曾问我，平和美好的京都已经不在了，你所要前往的地方是人间地狱，你做好准备了吗 ？。我看着他威严而冷酷的面庞，坚定地答道，我明白。可我的手心却忍不住出了汗、连弓箭也差一点滑落。'
                     }
                 ],
                 featureArr: [
                     {
                         url: require('../assets/images/home/feature01.jpg'),
                         desc1: '怀旧游戏',
-                        desc2: '一网打尽'
+                        desc2: '一网打尽',
+                        jumpFlag: false,
+                        jumpImg: require('../assets/images/home/coin.png'),
                     },
                     {
                         url: require('../assets/images/home/feature02.jpg'),
                         desc1: '乐趣有限',
-                        desc2: '创造无限'
+                        desc2: '创造无限',
+                        jumpFlag: false,
+                        jumpImg: require('../assets/images/home/coin.png'),
                     },
                     {
                         url: require('../assets/images/home/feature01.jpg'),
                         desc1: '边玩边学',
-                        desc2: '你上你行'
+                        desc2: '你上你行',
+                        jumpFlag: false,
+                        jumpImg: require('../assets/images/home/coin.png'),
                     },
                     {
                         url: require('../assets/images/home/feature02.jpg'),
                         desc1: '不够满足',
-                        desc2: '自己创造'
+                        desc2: '自己创造',
+                        jumpFlag: false,
+                        jumpImg: require('../assets/images/home/coin.png'),
                     },
-                ]
+                ],
+                jumpCount: 0
             }
         },
         methods: {
+            //登录跳转
             login() {
                 this.$router.push('/Login');
             },
+            // 游戏库跳转
             toGameCenter() {
                 this.$router.push('/GameCenter')
             },
+            // 排行榜跳转
             toRankingList() {
                 this.$router.push('/RankingList')
             },
+            // 提交建议跳转
             toSuggest() {
                 this.$router.push('/Suggest')
             },
+            // 发布游戏跳转
             toPublishGame() {
                 this.$router.push('/PublishGameTips')
             },
+            // 个人信息跳转
             toPersonal() {
                 this.$router.push('/Personal')
+            },
+            // 新游预告卡片翻转
+            inverseCard(index) {
+                this.newGameArr[index].inverseFlag = !this.newGameArr[index].inverseFlag;
+            },
+            // 特色卡片弹跳
+            cardJump(index) {
+                this.jumpCount++;
+                console.log(this.jumpCount);
+                if (this.jumpCount % 5 != 0) {
+                    this.featureArr[index].jumpImg = require('../assets/images/home/coin.png');
+                }
+                else if (this.jumpCount % 10 == 0) {
+                    this.featureArr[index].jumpImg = require('../assets/images/home/star.png');
+                }
+                else {
+                    this.featureArr[index].jumpImg = require('../assets/images/home/mushroom.png');
+                }
+                this.featureArr[index].jumpFlag = !this.featureArr[index].jumpFlag;
+                setTimeout(() => {
+                    this.featureArr[index].jumpFlag = !this.featureArr[index].jumpFlag;
+                }, 600)
             }
         }
     }
@@ -282,33 +339,82 @@
                     display: flex;
                     justify-content: center;
                     margin-top: 30px;
+                    perspective: 1000px;
+                    transform-style: preserve-3d;
                     .game-card {
+                        position: relative;
                         display: flex;
                         flex-direction: column;
                         width: 180px;
                         height: 320px;
-                        margin: 0 30px;
+                        margin: 30px 30px;
                         border-radius: 7px;
-                        img {
-                            width: 100%;
-                            height: 250px;
-                            border-radius: 7px 7px 0 0;
-                        }
-                        .game-info {
-                            flex: 1;
-                            background-color: #eaeaea;
-                            color: #000;
-                            border-radius: 0 0 7px 7px;
-                            box-sizing: border-box;
-                            padding: 5px 7px;
-                            .game-name {
-                                font-size: 18px;
+                        transform-style: preserve-3d;
+                        cursor: pointer;
+                        .front-info {
+                            height: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            z-index: 2;
+                            backface-visibility: hidden;
+                            img {
+                                width: 100%;
+                                height: 250px;
+                                border-radius: 7px 7px 0 0;
+                                /*backface-visibility: hidden;*/
                             }
-                            .game-desc {
-                                font-size: 14px;
-                                opacity: 0.75;
-                                overflow: hidden;
-                                text-indent: 1em;
+                            .game-info {
+                                flex: 1;
+                                background-color: #eaeaea;
+                                color: #000;
+                                border-radius: 0 0 7px 7px;
+                                box-sizing: border-box;
+                                padding: 5px 7px;
+                                .game-name {
+                                    font-size: 18px;
+                                }
+                                .game-desc {
+                                    font-size: 14px;
+                                    opacity: 0.75;
+                                    overflow: hidden;
+                                    text-indent: 1em;
+                                }
+                            }
+                        }
+                        .inverse-info {
+                            height: 100%;
+                            width: 100%;
+                            transform: rotateY(180deg);
+                            position: absolute;
+                            backface-visibility: hidden;
+                            background-color: rgba(0, 0, 0, 0.5);
+                            border-radius: 7px;
+                            box-sizing: border-box;
+                            img {
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                z-index: -1;
+                                border-radius: 7px;
+                                opacity: 0.4;
+                            }
+                            .inverse-game-info {
+                                height: 100%;
+                                box-sizing: border-box;
+                                padding: 20px 0 20px 10px;
+                                line-height: 1.5rem;
+                                overflow: auto;
+                                &::-webkit-scrollbar {
+                                    width: 1px;
+                                }
+                                &::-webkit-scrollbar-thumb {
+                                    border-radius: 10px;
+                                    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+                                    background: rgba(0, 0, 0, 0.2);
+                                }
+                                &::-webkit-scrollbar-track {
+                                    background: rgba(0, 0, 0, 0.1);
+                                }
                             }
                         }
                         &:hover {
@@ -316,16 +422,32 @@
                             transition: all 0.3s;
                             box-shadow: 0 0 20px 1px #dedede;
                         }
+                        &.inverse {
+                            transform: rotateY(-180deg);
+                            transition: all 0.3s;
+                        }
                     }
                 }
             }
-            .feature{
+            .feature {
+                position: relative;
                 display: flex;
                 justify-content: center;
-                margin-top: 90px;
+                margin-top: 120px;
+                .finger {
+                    position: absolute;
+                    left: 50px;
+                    top: 25px;
+                    width: 64px;
+                    height: 64px;
+                    background: url("../assets/images/home/finger.png");
+                    background-size: 100% 100%;
+                }
                 .feature-card {
+                    position: relative;
                     display: flex;
                     flex-direction: column;
+                    align-items: center;
                     width: 200px;
                     height: 200px;
                     margin: 0 30px;
@@ -333,8 +455,47 @@
                     img {
                         width: 100%;
                         border-radius: 7px;
+                        cursor: pointer;
+                        z-index: 2;
+                        @keyframes featureJump {
+                            0% {
+                                transform: translateY(0px);
+                            }
+                            50% {
+                                transform: translateY(-40px);
+                            }
+                            100% {
+                                transform: translateY(0px);
+                            }
+                        }
+                        @keyframes jumpImgJump {
+                            0% {
+                                transform: translateY(0px);
+                            }
+                            10% {
+                                transform: translateY(-100px) rotateY(0);
+                            }
+                            90% {
+                                transform: translateY(-100px) rotateY(360deg);
+                            }
+                            100% {
+                                transform: translateY(0px);
+                            }
+                        }
+                        &.feature-jump {
+                            animation: featureJump 0.6s linear forwards;
+                        }
+                        &.jump-img {
+                            position: absolute;
+                            width: 50px;
+                            height: 50px;
+                            z-index: 1;
+                            &.icon-jump {
+                                animation: jumpImgJump 0.6s linear forwards;
+                            }
+                        }
                     }
-                    .feature-desc{
+                    .feature-desc {
                         text-align: center;
                         line-height: 25px;
                         margin-top: 10px;
@@ -342,11 +503,11 @@
                 }
             }
         }
-        .footer{
+        .footer {
             height: 100px;
             background-color: rgba(0, 0, 0, 0.4);
-            margin-top: 50px;
-            .tips{
+            margin-top: 70px;
+            .tips {
                 line-height: 40px;
                 text-align: center;
                 opacity: 0.5;
