@@ -180,8 +180,7 @@ export default {
     },
     created(){
         this.id=this.$route.query.id
-        //调用后台接口
-        this.$api.gameInfo.ceshi().then(res=>{
+        this.$api.gameCenter.showAllGames(this.id).then(res=>{
             console.log(res)
         })
     },

@@ -1,11 +1,11 @@
 <template>
     <div class="search">
         <input type="text" 
-        @click.stop="searchDisplay=true" placeholder="输入需要搜索的游戏" 
+        @click.stop="searchDisplay" placeholder="输入需要搜索的游戏" 
         v-model="search" 
         @input='inputSearch(search)'>
         <el-button type="info" size="small" @click='searchFather'>搜索</el-button>
-        <div class="searchContent" v-if="searchDisplay">
+        <div class="searchContent" v-if="$store.state.searchDisplay">
             <ul>
                 <li 
                 v-for="(item,index) in searchList(search)" 
@@ -23,20 +23,22 @@ export default {
         return{
             search:'',
             //搜索快那个的显式隐藏
-            searchDisplay:false,
         }
     },
     props:['gameList'],
     methods: {
+        searchDisplay(){
+            this.$store.commit('changeSearch',true)
+        },
         updateSearch(index,value){
             //先匹配到输入内容中的所有元素，然后从现有的元素中选取第几个作为内容放到输入框
             this.search=this.searchList(value)[index]
-            this.searchDisplay=false
+            this.$store.state.searchDisplay=false
         },
         //输入内容时的变化
         inputSearch(value){
             if(this.search==''){
-                this.searchDisplay=true
+                this.$store.state.searchDisplay=true
             }
         },
         //输入内容时下拉框的内容
@@ -44,8 +46,8 @@ export default {
             //定义一个可以暂时存放数据的容器
             var a=[]
             this.gameList.filter(item=>{
-                if(item.info.includes(value)){
-                    a.push(item.info)
+                if(item.gameName.includes(value)){
+                    a.push(item.gameName)
                 }
             })
             return a

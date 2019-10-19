@@ -1,5 +1,5 @@
 <template>
-    <div class="game-library" @click.prevent="$refs.search.searchDisplay=false">
+    <div class="game-library" @click="searchDisplay">
         <div class="head">
             <div class="logo" @click="goHome">
                 <img src="../assets/images/home/logo.png" alt="logo">
@@ -23,9 +23,9 @@
                     <img src="../assets/images/gameLibrary/left.png" alt="向左">
                 </div>
                 <div class="middle">
-                    <div class="item" v-for="(item,index) in list" :key="index" @click="toDetails(index)">
-                        <img :src="item.goodsImg" alt="游戏图片">
-                        {{item.info}}
+                    <div class="item" v-for="(item,index) in list" :key="index" @click="toDetails(item.gameId-1)">
+                        <img :src="item.gamePic" alt="游戏图片">
+                        {{item.gameName}}
                     </div>
                 </div>
                 <div class="right" @click='right'>
@@ -63,7 +63,7 @@ export default {
             //存放查询后的结果
             list:[],
             //存放进入页面请求的数据
-            gameList:[
+            /* gameList:[
                 {
                     id:1,
                     goodsImg:'http://image.namedq.com/uploads/20190105/23/1546702937-UVQsqprDtH.jpg',
@@ -214,17 +214,30 @@ export default {
                     info:'极品飞机',
                     type:'shoot'
                 },
-            ],
+            ], */
+            gameList:[],
             newList:[]
         }
     },
     created() {
-        //页面加载时将list存入8条数据，作为默认显示
-        this.gameList.forEach((item,index) => {
-            if(index%3==0&&index<24){
-                this.list.push(this.gameList[index])
+        this.$api.gameCenter.showAllGames().then(res=>{
+            this.gameList=res.data
+        })
+        //页面加载时将list存入8条数据，作为默认显示 延时是为了在数据取到后再执行该操作
+        setTimeout(()=>{
+            if(this.gameList.length>8){
+                this.gameList.forEach((item,index) => {
+                    if(index%3==0&&index<24){
+                        this.list.push(this.gameList[index])
+                    }
+                });
+            }else{
+                this.gameList.forEach(item=>{
+                    this.list.push(item)
+                })
             }
-        });
+            
+        },200)    
     },
     methods:{
         //相应的路由跳转
@@ -235,7 +248,11 @@ export default {
             this.$router.push('/RankingList')
         },
         toDetails(index){
-            this.$router.push('/GameInfo?id='+this.gameList[index].id)
+            this.$router.push('/GameInfo?id='+this.gameList[index].gameId)
+        },
+        //改变模糊查询框的显示隐藏
+        searchDisplay(){
+            this.$store.commit('changeSearch',false)
         },
         //点击分页切换内容
         pageChange(index){
@@ -268,7 +285,7 @@ export default {
                 //每次进来先置空list 首先先根据type得到相应的数据
                 list5=[]
                 this.gameList.filter(item=>{
-                    if(item.type.includes(type)){
+                    if(item.gameType.includes(type)){
                         list4.push(item)
                     }
                 })
@@ -302,7 +319,7 @@ export default {
         searchGames(value){
             var list3=[]
             this.gameList.filter(item=>{
-                if(item.info.includes(value)){
+                if(item.gameName.includes(value)){
                     list3.push(item)
                 }
             })
@@ -319,7 +336,6 @@ export default {
             }
         },
         right(){
-            console.log(this.flag)
             if(this.flag>4){
                 return
             }else{
