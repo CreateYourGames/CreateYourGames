@@ -7,7 +7,7 @@
     <!-- <el-page-header content="安全中心"></el-page-header> -->
     <div class="content">
       <el-steps :active="active" process-status="wait" align-center>
-        <el-step title="填写账号"></el-step>
+        <el-step title="填写账号" style="font-size:10px"></el-step>
         <el-step title="身份验证"></el-step>
         <el-step title="设置新密码"></el-step>
         <el-step title="完成"></el-step>
@@ -42,10 +42,10 @@
           label-width="60px"
           class="demo-ruleForm"
         >
-          <P class="Verification">
+          <div class="Verification">
             <span v-bind:class="{active:tabType==1}" @click="tab(1)">邮箱验证</span>
             <span v-bind:class="{active:tabType==2}" @click="tab(2)">手机验证</span>
-          </P>
+          </div>
 
           <el-form-item label="邮箱" prop="Email" v-if="tabType===1" class="Verification-info">
             <el-input type="text" v-model="ruleForm.Email" autocomplete="off"></el-input>
@@ -225,11 +225,60 @@ export default {
   }
 };
 </script>
+<style>
+.el-step__head {
+  width: 150px;
+}
+/* 圆圈 */
+.el-step__icon.is-text {
+  /* background: green; */
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0);
+}
+.el-step__main {
+  width: 150px;
+}
+.el-step__line {
+  width: 100px;
+  margin-top: 10px;
+  line-height: 50px;
+  margin-left: 25px;
+  margin-right: 50px;
+}
+/* 文字 :填写账号*/
+.el-step__title.is-finish {
+  width: 150px;
+  /* color: #FDC003; */
+}
+/* .el-step__icon.is-finish {
+   background-color: yellow;
+} */
+.el-step__head.is-finish {
+  /* color: #FDC003; */
+  width: 150px;
+  /* border-color: #FDC003; */
+}
+.el-step__icon {
+  width: 100px;
+}
+.el-step__icon-inner {
+  font-size: 36px;
+}
+
+.Verification-info .el-input__inner {
+  width: 320px;
+}
+/* .Verification-info .el-input{ */
+  /* width: 300px; */
+/* } */
+</style>
 <style lang="scss" scoped>
 .container {
   width: 100%;
   height: 100%;
-  background-image: url("../assets/images/login/t4.jpg");
+  // background-image: url("../assets/images/login/bg.jpg");
+  background-image: url("../assets/images/login/tp2.jpg");
   background-attachment: fixed;
   background-size: 100% 100%;
 
@@ -237,7 +286,7 @@ export default {
     width: 100%;
     height: 50px;
     line-height: 50px;
-     background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.3);
     background-color: white;
     text-align: center;
   }
@@ -252,8 +301,8 @@ export default {
       position: absolute;
       width: 50%;
       top: 15%;
-      left: 50%;
-      transform: translate(-50%, -10%);
+      left: 28%;
+      transform: translate(-28%, -10%);
       // margin-top: 30px;
     }
 
@@ -273,22 +322,26 @@ export default {
       .Verification {
         width: 100%;
         text-align: center;
+        margin-top: 14px;
+        margin-bottom: 18px;
         span {
-          margin-right: 30px;
           color: black;
+          font-size: 20px;
         }
-        &.active {
-          span {
-            color: red;
-            border: solid 1px red;
-          }
+        span:first-of-type {
+          border-right: solid 1px #fdc003;
+          padding-right: 18px;
+          margin-right: 18px;
+        }
+        .active {
+          color: #fdc003;
         }
       }
       // 手机验证、邮箱验证-内容
       .Verification-info {
         width: 400px;
         .el-input {
-          width: 320px;
+          width: 30px;
         }
         // 验证码样式的设置 start
         .buttonItem {

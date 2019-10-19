@@ -67,13 +67,13 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$router.push("/").catch(err => console.log(err));
-        } else {
-          return false;
-        }
-      });
+      // this.$refs[formName].validate(valid => {
+      //   if (valid) {
+      //     this.$router.push("/").catch(err => console.log(err));
+      //   } else {
+      //     return false;
+      //   }
+      // });
 
       // 记住密码
       this.$refs[formName].validate(valid => {
@@ -172,6 +172,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped lang="scss">
 .container {

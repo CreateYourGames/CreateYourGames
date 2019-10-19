@@ -5,11 +5,11 @@
         <img src="@/assets/images/home/logo.png" alt />
         <p>测试啦！！！</p>
       </div>
-       <div class="title">
+      <div class="title">
         <p>展现实力的时候到啦！加油哦！</p>
       </div>
     </div>
-    <div class="content">
+    <div class="content" style="height: 530px">
       <div class="test">
         <!-- 进度条 -->
         <div class="progress">
@@ -19,13 +19,13 @@
         <!-- 倒计时 -->
         <div class="countdown">
           <span>
-            <i class="el-icon-time"></i>
-            {{minute}}：{{second}}
+            <i class="el-icon-timer"></i>
+            <span>{{minute}} : {{second}}</span>
           </span>
         </div>
 
         <!-- 考试题目 -->
-        <div class="question">
+        <div class="Question">
           <!-- <ul> -->
           <div v-if="flag===false">
             <h1>{{TopicsList[progress].question}}</h1>
@@ -34,12 +34,15 @@
               :key="index"
               class="form-check"
             >
+              <!-- 答案的选项 -->
               <label>
                 <input type="radio" name="item" v-model="answer" v-bind:value="itemsValue[index]" />
                 <span>{{itemsValue[index]}}</span>
+                <!--选项：A.B.C.C-->
                 {{item}}
+                <!--答案内容：xxxx-->
               </label>
-            </div>我是题目
+            </div>
           </div>
         </div>
         <el-button-group v-if="flag===false">
@@ -50,14 +53,20 @@
           </el-button>
         </el-button-group>
 
-        <div class="result" v-if="flag===true">
-          <p>恭喜你！获得xxx!可以成为开发者啦!现在我们就去开发吧！</p>
+        <!-- 通过测试 -->
+        <div class="result" v-if="flag===true && TotalScore==100">
+          <p>恭喜你！成为开发者啦!现在我们就去开发吧！</p>
+          <!-- <img src="@/assets/images/login/pass.jpeg" alt /> -->
           <p>{{TotalScore}}</p>
+          <button class="submit" v-if="flag===true && TotalScore==100" @click="goTo()">前往开发</button>
         </div>
 
-        <el-button-group v-if="flag===true">
-          <el-button type="primary" icon="el-icon-arrow-left" @click="goTo()">前往开发！</el-button>
-        </el-button-group>
+        <!-- 未通过测试 -->
+        <div class="result" v-if="flag===true && TotalScore<100">
+          <p>非常抱歉！还差一点点！我们再来一次吧！</p>
+          <p>{{TotalScore}}</p>
+          <button class="submit" v-if="flag===true && TotalScore<100" @click="goTry()">再来一次</button>
+        </div>
       </div>
     </div>
   </div>
@@ -73,12 +82,14 @@ export default {
       // 题目列表
       TopicsList: [
         {
-          question: "1.我是题目一xxxxxxxxxxxxxxxxxxxxxxxxxx",
+          question:
+            "1.我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一",
           option: ["xxx", "xxx", "xxx", "xxx"],
           ans: "A"
         },
         {
-          question: "2.我是题目二xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          question:
+            "2.我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二",
           option: ["xxx", "xxx", "xxx", "xxx"],
           ans: "A"
         },
@@ -206,11 +217,11 @@ export default {
       }
     },
 
-    // goHome() {
-    //   this.$router.push("/");
-    // },
     goTo() {
-      this.$router.push("/");
+      this.$router.push("/PublishGameTips");
+    },
+    goTry() {
+      this.$router.push("/Developer");
     }
   }
 };
@@ -269,8 +280,9 @@ export default {
       background-color: white;
       position: absolute;
       left: 50%;
-      top: 65%;
-      transform: translate(-50%, -65%);
+      top: 55%;
+      transform: translate(-50%, -55%);
+      background: rgba(255, 255, 255, 0.9);
 
       .progress {
         width: 600px;
@@ -283,18 +295,26 @@ export default {
 
       // 倒计时
       .countdown {
-        width: 80px;
+        width: 180px;
         text-align: center;
-        border: solid 1px black;
-        background-color: white;
-
         position: absolute;
         left: 50%;
         top: 15%;
         transform: translate(-50%, -15%);
+
+        span {
+          color: #fec003;
+          font-size: 34px;
+          span{
+            line-height: 34px;
+            font-size: 26px;
+            margin-left: 10px;
+            // margin-bottom: 5px;
+          }
+        }
       }
 
-      .question,
+      .Question,
       .result {
         width: 80%;
         height: 50%;
@@ -302,7 +322,23 @@ export default {
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        border: solid 1px red;
+        // border: solid 1px red;
+      }
+      .Question {
+        // 题目
+        h1 {
+          margin-left: 30px;
+          font-size: 18px;
+          line-height: 30px;
+          margin-bottom: 15px;
+        }
+
+        // 选项内容
+        .form-check {
+          font-size: 16px;
+          line-height: 30px;
+          margin-left: 30px;
+        }
       }
       .result {
         direction: flex;
@@ -310,8 +346,34 @@ export default {
         justify-content: center;
         align-items: center;
         p {
+          font-size: 26px;
           width: 100%;
           text-align: center;
+        }
+        p:last-of-type {
+          margin-top: 50px;
+          margin-left: 270px;
+          width: 100px;
+          height: 100px;
+          line-height: 100px;
+          border-radius: 50%;
+          color: white;
+          background-color: #fec003;
+        }
+        img {
+          width: 300px;
+        }
+        .submit {
+          width: 240px;
+          height: 45px;
+          text-align: center;
+          line-height: 45px;
+          color: white;
+          background-color: #409eff;
+          border: none;
+          border-radius: 30px;
+          margin-top: 70px;
+          margin-left: 200px;
         }
       }
       .el-button-group {
@@ -337,6 +399,9 @@ export default {
           margin-right: 100px;
         }
       }
+    }
+    .submit {
+      margin-left: 250px;
     }
   }
 }
