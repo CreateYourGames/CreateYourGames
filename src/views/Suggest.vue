@@ -3,15 +3,21 @@
         <topNav></topNav>
         <div class="content">
             <div class="suggest-box">
-                <img src="../assets/images/home/logo.png" alt="logo"/>
-                <br/>
+                <div class="suggest-logo">
+                    <img src="../assets/images/home/logo.png" alt="logo"/>
+                </div>
                 <div class="suggest-tip">
                     你们随便提提，我们反正是不会改的๑乛◡乛๑
                 </div>
-                <br/>
                 <textarea cols="60" rows="10" placeholder="此处填写建议" v-model="textMessage"></textarea>
-                <br/>
-                <button class="submit" @click="goTo()">提交建议</button>
+                <div class="submit">
+                    <img :src="submitImg" alt=""
+                         @click="goTo"
+                         @mousedown="mouseDown"
+                         @mouseup="mouseUp"
+                    >提交建议
+                </div>
+                <!--<button class="submit" @click="goTo()">提交建议</button>-->
             </div>
         </div>
     </div>
@@ -25,20 +31,9 @@
             return {
                 selected: "one",
                 textMessage: "",
-                MessageList: [
-                    {
-                        selected: "one",
-                        textMessage: "建议是one啥啥啥"
-                    },
-                    {
-                        selected: "two",
-                        textMessage: "建议是two啥啥啥"
-                    },
-                    {
-                        selected: "three",
-                        textMessage: "建议是three啥啥啥"
-                    }
-                ]
+                submitImg: require('../assets/images/suggest/submit.png'),
+                mouseDownImg: require('../assets/images/suggest/submit-click.png'),
+                mouseUpImg: require('../assets/images/suggest/submit.png')
             };
         },
 
@@ -63,6 +58,14 @@
                             message: "已取消提交"
                         });
                     });
+            },
+            mouseDown(){
+                this.submitImg = this.mouseDownImg;
+                console.log('down');
+            },
+            mouseUp(){
+                this.submitImg = this.mouseUpImg;
+                console.log('up');
             }
         },
         components: {
@@ -93,26 +96,31 @@
                     color: #ffffff;
                     font-size: 20px;
                 }
-                img {
+                .suggest-logo img {
                     height: 45px;
+                    margin: 50px 0 30px;
                 }
-                label {
-                    color: white;
-                }
-                select {
-                    width: 100px;
+                .suggest-tip{
+                    margin: 20px 0;
                 }
                 textarea {
                     width: 370px;
                     height: 250px;
+                    margin-bottom: 40px;
+                    box-sizing: border-box;
+                    padding: 10px;
                 }
-                button {
-                    width: 150px;
-                    height: 30px;
-                    border-radius: 30px;
-                    border: none;
-                    background-color: #fec003;
+                .submit {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
                     color: #ffffff;
+                    img{
+                        width: 96px;
+                        height: 80px;
+                        margin-bottom: 10px;
+                        cursor: pointer;
+                    }
                 }
             }
         }
