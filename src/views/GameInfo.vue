@@ -36,7 +36,8 @@
                     <div class="setLove" @click="addToLove">
                         <img v-if="imgFlag" src="../assets/images/details/love.png" alt="">
                         <img v-else src="../assets/images/details/loveActive.png" alt="">
-                        <span>设为喜欢</span>
+                        <span v-if="imgFlag">设为喜欢</span>
+                        <span v-else>取消喜欢</span>
                     </div>
                     <div class="searchCode">
                         <span>查看代码</span>
@@ -185,6 +186,14 @@ export default {
     },
     created(){
         this.id=this.$route.query.id
+        const name=this.$store.state.token.loginName
+        //进入页面判段用户是否喜欢过改游戏
+        this.$api.gameInfo.loveJudge({name:name,id:this.id}).then(res=>{
+            console.log(res)
+            if(res==true){
+                this.imgFlag=false
+            }
+        })
         //请求到游戏详情页的相关数据
         this.$api.gameInfo.gameInfoApi(this.id).then(res=>{
             this.gameDetail=res.gameInfo[0].gameDetail
