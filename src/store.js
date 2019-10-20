@@ -5,7 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token:'true',//这里用来存放登录成功的信息
+    token:{
+    //  id:userName,
+    //  pwd:checkPass
+    },//这里用来存放登录成功的信息
     searchDisplay: false, //模糊查询框的显示隐藏
 
     // network:true //判断是否有网
@@ -18,6 +21,10 @@ export default new Vuex.Store({
     //改变模糊查询下拉框的显示隐藏
     changeSearch(state,params){
       state.searchDisplay=params
+    },
+    //存入用户信息
+    getToken(state,params){
+      state.token=params
     }
    /*  changeNetwork(store, param) { 
       store.network = param;
