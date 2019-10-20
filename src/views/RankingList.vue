@@ -440,7 +440,7 @@
             flex-direction: column;
             align-items: center;
             color: #ffffff;
-            margin-top: -90px;
+            margin-top: -30px;
             .ranking-nav {
                 width: 300px;
                 height: 70px;
