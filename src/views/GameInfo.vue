@@ -72,7 +72,7 @@
                     <div class="item" v-for="(item,index) in commentList" :key="index">
                         <div class="item-userInfo">
                             <img :src="item.picture" alt="用户头像">
-                            <span>{{item.userName}}:</span>
+                            <span>{{item.userLoginName}}:</span>
                         </div>
                         <div class="item-comment">{{item.comDetail}}</div>
                         <div class="item-bottom">
@@ -92,14 +92,17 @@
                         </div>
                     </div>
                 </div>
+                <div v-if="commentFlag">
+                        暂无评论~
+                </div>
             </div>
             <div class="ranking-list">
                 <p>排行榜</p>
                 <ul>
                     <li v-for="(item,index) in rankingList" :key='index'>
-                        <span>{{item.num}}</span>
-                        <span><img :src="item.img" alt=""></span>
-                        <span>{{item.grade}}</span>
+                        <span>{{index+1}}</span>
+                        <span><img :src="item.picture" alt=""></span>
+                        <span>{{item.gameScore}}</span>
                     </li>
                 </ul>
             </div>
@@ -114,6 +117,7 @@ export default {
             value: null,
             imgFlag:true,
             goodImgFlag:false,
+            commentFlag:false,
             qqFlag:true,
             comment:'',
             //分享功能动态传参
@@ -181,12 +185,16 @@ export default {
     },
     created(){
         this.id=this.$route.query.id
+        //请求到游戏详情页的相关数据
         this.$api.gameInfo.gameInfoApi(this.id).then(res=>{
             this.gameDetail=res.gameInfo[0].gameDetail
             this.commentList=res.commentList
-            this.rankingList=res.rankingList
-            console.log(res)
+            this.rankingList=res.rankList
+            if(this.commentList.length==0){
+            this.commentFlag=true
+        }
         })
+       
     },
     methods:{
         //返回首页
@@ -199,11 +207,25 @@ export default {
         },
         //添加到喜欢
         addToLove(){
+            var love={
+                userLoginName:'18338514073',
+                gameId:this.id
+            }
             this.imgFlag=!this.imgFlag
             if(this.imgFlag==true){
-                this.$message('取消喜欢成功');
+                this.$api.gameInfo.removeLove(love).then(()=>{
+                    this.$message({
+                        message: '取消喜欢成功',
+                        type: 'success'
+                    });
+                })  
             }else{
-                this.$message('加入喜欢成功');
+                this.$api.gameInfo.addToLove(love).then(()=>{
+                    this.$message({
+                        message: '加入喜欢成功',
+                        type: 'success'
+                    });
+                })   
             }
         },
         //发表评论
@@ -212,7 +234,8 @@ export default {
             const now=date.getFullYear()+"-"+(date.getMonth()+1).toString().padStart(2,'0')+"-"+date.getDate().toString().padStart(2,'0')
             const obj={
                 picture:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1338782153,119777043&fm=26&gp=0.jpg',
-                userName:'孙永祥',
+                userLoginName:'18338514073',
+                gameId:this.id,
                 comTime:now,
                 goodNum:0,
                 badNum:0,
@@ -221,7 +244,14 @@ export default {
                 comDetail:this.comment,
             }
             this.commentList.unshift(obj)
-            // this.$api.gameInfo.comPublish(obj)
+            this.$api.gameInfo.comPublish(obj).then(()=>{
+                this.$message({
+                    message: '评论成功',
+                    type: 'success'
+                });
+            }).catch(()=>{
+                this.$message.error("评论失败")
+            })
             this.comment=''
         },
         //点赞
@@ -229,14 +259,18 @@ export default {
             if(this.commentList[index].goodImgFlag==false){
                 this.commentList[index].goodImgFlag=true
                 this.commentList[index].goodNum-=1
+                //发表评论，第一个参数是第几条评论，第二个参数是评论的个数
+                this.$api.gameInfo.goodIncrease(this.commentList[index].comId,this.commentList[index].goodNum)
             }
             else{
                 this.commentList[index].goodImgFlag=false
                 this.commentList[index].goodNum+=1
+                this.$api.gameInfo.goodIncrease(this.commentList[index].comId,this.commentList[index].goodNum)
                 //判断点赞和差评，不能同时存在，并且数量上要相应的变化
                 if( this.commentList[index].badImgFlag==false){
                     this.commentList[index].badImgFlag=true
                     this.commentList[index].badNum-=1
+                    this.$api.gameInfo.badIncrease(this.commentList[index].comId,this.commentList[index].badNum)
                 }
             }
         },
@@ -245,12 +279,15 @@ export default {
             if(this.commentList[index].badImgFlag==false){
                 this.commentList[index].badImgFlag=true
                 this.commentList[index].badNum-=1
+                this.$api.gameInfo.badIncrease(this.commentList[index].comId,this.commentList[index].badNum)
             }else{
                 this.commentList[index].badImgFlag=false
                 this.commentList[index].badNum+=1
+                this.$api.gameInfo.badIncrease(this.commentList[index].comId,this.commentList[index].badNum)
                 if(this.commentList[index].goodImgFlag==false){
                     this.commentList[index].goodImgFlag=true
                     this.commentList[index].goodNum-=1
+                    this.$api.gameInfo.goodIncrease(this.commentList[index].comId,this.commentList[index].goodNum)
                 }
             }
         }
