@@ -18,9 +18,9 @@
       class="demo-ruleForm"
     >
       <p>欢迎注册Create Your Games</p>
-      <el-form-item prop="userName" label-width="0">
+      <el-form-item prop="userPhone" label-width="0">
         <span>手机号</span>
-        <el-input type="text" v-model="ruleForm.userPhone" autocomplete="off"></el-input>
+        <el-input @blur="goRUN" type="text" v-model="ruleForm.userPhone" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item class="Verification-info" label-width="0px" style="margin-top:-15px;">
         <span>验证码</span>
@@ -60,6 +60,23 @@ export default {
         callback();
       }
     };
+
+    var userPhone = (rule, value, callback) => {
+      setTimeout(() => {
+        //   判断条件
+        if (!value) {
+          return callback(new Error("手机号不能为空！"));
+        } else {
+          const reg = /^1[3|4|5|7|8|9][0-9]\d{8}$/;
+          if (reg.test(value)) {
+            callback();
+          } else {
+            return callback(new Error("请输入正确的手机号"));
+          }
+        }
+      }, 1000);
+    };
+
     return {
       btnText: "获取验证码",
       pictureList: [
@@ -74,8 +91,14 @@ export default {
       },
       rules: {
         userPhone: [
-          { required: true, message: "请输入账号", trigger: "blur" },
-          { min: 3, max: 7, message: "账号长度为3-7个字符", trigger: "blur" }
+          {
+            validator: userPhone,
+            required: true,
+            // message: "请输入手机号",
+            trigger: "blur"
+          }
+          // { min: 10, max: 12, message: "账号长度为3-7个字符", trigger: "blur" },
+          // { validator:userPhone}
         ],
         Pass: [
           { required: true, message: "请输入密码", trigger: "blur" },
@@ -89,7 +112,15 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$api.register.register({loginName:this.ruleForm.userPhone,pwd:this.ruleForm.Pass})
+      this.$api.register.register({
+        loginName: this.ruleForm.userPhone,
+        pwd: this.ruleForm.Pass
+      });
+      var obj = {
+        loginName: this.ruleForm.userPhone,
+        pwd: this.ruleForm.Pass
+      };
+      this.$store.commit("getToken", obj);
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$router.push("/RegisterPerfect").catch(err => console.log(err));
@@ -97,7 +128,6 @@ export default {
           return false;
         }
       });
-
     },
     // 验证码的点击事件
     sendMessage() {
@@ -122,6 +152,16 @@ export default {
           _this.getSecond(wait);
         }, 1000);
       }
+    },
+    goRUN() {
+      return this.$api.register
+        .registerJudge(this.ruleForm.userPhone)
+        .then(res => {
+          if (res == false) {
+            this.$message.error("该用户已存在");
+          }
+          return res;
+        });
     }
     // backHome(){
     //     this.$router.push('/')

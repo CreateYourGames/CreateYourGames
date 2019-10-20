@@ -1,6 +1,8 @@
 <template>
   <div class="container">
     <div class="register">
+      <p>完善信息</p>
+
       <el-form
         :model="ruleForm"
         status-icon
@@ -11,10 +13,10 @@
       >
         <p>完善信息</p>
 
-        <el-form-item label="头像" prop="userName">
+        <!-- <el-form-item label="头像" prop="userName">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -22,20 +24,18 @@
             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-
-          <!-- <el-input type="text" v-model="ruleForm.userName" autocomplete="off"></el-input> -->
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="昵称" prop="Name">
           <el-input type="text" v-model="ruleForm.Name" autocomplete="off"></el-input>
         </el-form-item>
 
         <el-form-item label="性别" prop="Sex">
-          <el-radio v-model="radio" label="1">男</el-radio>
-          <el-radio v-model="radio" label="2">女</el-radio>
+          <el-radio v-model="radio" label="1" name="radio">男</el-radio>
+          <el-radio v-model="radio" label="2" name="radio">女</el-radio>
         </el-form-item>
 
         <el-form-item label="出生年月" prop="Birth">
-          <el-date-picker v-model="value" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker v-model="value" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
         </el-form-item>
         <el-form-item label="手机号" prop="Phone">
           <el-input type="text" v-model.number="ruleForm.Phone" autocomplete="off"></el-input>
@@ -112,12 +112,14 @@ export default {
     return {
       radio: "1",
       value: "",
-      imageUrl: "",
+      param: "", //表单要提交的参数
+      imageUrl: "", //图片地址
       ruleForm: {
         Name: "",
         Phone: "",
         Email: ""
       },
+
       rules: {
         Name: [
           {
@@ -147,15 +149,28 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          console.log("时间是：" + this.value);
           this.$router.push("/login").catch(err => console.log(err));
         } else {
           return false;
         }
       });
+
+      this.$api.registerPerfect.registerPerfect({
+        pic: this.imageUrl,
+        name: this.ruleForm.Name,
+        sex: this.radio == 1 ? "男" : "女",
+        birth: this.value,
+        phone: this.ruleForm.Phone,
+        email: this.ruleForm.Email,
+        loginName: this.$store.state.token.loginName
+      });
     },
 
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      var windowURL = window.URL || window.webkitURL;
+      // this.imageUrl=windowURL.createObjectURL(file.raw)
+      this.imageUrl = windowURL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
@@ -176,7 +191,7 @@ export default {
 <style lang="scss" scoped>
 .container {
   width: 100%;
-  height:100%;
+  height: 100%;
   background-image: url("../assets/images/login/bg.jpg");
   background-attachment: fixed;
   background-size: 100% 100%;

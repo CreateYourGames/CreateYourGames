@@ -10,6 +10,11 @@ const register={
         return axios.post(`${www}/register`,{
             params:value
         })
+    },
+    registerJudge(value){
+        return axios.post(`${www}/registerJudge`,{
+            params:value
+        })
     }
    
 }   

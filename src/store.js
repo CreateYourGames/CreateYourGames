@@ -21,6 +21,10 @@ export default new Vuex.Store({
     //改变模糊查询下拉框的显示隐藏
     changeSearch(state,params){
       state.searchDisplay=params
+    },
+    //存入用户信息
+    getToken(state,params){
+      state.token=params
     }
    /*  changeNetwork(store, param) { 
       store.network = param;

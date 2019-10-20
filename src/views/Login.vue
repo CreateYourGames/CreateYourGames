@@ -63,10 +63,43 @@ export default {
   },
   mounted() {
     // 记住密码
-    this.getCookie();
+    if (this.$store.state.token.loginName) {
+      console.log("走了token");
+      this.ruleForm.userPhone = this.$store.state.token.loginName;
+      this.ruleForm.checkPass = this.$store.state.token.pwd;
+    } else {
+      console.log("走了cookie");
+      this.getCookie();
+    }
   },
   methods: {
     submitForm(formName) {
+      this.$api.login.login({ Id: this.ruleForm.userPhone, Pwd: this.ruleForm.checkPass }).then(res=>{
+        if(res==true){
+          var obj = {
+              loginName: this.ruleForm.userPhone,
+              pwd: this.ruleForm.checkPass
+            };
+            this.$store.commit("getToken", obj);
+            this.$message({
+              message:'登录成功',
+              type:'success'
+            })
+            this.$router.push("/").catch(err => console.log(err));
+        }else{
+          this.$message.error("该用户不存在或密码错误")
+        }
+      });
+
+      // return this.$api.login
+      //   .loginJudge(this.ruleForm.userPhone)
+      //   .then(res => {
+      //     if (res == false) {
+      //       this.$message.error("该用户未注册");
+      //     }
+      //     return res;
+      //   });
+
       // 记住密码
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -85,31 +118,11 @@ export default {
             // 清空Cookie
             this.clearCookie();
           }
+
           if (this.ruleForm.userPhone === "") {
             this.ruleForm.checkPass = "";
             this.ruleForm.rem = false;
-          }
-          //与后端请求代码
-          console.log("登陆成功");
-          // this.$axios
-          //   .post("/user/login.json", {
-          //     pwd: this.ruleForm.checkPass,
-          //     username: this.ruleForm.userName
-          //   })
-          //   .then(res => {
-          //     if (res.data.code === this.$webConfig.httpSuccessStatus) {
-          //       localStorage.accountName = res.data.data.real_name;
-          //       this.$ls.set(this.$webConfig.authTokenName, res.data.data);
-          //     } else {
-          //       this.$message(res.data.message);
-          //     }
-          //     this.submitState = false;
-          //   })
-          //   .catch(() => {
-          //     this.submitState = false;
-          // });
-
-          this.$router.push("/").catch(err => console.log(err));
+          }    
         } else {
           return false;
         }
@@ -134,7 +147,7 @@ export default {
         var arr = document.cookie.split("; "); //这里显示的格式需要切割// console.log(arr)
         for (var i = 0; i < arr.length; i++) {
           var arr2 = arr[i].split("="); //再次切割 //判断查找相对应的值
-          console.log(arr, arr2);
+          // console.log(arr, arr2);
           if (arr2[0] == "userPhone") {
             this.ruleForm.userPhone = arr2[1]; //保存到保存数据的地方
           } else if (arr2[0] == "userPwd") {
@@ -160,13 +173,7 @@ export default {
       this.$router.push("/Login/SafetyCenter");
     }
   },
-  created() {
-    this.$api.login
-      .login({ Id: this.ruleForm.userPhone, Pwd: this.ruleForm.checkPass })
-      .then(res => {
-        console.log(res);
-      });
-  }
+  created() {}
 };
 </script>
 
