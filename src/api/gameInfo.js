@@ -8,6 +8,12 @@ const gameInfo={
     gameInfoApi(value) {
         return axios.get(`${www}/showGameInfo?id=${value}`)
     },
+    //判断用户是否喜欢该游戏
+    loveJudge(value){
+        return axios.get(`${www}/loveJudge`,{
+            params:value
+        })
+    },
     //发表评论
     comPublish(value){
         return axios.post(`${www}/comPublish`,value)

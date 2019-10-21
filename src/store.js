@@ -1,9 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+//页面持久化，刷新页面数据不会丢失
+import presistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  //配置插件 保持活性
+  plugins: [presistedState({
+    storage: window.sessionStorage
+  })],
   state: {
     token:{},//这里用来存放登录成功的信息
     searchDisplay: false, //模糊查询框的显示隐藏

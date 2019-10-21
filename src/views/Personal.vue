@@ -17,7 +17,9 @@
       </div>
     </div>
 
-    <conform></conform>
+    <div>
+      <conform ref="delGame"></conform>
+    </div>
 
     <!-- content -->
     <div class="content">
@@ -51,10 +53,10 @@
             >
               <img :src="publish.img" alt />
               <div v-show="publish.flag">
-                <p class="details">查看详情</p>
+                <p class="details" @click="jumpGameDetails()">查看详情</p>
                 <div class="ud">
                   <p class="update" @click="jumpGame()">修改信息&nbsp;</p>
-                  <p class="delete">&nbsp;删除游戏</p>
+                  <p class="delete" @click="delGame()">&nbsp;删除游戏</p>
                 </div>
               </div>
             </li>
@@ -238,6 +240,11 @@ export default {
       });
     },
 
+    // 删除游戏
+    delGame() {
+      this.$refs.delGame.del()
+    },
+
     //发布的游戏 手表移动事件
     overStyle(index) {
       this.publishList[index].flag = !this.publishList[index].flag;
@@ -250,12 +257,12 @@ export default {
 
     // 点击自定义轮播推动
     left() {
-      var newList1 = this.publishList.shift();
-      this.publishList.push(newList1);
-    },
-    right() {
       var newList2 = this.publishList.pop();
       this.publishList.unshift(newList2);
+    },
+    right() {
+      var newList1 = this.publishList.shift();
+      this.publishList.push(newList1);
     },
 
     // 喜欢的游戏     鼠标滑入滑出事件
