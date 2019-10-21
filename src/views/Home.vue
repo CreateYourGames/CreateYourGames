@@ -3,13 +3,25 @@
         <div class="header">
             <div class="logo"></div>
             <div class="personal">
-                <div class="login" @click="login">
-                    前往登录
+                <div class="a">
+                    <div v-if="!loginFlag" class="unlogin" @click="login">
+                        前往登录
+                    </div>
+                    <div v-if="loginFlag" class="login" @click="toPersonal">
+                        <div class="user-img">
+                            <img :src="userInfo.userIcon" alt="">
+                        </div>
+                        <div class="user-name">{{ userInfo.userName}}</div>
+                    </div>
+                    <div class="list-btn" @click="listFlag = !listFlag">
+                        <img v-if="!listFlag" src="../assets/images/home/list-down.png" alt="">
+                        <img v-else src="../assets/images/home/list-up.png" alt="">
+                    </div>
                 </div>
-                <div class="user-img" @click="toPersonal">
-                    <img src="@/assets/images/home/user.png" alt="">
-                </div>
-                <div class="user-name">YugiAsuna</div>
+                <ul v-show="listFlag" class="list">
+                    <li @click="toPersonal">个人信息</li>
+                    <li @click="exitLogin">退出</li>
+                </ul>
             </div>
         </div>
         <div class="content">
@@ -36,9 +48,13 @@
                     <img src="@/assets/images/home/icon-suggest.png" alt="">
                     提交建议
                 </div>
-                <div class="nav-item upload" @click="toPublishGame">
-                    <img src="@/assets/images/home/icon-upload1.png" alt="">
+                <div class="nav-item upload" @click="toPublishGame" v-if="userInfo.isDeveloper">
+                    <img src="@/assets/images/home/icon-upload.png" alt="">
                     发布游戏
+                </div>
+                <div class="nav-item test" @click="toDeveloperTest" v-if="!userInfo.isDeveloper">
+                    <img src="@/assets/images/home/icon-develop.png" alt="">
+                    成为开发者
                 </div>
             </div>
             <div class="new-games">
@@ -92,6 +108,13 @@
         name: "home",
         data() {
             return {
+                loginFlag: false,
+                userInfo: {
+                    userIcon: require('../assets/images/home/user.png'),
+                    userName: 'YugiAsuna',
+                    isDeveloper: false
+                },
+                listFlag: false,
                 active1: false,
                 active2: false,
                 active3: false,
@@ -156,12 +179,31 @@
                         jumpImg: require('../assets/images/home/coin.png'),
                     },
                 ],
-                jumpCount: 0
+                jumpCount: 0,
+                defaultIcon: require('../assets/images/home/icon-default.jpg')
             }
+        },
+        created(){
+          if(this.$store.state.token.loginName){
+              this.loginFlag = true;
+              console.log(this.$store.state.token.loginName);
+              this.$api.loginInfo.getLoginInfo(this.$store.state.token.loginName).then(res => {
+                  console.log(res.userMsg);
+                  console.log(res);
+                  const info = res.userMsg[0];
+                  this.userInfo.userIcon = info.picture || this.defaultIcon;
+                  this.userInfo.userName = info.nickName;
+                  console.log(res.userMsg[0]);
+              }).catch(err => console.log(err));
+          }
         },
         methods: {
             //登录跳转
             login() {
+                this.$router.push('/Login');
+            },
+            exitLogin(){
+                this.$store.state.token = {};
                 this.$router.push('/Login');
             },
             // 游戏库跳转
@@ -179,6 +221,10 @@
             // 发布游戏跳转
             toPublishGame() {
                 this.$router.push('/PublishGameTips')
+            },
+            // 开发者测试跳转
+            toDeveloperTest(){
+                this.$router.push('/Developer')
             },
             // 个人信息跳转
             toPersonal() {
@@ -230,26 +276,67 @@
                 opacity: 0.8;
             }
             .personal {
-                display: flex;
-                align-items: center;
+                position: relative;
                 margin-right: 100px;
-                .login {
-                    font-size: 16px;
-                    color: #ffffff;
-                    margin-right: 20px;
-                }
-                .user-img {
-                    img {
-                        display: block;
-                        width: 30px;
-                        height: 30px;
-                        border-radius: 50%;
+                .a{
+                    display: flex;
+                    align-items: center;
+                    .unlogin {
+                        font-size: 16px;
+                        color: #ffffff;
+                        margin-right: 20px;
+                        cursor: pointer;
+                    }
+                    .login{
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
                         margin-right: 10px;
+                        .user-img {
+                            img {
+                                display: block;
+                                width: 30px;
+                                height: 30px;
+                                border-radius: 50%;
+                                margin-right: 10px;
+                            }
+                        }
+                        .user-name {
+                            color: #ffffff;
+                            font-size: 14px;
+                        }
+                    }
+                    .list-btn{
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        img{
+                            width: 12px;
+                            height: 12px;
+                        }
                     }
                 }
-                .user-name {
+                .list{
+                    position: absolute;
+                    right: 0;
+                    margin-top: 10px;
+                    background-color: rgba(32, 39, 77, 0.8);
                     color: #ffffff;
-                    font-size: 0.3rem;
+                    li{
+                        width: 130px;
+                        padding: 5px 10px;
+                        text-align: center;
+                        cursor: pointer;
+                        border-left: 2px solid #ddd;
+                        margin-bottom: 3px;
+                        &:last-of-type{
+                            /*border-bottom: 1px solid #ddd;*/
+                        }
+                        &:hover{
+                            background-color: #dddddd;
+                            color: #000;
+                        }
+                    }
                 }
             }
         }
@@ -260,9 +347,8 @@
             padding: 0 50px;
             .banner {
                 display: flex;
-                margin: 70px 0 50px 30px;
-                padding: 0 70px;
-                /*justify-content: center;*/
+                margin: 70px 0 50px 0;
+                justify-content: center;
                 align-items: center;
                 .main-msg {
                     display: flex;
@@ -273,6 +359,7 @@
                         margin-left: -120px;
                         margin-bottom: 15px;
                         opacity: 0.8;
+                        text-shadow: 2px 2px 5px 0 #67c23a;
                     }
                     h3 {
                         margin-left: -60px;
