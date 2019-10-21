@@ -43,6 +43,24 @@
 <script>
 export default {
   data() {
+    var PhoneValue = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("手机号不能为空"));
+      }
+      setTimeout(() => {
+        //   判断条件
+        if (!value) {
+          return callback(new Error("手机号不能为空！"));
+        } else {
+          const reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+          if (reg.test(value)) {
+            callback();
+          } else {
+            return callback(new Error("请输入正确的手机号"));
+          }
+        }
+      }, 1000);
+    };
     return {
       ruleForm: {
         userPhone: "",
@@ -50,13 +68,10 @@ export default {
         rem: false
       },
       rules: {
-        userPhone: [
-          { required: true, message: "请输入手机号", trigger: "blur" }
-          // { min: 3, max: 10, message: "账号长度为3-10个字符", trigger: "blur" }
-        ],
+        userPhone: { required: true, trigger: "blur" ,validator: PhoneValue},
         checkPass: [
-          { required: true, message: "请输入密码", trigger: "blur" }
-          // { min: 6, max: 16, message: "密码长度为6-16个字符", trigger: "blur" }
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 6, max: 16, message: "密码长度为6-16个字符", trigger: "blur" }
         ]
       }
     };

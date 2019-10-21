@@ -67,7 +67,7 @@ export default {
         if (!value) {
           return callback(new Error("手机号不能为空！"));
         } else {
-          const reg = /^1[3|4|5|7|8|9][0-9]\d{8}$/;
+          const reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
           if (reg.test(value)) {
             callback();
           } else {
@@ -90,23 +90,12 @@ export default {
         checkPass: ""
       },
       rules: {
-        userPhone: [
-          {
-            validator: userPhone,
-            required: true,
-            // message: "请输入手机号",
-            trigger: "blur"
-          }
-          // { min: 10, max: 12, message: "账号长度为3-7个字符", trigger: "blur" },
-          // { validator:userPhone}
-        ],
+        userPhone: {validator: userPhone,required: true,trigger: "blur"},
         Pass: [
           { required: true, message: "请输入密码", trigger: "blur" },
           { min: 6, max: 16, message: "密码长度为6-16个字符", trigger: "blur" }
         ],
-        checkPass: [
-          { required: true, validator: CheckPass, message: "", trigger: "blur" }
-        ]
+        checkPass: { required: true, validator: CheckPass, message: "", trigger: "blur" }
       }
     };
   },

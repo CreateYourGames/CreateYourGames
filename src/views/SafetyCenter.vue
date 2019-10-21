@@ -4,7 +4,6 @@
       <Header></Header>
     </div>
 
-    <!-- <el-page-header content="安全中心"></el-page-header> -->
     <div class="content">
       <el-steps :active="active" process-status="wait" align-center>
         <el-step title="填写账号" style="font-size:10px"></el-step>
@@ -277,8 +276,7 @@ export default {
 .container {
   width: 100%;
   height: 100%;
-  // background-image: url("../assets/images/login/bg.jpg");
-  background-image: url("../assets/images/login/tp2.jpg");
+  background-image: url("../assets/images/login/pic2.jpg");
   background-attachment: fixed;
   background-size: 100% 100%;
 

@@ -5,10 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token:{
-    //  id:userName,
-    //  pwd:checkPass
-    },//这里用来存放登录成功的信息
+    token:{},//这里用来存放登录成功的信息
     searchDisplay: false, //模糊查询框的显示隐藏
 
     // network:true //判断是否有网

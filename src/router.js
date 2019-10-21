@@ -124,10 +124,6 @@ export default new Router({
             path: '/GamePlaying',
             name: 'GamePlaying',
             component: () => import('./views/GamePlaying.vue')
-        }, {
-            path: '/pic',
-            name: 'pic',
-            component: () => import('./views/pic.vue')
-        },
+        }
     ]
 })
