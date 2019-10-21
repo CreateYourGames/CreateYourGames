@@ -1,8 +1,6 @@
 <template>
   <div class="container">
     <div class="register">
-      <p>完善信息</p>
-
       <el-form
         :model="ruleForm"
         status-icon
@@ -11,12 +9,12 @@
         ref="ruleForm"
         class="demo-ruleForm"
       >
-        <p>完善信息</p>
+        <p>信息完善</p>
 
-        <!-- <el-form-item label="头像" prop="userName">
+        <el-form-item label="头像" prop="userName">
           <el-upload
             class="avatar-uploader"
-            action
+            action="https://jsonplaceholder.typicode.com/posts/"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -24,7 +22,8 @@
             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-        </el-form-item> -->
+        </el-form-item>
+
         <el-form-item label="昵称" prop="Name">
           <el-input type="text" v-model="ruleForm.Name" autocomplete="off"></el-input>
         </el-form-item>
@@ -82,7 +81,7 @@ export default {
         if (!value) {
           return callback(new Error("手机号不能为空！"));
         } else {
-          const reg = /^1[3|4|5|7|8|9][0-9]\d{8}$/;
+          const reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
           if (reg.test(value)) {
             callback();
           } else {
@@ -99,7 +98,7 @@ export default {
         if (!value) {
           return callback(new Error("邮箱不能为空！"));
         } else {
-          const reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+          const reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
           if (reg.test(value)) {
             callback();
           } else {
@@ -114,6 +113,7 @@ export default {
       value: "",
       param: "", //表单要提交的参数
       imageUrl: "", //图片地址
+      // uploadeURL: base.dev + base.proxy + base.uploadeURL,
       ruleForm: {
         Name: "",
         Phone: "",
@@ -149,7 +149,6 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log("时间是：" + this.value);
           this.$router.push("/login").catch(err => console.log(err));
         } else {
           return false;
@@ -165,25 +164,45 @@ export default {
         email: this.ruleForm.Email,
         loginName: this.$store.state.token.loginName
       });
+      console.log("pic是：" + this.imageUrl);
+    
     },
 
     handleAvatarSuccess(res, file) {
       var windowURL = window.URL || window.webkitURL;
       // this.imageUrl=windowURL.createObjectURL(file.raw)
+      // this.imageUrl=file.URL
+
+      // this.imageUrl=res.data.url;
       this.imageUrl = windowURL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
+      const isIMG =
+        file.type == "image/jpeg" ||
+        file.type == "image/png" ||
+        file.type == "image/jpeg" ||
+        file.type == "image/gif";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+      if (!isIMG) {
+        this.$message.error("上传头像图片只能是 JPG/PNG/JPEG/GIF 格式!");
       }
       if (!isLt2M) {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
-      return isJPG && isLt2M;
-    }
+      return isIMG && isLt2M;
+    },
+    // onchange(file,fileList){
+    //   var _this=this;
+    //   var event=event||window.event;
+    //   var file=event.target.file;
+    //   var reader=new FileReader();
+    //   reader.onload=function(e){
+    //     _this.imageUrl=e.target.result;
+    //   }
+    //   reader.readAsDataURL(file);
+
+    // }
   }
 };
 </script>

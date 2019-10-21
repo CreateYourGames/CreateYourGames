@@ -6,9 +6,10 @@
             <div class="to-game-center" @click="toGameCenter">游戏库</div>
             <div class="to-ranking-list" @click="toRankingList">排行榜</div>
             <div class="to-suggest" @click="toSuggest">提交建议</div>
-            <div class="to-publish-game" @click="toPublishGame">发布游戏</div>
-            <div class="user-icon">
-                <img src="@/assets/images/home/user.png" alt="" @click="toPersonal">
+            <!--<div class="to-publish-game" @click="toPublishGame">发布游戏</div>-->
+            <div class="user-icon" @click="toPersonal">
+                <img src="@/assets/images/home/user.png" alt="">
+                个人中心
             </div>
         </div>
     </div>
@@ -33,10 +34,10 @@
             toSuggest() {
                 this.$router.push('/Suggest')
             },
-            // 发布游戏跳转
-            toPublishGame() {
-                this.$router.push('/PublishGameTips')
-            },
+            // // 发布游戏跳转
+            // toPublishGame() {
+            //     this.$router.push('/PublishGameTips')
+            // },
             // 个人信息跳转
             toPersonal() {
                 this.$router.push('/Personal')
@@ -90,6 +91,7 @@
                     width: 32px;
                     height: 32px;
                     border-radius: 50%;
+                    margin-right: 10px;
                 }
             }
         }

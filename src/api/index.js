@@ -6,6 +6,8 @@ import registerPerfect from './registerPerfect'
 import login from './login'
 import personal from './personal'
 import updateGameInfo from './updateGameInfo'
+import developerTest from './developerTest'
+import loginInfo from './home'
 //将接口导出
 export default{
     gameInfo,
@@ -14,6 +16,7 @@ export default{
     registerPerfect,
     login,
     personal,
-    updateGameInfo
-
+    updateGameInfo,
+    developerTest,
+    loginInfo
 }

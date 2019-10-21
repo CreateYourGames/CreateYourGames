@@ -32,8 +32,8 @@
           <span @click="Password">找回密码</span>
         </p>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">SIGN IN</el-button>
-          <el-button type="primary" @click="Register()">REGISTER</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+          <el-button type="primary" @click="Register()">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -43,6 +43,24 @@
 <script>
 export default {
   data() {
+    var PhoneValue = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("手机号不能为空"));
+      }
+      setTimeout(() => {
+        //   判断条件
+        if (!value) {
+          return callback(new Error("手机号不能为空！"));
+        } else {
+          const reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+          if (reg.test(value)) {
+            callback();
+          } else {
+            return callback(new Error("请输入正确的手机号"));
+          }
+        }
+      }, 1000);
+    };
     return {
       ruleForm: {
         userPhone: "",
@@ -50,18 +68,17 @@ export default {
         rem: false
       },
       rules: {
-        userPhone: [
-          { required: true, message: "请输入手机号", trigger: "blur" }
-          // { min: 3, max: 10, message: "账号长度为3-10个字符", trigger: "blur" }
-        ],
+        userPhone: { required: true, trigger: "blur", validator: PhoneValue },
         checkPass: [
-          { required: true, message: "请输入密码", trigger: "blur" }
-          // { min: 6, max: 16, message: "密码长度为6-16个字符", trigger: "blur" }
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 6, max: 16, message: "密码长度为6-16个字符", trigger: "blur" }
         ]
       }
     };
   },
   mounted() {
+    // console.log(this.$store.state.rememberPwd);
+    this.ruleForm.rem = this.$store.state.rememberPwd;
     // 记住密码
     if (this.$store.state.token.loginName) {
       console.log("走了token");
@@ -74,30 +91,23 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$api.login.login({ Id: this.ruleForm.userPhone, Pwd: this.ruleForm.checkPass }).then(res=>{
-        if(res==true){
-          var obj = {
-              loginName: this.ruleForm.userPhone,
-              pwd: this.ruleForm.checkPass
-            };
-            this.$store.commit("getToken", obj);
-            this.$message({
-              message:'登录成功',
-              type:'success'
-            })
-            this.$router.push("/").catch(err => console.log(err));
-        }else{
-          this.$message.error("该用户不存在或密码错误")
-        }
-      });
-
-      // return this.$api.login
-      //   .loginJudge(this.ruleForm.userPhone)
+      // this.$api.login
+      //   .login({ Id: this.ruleForm.userPhone, Pwd: this.ruleForm.checkPass })
       //   .then(res => {
-      //     if (res == false) {
-      //       this.$message.error("该用户未注册");
+      //     if (res == true) {
+      //       var obj = {
+      //         loginName: this.ruleForm.userPhone,
+      //         pwd: this.ruleForm.checkPass
+      //       };
+      //       this.$store.commit("getToken", obj);
+      //       this.$message({
+      //         message: "登录成功",
+      //         type: "success"
+      //       });
+      //       this.$router.push("/").catch(err => console.log(err));
+      //     } else {
+      //       this.$message.error("该用户不存在或密码错误");
       //     }
-      //     return res;
       //   });
 
       // 记住密码
@@ -105,6 +115,7 @@ export default {
         if (valid) {
           // 判断复选框是否被勾选 勾选则调用配置cookie方法
           if (this.ruleForm.rem == true) {
+            this.$store.state.rememberPwd = true;
             console.log("checked == true");
             // 传入账号名，密码，和保存天数3个参数
             this.setCookie(
@@ -113,16 +124,43 @@ export default {
               this.ruleForm.rem,
               7
             );
+
+            this.$api.login
+              .login({
+                Id: this.ruleForm.userPhone,
+                Pwd: this.ruleForm.checkPass
+              })
+              .then(res => {
+                if (res == true) {
+                  var obj = {
+                    loginName: this.ruleForm.userPhone,
+                    pwd: this.ruleForm.checkPass
+                  };
+                  this.$store.commit("getToken", obj);
+                  this.$message({
+                    message: "登录成功",
+                    type: "success"
+                  });
+                  this.$router.push("/").catch(err => console.log(err));
+                } else {
+                  this.$message.error("该用户不存在或密码错误");
+                }
+              });
           } else {
+            console.log('未保存密码')
+            this.$store.state.rememberPwd = false;
+            this.$router.push("/").catch(err => console.log(err));
             console.log("清空Cookie");
             // 清空Cookie
             this.clearCookie();
+            console.log("清空Tookie");
+            // 清空token
+            var obj = {
+              loginName:this.ruleForm.userPhone,
+              pwd: null
+            };
+            this.$store.commit("getToken", obj);
           }
-
-          if (this.ruleForm.userPhone === "") {
-            this.ruleForm.checkPass = "";
-            this.ruleForm.rem = false;
-          }    
         } else {
           return false;
         }
@@ -176,7 +214,6 @@ export default {
   created() {}
 };
 </script>
-
 
 <style scoped lang="scss">
 .container {

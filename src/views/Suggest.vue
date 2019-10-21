@@ -8,8 +8,8 @@
                 </div>
                 <div class="suggest-tip">
                     你们随便提提，我们反正是不会改的๑乛◡乛๑
+                    <textarea cols="60" rows="10" placeholder="此处填写建议" v-model="textMessage"></textarea>
                 </div>
-                <textarea cols="60" rows="10" placeholder="此处填写建议" v-model="textMessage"></textarea>
                 <div class="submit">
                     <img :src="submitImg" alt=""
                          @click="goTo"
@@ -17,7 +17,6 @@
                          @mouseup="mouseUp"
                     >提交建议
                 </div>
-                <!--<button class="submit" @click="goTo()">提交建议</button>-->
             </div>
         </div>
     </div>
@@ -80,33 +79,37 @@
         height: 100%;
         background-image: url("../assets/images/home/bg.png");
         background-size: 100% 100%;
-        display: flex;
-        flex-direction: column;
+        // display: flex;
+        // flex-direction: column;
         .content {
+            height: calc(100% - 60px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             .suggest-box {
+                height: 100%;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                justify-content: space-around;
                 align-items: center;
+                box-sizing: border-box;
+                padding: 20px 0;
                 .suggest-tip {
                     color: #ffffff;
                     font-size: 20px;
                 }
                 .suggest-logo img {
                     height: 45px;
-                    margin: 50px 0 30px;
                 }
                 .suggest-tip{
-                    margin: 20px 0;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
                 }
                 textarea {
                     width: 370px;
                     height: 250px;
-                    margin-bottom: 40px;
                     box-sizing: border-box;
                     padding: 10px;
                 }
