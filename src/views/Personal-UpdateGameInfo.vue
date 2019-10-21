@@ -5,22 +5,29 @@
       <form action>
         <label for class="special">游戏图标：</label>
         <div class="container">
-          <img class="game-img" src="@/assets/images/personal/104.jpg" alt />
-          <div class="up-gm-img" @click="fileClick">
-            <img src="@/assets/images/personal/z.png" alt />
+          <img class="game-img" :src="GameInfo[0].gamePic" alt />
+          <div class="up-gm-img" @click="fileClick"  @mouseover="addStyle"  v-bind:class="{style:enable}"
+          @mouseout="removeStyle">
+            <!-- <img src="@/assets/images/personal/z.png" alt /> -->
           </div>
         </div>
         <label for>游戏名称：</label>
-        <input type="text" name id value="皮皮蛇" />
+        <input type="text" name id :value="GameInfo[0].gameName" />
         <br />
         <label for>游戏分类：</label>
-        <input type="text" name id value="益智类" />
+        <!-- <input type="text" name id :value="GameInfo[0].gameType" /> -->
+        <select v-model="selected" name="type" id="" >
+            <option value="all" >所有类型</option>
+            <option value="clever" >益智</option>
+            <option value="smallGame" >小游戏</option>
+            <option value="shoot" >射击</option>
+        </select>
         <br />
         <label for class="special">游戏简介：</label>
-        <textarea name id cols="30" rows="10">皮皮蛇</textarea>
+        <textarea name id cols="30" rows="10" :value="GameInfo[0].gameDetail"></textarea>
         <br />
-        <label for>游戏相关截图：</label>
-        <ul>
+        <!-- <label for>游戏相关截图：</label> -->
+        <!-- <ul>
           <li>
             <img src="@/assets/images/personal/103.jpg" alt />
             <img class="del-img" src="@/assets/images/personal/shanchu.png" alt />
@@ -29,7 +36,7 @@
             <img src="@/assets/images/personal/105.jpg" alt />
             <img class="del-img" src="@/assets/images/personal/shanchu.png" alt />
           </li>
-        </ul>
+        </ul> -->
         <label for>游戏源码文件：</label>
         <input ref="file" type="file" name id style="border:none;display:none" />
         <img @click="upload" class="file" src="../assets/images/personal/anniu.png" alt="">
@@ -44,7 +51,28 @@
 
 <script>
 export default {
-  methods: {
+    data(){
+      return{
+        enable: false,
+        selected:'all',
+        id:'',
+        GameInfo:[
+          {
+          }
+        ]
+      }
+    },
+    created(){
+      this.id = this.$route.query.id
+      let val = this.id
+      console.log(this.id,"123")
+      this.$api.updateGameInfo.updateGameInfo(val).then(res=>{
+            console.log(res)
+            this.GameInfo = res.GameInfo
+            console.log(this.GameInfo[0].gameName)
+        })
+    },
+   methods: {
     fileClick() {
       this.$refs.input.dispatchEvent(new MouseEvent("click"));
     },
@@ -56,7 +84,15 @@ export default {
     },
     go2() {
       this.$router.push("/Personal").catch(err => console.log(err));
-    }
+    },
+
+    // 鼠标移入移出
+    addStyle() {
+      this.enable = true;
+    },
+    removeStyle() {
+      this.enable = false;
+    },
   }
 };
 </script>
@@ -84,7 +120,7 @@ export default {
   label {
     font-size: 20px;
   }
-  input {
+  input,select {
     width: 290px;
     height: 40px;
     border: 1px solid gray;
@@ -115,6 +151,16 @@ export default {
     width: 120px;
     height: 110px;
     position: relative;
+    .style {
+      width: 120px;
+      height: 110px;
+      background-color: rgba(128, 128, 128, 0.4);
+      background-image: url("../assets/images/personal/z.png");
+      background-size: 50px 50px;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      cursor: pointer;
+    }
     .game-img {
       margin-top: 20px;
       width: 120px;
@@ -126,7 +172,6 @@ export default {
       margin-top: 20px;
       width: 120px;
       height: 110px;
-      background-color: rgba(128, 128, 128, 0.4);
       color: #fff;
       text-align: center;
       line-height: 100px;
