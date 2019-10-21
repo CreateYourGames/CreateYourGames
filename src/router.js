@@ -125,5 +125,15 @@ export default new Router({
             name: 'GamePlaying',
             component: () => import('./views/GamePlaying.vue')
         }
+
+
+
+        ,
+        //游戏进行页
+        {
+            path: '/Game',
+            name: 'Game',
+            component: () => import('./views/Game.vue')
+        }
     ]
 })

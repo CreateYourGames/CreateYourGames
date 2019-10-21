@@ -32,8 +32,8 @@
           <span @click="Password">找回密码</span>
         </p>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">SIGN IN</el-button>
-          <el-button type="primary" @click="Register()">REGISTER</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+          <el-button type="primary" @click="Register()">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -65,7 +65,7 @@ export default {
       ruleForm: {
         userPhone: "",
         checkPass: "",
-        rem: true
+        rem: false
       },
       rules: {
         userPhone: { required: true, trigger: "blur", validator: PhoneValue },
@@ -77,6 +77,8 @@ export default {
     };
   },
   mounted() {
+    // console.log(this.$store.state.rememberPwd);
+    this.ruleForm.rem = this.$store.state.rememberPwd;
     // 记住密码
     if (this.$store.state.token.loginName) {
       console.log("走了token");
@@ -113,6 +115,7 @@ export default {
         if (valid) {
           // 判断复选框是否被勾选 勾选则调用配置cookie方法
           if (this.ruleForm.rem == true) {
+            this.$store.state.rememberPwd = true;
             console.log("checked == true");
             // 传入账号名，密码，和保存天数3个参数
             this.setCookie(
@@ -144,6 +147,8 @@ export default {
                 }
               });
           } else {
+            console.log('未保存密码')
+            this.$store.state.rememberPwd = false;
             this.$router.push("/").catch(err => console.log(err));
             console.log("清空Cookie");
             // 清空Cookie
@@ -151,15 +156,10 @@ export default {
             console.log("清空Tookie");
             // 清空token
             var obj = {
-              loginName: null,
+              loginName:this.ruleForm.userPhone,
               pwd: null
             };
             this.$store.commit("getToken", obj);
-          }
-
-          if (this.ruleForm.userPhone === "") {
-            this.ruleForm.checkPass = "";
-            this.ruleForm.rem = false;
           }
         } else {
           return false;
