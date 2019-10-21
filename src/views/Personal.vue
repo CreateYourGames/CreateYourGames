@@ -53,7 +53,7 @@
             >
               <img :src="publish.img" alt />
               <div v-show="publish.flag">
-                <p class="details">查看详情</p>
+                <p class="details" @click="jumpGameDetails()">查看详情</p>
                 <div class="ud">
                   <p class="update" @click="jumpGame()">修改信息&nbsp;</p>
                   <p class="delete" @click="delGame()">&nbsp;删除游戏</p>
