@@ -60,7 +60,7 @@ const errorHandle = (status, other) => {
 //  create({option}) option为对新建的axios实例的配置。;
 var instance = axios.create({ timeout: 5000}); //如果请求话费了超过 `timeout` 的时间，请求将被中断
 // 设置post请求头 (序列化时<FormData>必须的请求头)  后台接收的时候是键值对的方式-
-instance.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 /** 
  * 请求拦截器
  * 每次请求前，如果存在token则在请求头中携带token
