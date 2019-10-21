@@ -65,10 +65,10 @@ export default {
       ruleForm: {
         userPhone: "",
         checkPass: "",
-        rem: false
+        rem: true
       },
       rules: {
-        userPhone: { required: true, trigger: "blur" ,validator: PhoneValue},
+        userPhone: { required: true, trigger: "blur", validator: PhoneValue },
         checkPass: [
           { required: true, message: "请输入密码", trigger: "blur" },
           { min: 6, max: 16, message: "密码长度为6-16个字符", trigger: "blur" }
@@ -89,30 +89,23 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$api.login.login({ Id: this.ruleForm.userPhone, Pwd: this.ruleForm.checkPass }).then(res=>{
-        if(res==true){
-          var obj = {
-              loginName: this.ruleForm.userPhone,
-              pwd: this.ruleForm.checkPass
-            };
-            this.$store.commit("getToken", obj);
-            this.$message({
-              message:'登录成功',
-              type:'success'
-            })
-            this.$router.push("/").catch(err => console.log(err));
-        }else{
-          this.$message.error("该用户不存在或密码错误")
-        }
-      });
-
-      // return this.$api.login
-      //   .loginJudge(this.ruleForm.userPhone)
+      // this.$api.login
+      //   .login({ Id: this.ruleForm.userPhone, Pwd: this.ruleForm.checkPass })
       //   .then(res => {
-      //     if (res == false) {
-      //       this.$message.error("该用户未注册");
+      //     if (res == true) {
+      //       var obj = {
+      //         loginName: this.ruleForm.userPhone,
+      //         pwd: this.ruleForm.checkPass
+      //       };
+      //       this.$store.commit("getToken", obj);
+      //       this.$message({
+      //         message: "登录成功",
+      //         type: "success"
+      //       });
+      //       this.$router.push("/").catch(err => console.log(err));
+      //     } else {
+      //       this.$message.error("该用户不存在或密码错误");
       //     }
-      //     return res;
       //   });
 
       // 记住密码
@@ -128,16 +121,46 @@ export default {
               this.ruleForm.rem,
               7
             );
+
+            this.$api.login
+              .login({
+                Id: this.ruleForm.userPhone,
+                Pwd: this.ruleForm.checkPass
+              })
+              .then(res => {
+                if (res == true) {
+                  var obj = {
+                    loginName: this.ruleForm.userPhone,
+                    pwd: this.ruleForm.checkPass
+                  };
+                  this.$store.commit("getToken", obj);
+                  this.$message({
+                    message: "登录成功",
+                    type: "success"
+                  });
+                  this.$router.push("/").catch(err => console.log(err));
+                } else {
+                  this.$message.error("该用户不存在或密码错误");
+                }
+              });
           } else {
+            this.$router.push("/").catch(err => console.log(err));
             console.log("清空Cookie");
             // 清空Cookie
             this.clearCookie();
+            console.log("清空Tookie");
+            // 清空token
+            var obj = {
+              loginName: null,
+              pwd: null
+            };
+            this.$store.commit("getToken", obj);
           }
 
           if (this.ruleForm.userPhone === "") {
             this.ruleForm.checkPass = "";
             this.ruleForm.rem = false;
-          }    
+          }
         } else {
           return false;
         }
@@ -191,7 +214,6 @@ export default {
   created() {}
 };
 </script>
-
 
 <style scoped lang="scss">
 .container {
