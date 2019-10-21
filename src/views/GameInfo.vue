@@ -16,7 +16,7 @@
                 <div class="game">
                     <div class="game-info">
                         <span>游戏简介</span>
-                        <p>游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介游戏简介</p>
+                        <p>{{gameDetail}}</p>
                     </div>
                     <div class="game-start">
                         <el-row>
@@ -36,7 +36,8 @@
                     <div class="setLove" @click="addToLove">
                         <img v-if="imgFlag" src="../assets/images/details/love.png" alt="">
                         <img v-else src="../assets/images/details/loveActive.png" alt="">
-                        <span>设为喜欢</span>
+                        <span v-if="imgFlag">设为喜欢</span>
+                        <span v-else>取消喜欢</span>
                     </div>
                     <div class="searchCode">
                         <span>查看代码</span>
@@ -71,35 +72,38 @@
                     <p>评论区</p>
                     <div class="item" v-for="(item,index) in commentList" :key="index">
                         <div class="item-userInfo">
-                            <img :src="item.img" alt="用户头像">
-                            <span>{{item.name}}:</span>
+                            <img :src="item.picture" alt="用户头像">
+                            <span>{{item.userLoginName}}:</span>
                         </div>
-                        <div class="item-comment">{{item.comment}}</div>
+                        <div class="item-comment">{{item.comDetail}}</div>
                         <div class="item-bottom">
                             <div class="good" @click="goodIncrease(index)">
                                 <img v-if="item.goodImgFlag" src="../assets/images/details/good.png" alt="点赞数">
                                 <img v-else src="../assets/images/details/goodActive.png" alt="点赞数">
-                                {{item.good}}
+                                {{item.goodNum}}
                             </div>
                             <div class="bad" @click="badIncrease(index)">
                                 <img v-if="item.badImgFlag" src="../assets/images/details/good.png" alt="点赞数">
                                 <img v-else src="../assets/images/details/goodActive.png" alt="点赞数">
-                                {{item.bad}}
+                                {{item.badNum}}
                             </div>
                             <div class="time">
-                                {{item.date}}
+                                {{item.comTime|formDate}}
                             </div>
                         </div>
                     </div>
+                </div>
+                <div v-if="commentFlag">
+                        暂无评论~
                 </div>
             </div>
             <div class="ranking-list">
                 <p>排行榜</p>
                 <ul>
                     <li v-for="(item,index) in rankingList" :key='index'>
-                        <span>{{item.num}}</span>
-                        <span><img :src="item.img" alt=""></span>
-                        <span>{{item.grade}}</span>
+                        <span>{{index+1}}</span>
+                        <span><img :src="item.picture" alt=""></span>
+                        <span>{{item.gameScore}}</span>
                     </li>
                 </ul>
             </div>
@@ -114,6 +118,7 @@ export default {
             value: null,
             imgFlag:true,
             goodImgFlag:false,
+            commentFlag:false,
             qqFlag:true,
             comment:'',
             //分享功能动态传参
@@ -121,11 +126,12 @@ export default {
             pics:"https://goss1.veer.com/creative/vcg/veer/612/veer-104218671.jpg",
             summary:"是兄弟就来砍我",
             desc:'快来跟我一起玩游戏吧',
-            userImg:require('../assets/images/home/01.png'),
+            userImg:require('../assets/images/home/user.png'),
             //给请求来的数据加两个标识符，用来判断每个是否在点击状态
+            gameDetail:'',
             commentList:[
                 {
-                    img:require('../assets/images/home/01.png'),
+                    img:require('../assets/images/home/user.png'),
                     name:'江小白',
                     comment:'大家好，我是渣渣辉，一起来贪玩蓝月，是兄弟！就来砍我!',
                     date:'2019-01-03',
@@ -135,7 +141,7 @@ export default {
                     bad:1
                 },
                 {
-                    img:require('../assets/images/home/01.png'),
+                    img:require('../assets/images/home/user.png'),
                     name:'江小白',
                     comment:'大家好，我是渣渣辉，一起来贪玩蓝月，是兄弟！就来砍我！大家好，我是渣渣辉，一起来贪玩蓝月，是兄弟！就来砍我!',
                     date:'2019-01-03',
@@ -145,7 +151,7 @@ export default {
                     bad:1
                 },
                 {
-                    img:require('../assets/images/home/01.png'),
+                    img:require('../assets/images/home/user.png'),
                     name:'江小白',
                     comment:'大家好，我是渣渣辉，一起来贪玩蓝月，是兄弟！就来砍我！大家好，我是渣渣辉，一起来贪玩蓝月，是兄弟！就来砍我!',
                     date:'2019-01-03',
@@ -155,7 +161,7 @@ export default {
                     bad:1
                 },
                 {
-                    img:require('../assets/images/home/01.png'),
+                    img:require('../assets/images/home/user.png'),
                     name:'江小白',
                     comment:'大家好，我是渣渣辉，一起来贪玩蓝月，是兄弟！就来砍我！',
                     date:'2019-01-03',
@@ -166,13 +172,13 @@ export default {
                 }
             ],
             rankingList:[
-                {num:1,img:require('../assets/images/home/01.png'),grade:100},
-                {num:2,img:require('../assets/images/home/01.png'),grade:98},
-                {num:3,img:require('../assets/images/home/01.png'),grade:97},
-                {num:4,img:require('../assets/images/home/01.png'),grade:96},
-                {num:5,img:require('../assets/images/home/01.png'),grade:89},
-                {num:6,img:require('../assets/images/home/01.png'),grade:86},
-                {num:7,img:require('../assets/images/home/01.png'),grade:73},
+                {num:1,img:require('../assets/images/home/user.png'),grade:100},
+                {num:2,img:require('../assets/images/home/user.png'),grade:98},
+                {num:3,img:require('../assets/images/home/user.png'),grade:97},
+                {num:4,img:require('../assets/images/home/user.png'),grade:96},
+                {num:5,img:require('../assets/images/home/user.png'),grade:89},
+                {num:6,img:require('../assets/images/home/user.png'),grade:86},
+                {num:7,img:require('../assets/images/home/user.png'),grade:73},
             ],
             id:'',
             ceshi:[]
@@ -180,9 +186,24 @@ export default {
     },
     created(){
         this.id=this.$route.query.id
-        this.$api.gameCenter.showAllGames(this.id).then(res=>{
+        const name=this.$store.state.token.loginName
+        //进入页面判段用户是否喜欢过改游戏
+        this.$api.gameInfo.loveJudge({name:name,id:this.id}).then(res=>{
             console.log(res)
+            if(res==true){
+                this.imgFlag=false
+            }
         })
+        //请求到游戏详情页的相关数据
+        this.$api.gameInfo.gameInfoApi(this.id).then(res=>{
+            this.gameDetail=res.gameInfo[0].gameDetail
+            this.commentList=res.commentList
+            this.rankingList=res.rankList
+            if(this.commentList.length==0){
+            this.commentFlag=true
+        }
+        })
+       
     },
     methods:{
         //返回首页
@@ -195,11 +216,25 @@ export default {
         },
         //添加到喜欢
         addToLove(){
+            var love={
+                userLoginName:'18338514073',
+                gameId:this.id
+            }
             this.imgFlag=!this.imgFlag
             if(this.imgFlag==true){
-                this.$message('取消喜欢成功');
+                this.$api.gameInfo.removeLove(love).then(()=>{
+                    this.$message({
+                        message: '取消喜欢成功',
+                        type: 'success'
+                    });
+                })  
             }else{
-                this.$message('加入喜欢成功');
+                this.$api.gameInfo.addToLove(love).then(()=>{
+                    this.$message({
+                        message: '加入喜欢成功',
+                        type: 'success'
+                    });
+                })   
             }
         },
         //发表评论
@@ -207,49 +242,68 @@ export default {
             const date=new Date()
             const now=date.getFullYear()+"-"+(date.getMonth()+1).toString().padStart(2,'0')+"-"+date.getDate().toString().padStart(2,'0')
             const obj={
-                img:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1338782153,119777043&fm=26&gp=0.jpg',
-                name:'孙永祥',
-                date:now,
-                good:0,
-                bad:0,
+                picture:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1338782153,119777043&fm=26&gp=0.jpg',
+                userLoginName:'18338514073',
+                gameId:this.id,
+                comTime:now,
+                goodNum:0,
+                badNum:0,
                 goodImgFlag:true,
                 badImgFlag:true,
-                comment:this.comment,
+                comDetail:this.comment,
             }
             this.commentList.unshift(obj)
+            this.$api.gameInfo.comPublish(obj).then(()=>{
+                this.$message({
+                    message: '评论成功',
+                    type: 'success'
+                });
+            }).catch(()=>{
+                this.$message.error("评论失败")
+            })
             this.comment=''
         },
         //点赞
         goodIncrease(index){
-            if(this.commentList[index].goodImgFlag==true){
+            if(this.commentList[index].goodImgFlag==false){
+                this.commentList[index].goodImgFlag=true
+                this.commentList[index].goodNum-=1
+                //发表评论，第一个参数是第几条评论，第二个参数是评论的个数
+                this.$api.gameInfo.goodIncrease(this.commentList[index].comId,this.commentList[index].goodNum)
+            }
+            else{
                 this.commentList[index].goodImgFlag=false
-                this.commentList[index].good+=1
+                this.commentList[index].goodNum+=1
+                this.$api.gameInfo.goodIncrease(this.commentList[index].comId,this.commentList[index].goodNum)
                 //判断点赞和差评，不能同时存在，并且数量上要相应的变化
                 if( this.commentList[index].badImgFlag==false){
                     this.commentList[index].badImgFlag=true
-                    this.commentList[index].bad-=1
+                    this.commentList[index].badNum-=1
+                    this.$api.gameInfo.badIncrease(this.commentList[index].comId,this.commentList[index].badNum)
                 }
-            }
-            else{
-               this.commentList[index].goodImgFlag=true
-                this.commentList[index].good-=1
             }
         },
         //差评
         badIncrease(index){
-            if(this.commentList[index].badImgFlag==true){
+            if(this.commentList[index].badImgFlag==false){
+                this.commentList[index].badImgFlag=true
+                this.commentList[index].badNum-=1
+                this.$api.gameInfo.badIncrease(this.commentList[index].comId,this.commentList[index].badNum)
+            }else{
                 this.commentList[index].badImgFlag=false
-                this.commentList[index].bad+=1
+                this.commentList[index].badNum+=1
+                this.$api.gameInfo.badIncrease(this.commentList[index].comId,this.commentList[index].badNum)
                 if(this.commentList[index].goodImgFlag==false){
                     this.commentList[index].goodImgFlag=true
-                    this.commentList[index].good-=1
+                    this.commentList[index].goodNum-=1
+                    this.$api.gameInfo.goodIncrease(this.commentList[index].comId,this.commentList[index].goodNum)
                 }
-
-            }else{
-                this.commentList[index].badImgFlag=true
-                this.commentList[index].bad-=1
-
             }
+        }
+    },
+    filters:{
+        formDate:function(msg=''){
+            return msg.substr(0,10)
         }
     },
     components:{

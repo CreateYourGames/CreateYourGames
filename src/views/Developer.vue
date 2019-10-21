@@ -43,7 +43,8 @@ export default {
     .test {
       width: 800px;
       height: 500px;
-      background-color: white;
+      background: rgba(255, 255, 255, 0.9);
+      // background-color: white;
       position: absolute;
       left: 50%;
       top: 60%;
