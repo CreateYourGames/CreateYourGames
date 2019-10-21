@@ -80,8 +80,8 @@
         height: 100%;
         background-image: url("../assets/images/home/bg.png");
         background-size: 100% 100%;
-        display: flex;
-        flex-direction: column;
+        // display: flex;
+        // flex-direction: column;
         .content {
             display: flex;
             flex-direction: column;
