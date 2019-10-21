@@ -143,6 +143,7 @@ export default {
             goodImgFlag:false,
             commentFlag:false,
             qqFlag:true,
+            loginName:this.$store.state.token.loginName,
             comment:'',
             //分享功能动态传参
             url:'https://blog.csdn.net/QPC908694753/article/details/81137975',
@@ -243,7 +244,7 @@ export default {
         },
         //添加到喜欢
         addToLove(){
-            if(this.$store.state.token.loginName){
+            if(loginName){
                 var love={
                     userLoginName:'18338514073',
                     gameId:this.id
@@ -267,123 +268,154 @@ export default {
                 }
             }
             else{
-                console.log("走了喜欢")
-                console.log(this.$router)
-                // this.$router.push('/Login')
-                this.$router.replace({
-                    path: '/Login',
-                    query: {
-                        redirect: this.$router.history.current.fullPath
-                    }
-                });
+                alert("您即将前往登录页")
+                this.$store.commit('getRouter',this.$router.history.current.fullPath)
+                this.$router.push('/Login')
             }
         },
         //发表评论
         async publish(){
-            const date=new Date()
-            const now=date.getFullYear()+"-"+(date.getMonth()+1).toString().padStart(2,'0')+"-"+date.getDate().toString().padStart(2,'0')
-            const obj={
-                picture:this.userImg,
-                userLoginName:this.$store.state.token.loginName,
-                gameId:this.id,
-                comTime:now,
-                goodNum:0,
-                badNum:0,
-                goodImgFlag:true,
-                badImgFlag:true,
-                comDetail:this.comment,
+            if(loginName){
+                const date=new Date()
+                const now=date.getFullYear()+"-"+(date.getMonth()+1).toString().padStart(2,'0')+"-"+date.getDate().toString().padStart(2,'0')
+                const obj={
+                    picture:this.userImg,
+                    userLoginName:loginName,
+                    gameId:this.id,
+                    comTime:now,
+                    goodNum:0,
+                    badNum:0,
+                    goodImgFlag:true,
+                    badImgFlag:true,
+                    comDetail:this.comment,
+                }
+                this.commentList.unshift(obj)
+                await this.$api.gameInfo.comPublish(obj).then(()=>{
+                    this.$message({
+                        message: '评论成功',
+                        type: 'success'
+                    });
+                }).catch(()=>{
+                    this.$message.error("评论失败")
+                })
+                this.comment=''
+                //再次发送请求
+                await this.$api.gameInfo.gameInfoApi({id:this.id,loginName:loginName}).then(res=>{
+                    console.log(res)
+                    this.commentList=res.newCommentList
+                })
             }
-            this.commentList.unshift(obj)
-            await this.$api.gameInfo.comPublish(obj).then(()=>{
-                this.$message({
-                    message: '评论成功',
-                    type: 'success'
-                });
-            }).catch(()=>{
-                this.$message.error("评论失败")
-            })
-            this.comment=''
-            //再次发送请求
-            await this.$api.gameInfo.gameInfoApi({id:this.id,loginName:this.$store.state.token.loginName}).then(res=>{
-                console.log(res)
-                this.commentList=res.newCommentList
-            })
-
-           
+            else{
+                alert("您即将前往登录页")
+                this.$store.commit('getRouter',this.$router.history.current.fullPath)
+                this.$router.push('/Login')
+            }
         },
         //点赞
         goodIncrease(index){
-            if(this.commentList[index].goodImgFlag==false){
-                this.commentList[index].goodImgFlag=true
-                this.commentList[index].goodNum-=1
-                //发表评论，第一个参数是第几条评论，第二个参数是评论的个数
-                this.$api.gameInfo.goodIncrease(this.commentList[index].comId,this.commentList[index].goodNum)
-            }
-            else{
-                this.commentList[index].goodImgFlag=false
-                this.commentList[index].goodNum+=1
-                this.$api.gameInfo.goodIncrease(this.commentList[index].comId,this.commentList[index].goodNum)
-                //判断点赞和差评，不能同时存在，并且数量上要相应的变化
-                if( this.commentList[index].badImgFlag==false){
-                    this.commentList[index].badImgFlag=true
-                    this.commentList[index].badNum-=1
-                    this.$api.gameInfo.badIncrease(this.commentList[index].comId,this.commentList[index].badNum)
-                }
-            }
-        },
-        //差评
-        badIncrease(index){
-            if(this.commentList[index].badImgFlag==false){
-                this.commentList[index].badImgFlag=true
-                this.commentList[index].badNum-=1
-                this.$api.gameInfo.badIncrease(this.commentList[index].comId,this.commentList[index].badNum)
-            }else{
-                this.commentList[index].badImgFlag=false
-                this.commentList[index].badNum+=1
-                this.$api.gameInfo.badIncrease(this.commentList[index].comId,this.commentList[index].badNum)
+            if(loginName){
                 if(this.commentList[index].goodImgFlag==false){
                     this.commentList[index].goodImgFlag=true
                     this.commentList[index].goodNum-=1
+                    //发表评论，第一个参数是第几条评论，第二个参数是评论的个数
                     this.$api.gameInfo.goodIncrease(this.commentList[index].comId,this.commentList[index].goodNum)
                 }
+                else{
+                    this.commentList[index].goodImgFlag=false
+                    this.commentList[index].goodNum+=1
+                    this.$api.gameInfo.goodIncrease(this.commentList[index].comId,this.commentList[index].goodNum)
+                    //判断点赞和差评，不能同时存在，并且数量上要相应的变化
+                    if( this.commentList[index].badImgFlag==false){
+                        this.commentList[index].badImgFlag=true
+                        this.commentList[index].badNum-=1
+                        this.$api.gameInfo.badIncrease(this.commentList[index].comId,this.commentList[index].badNum)
+                    }
+                }
             }
+            else{
+                alert("您即将前往登录页")
+                this.$store.commit('getRouter',this.$router.history.current.fullPath)
+                this.$router.push('/Login')
+            }
+           
+        },
+        //差评
+        badIncrease(index){
+            if(loginName){
+                if(this.commentList[index].badImgFlag==false){
+                    this.commentList[index].badImgFlag=true
+                    this.commentList[index].badNum-=1
+                    this.$api.gameInfo.badIncrease(this.commentList[index].comId,this.commentList[index].badNum)
+                }else{
+                    this.commentList[index].badImgFlag=false
+                    this.commentList[index].badNum+=1
+                    this.$api.gameInfo.badIncrease(this.commentList[index].comId,this.commentList[index].badNum)
+                    if(this.commentList[index].goodImgFlag==false){
+                        this.commentList[index].goodImgFlag=true
+                        this.commentList[index].goodNum-=1
+                        this.$api.gameInfo.goodIncrease(this.commentList[index].comId,this.commentList[index].goodNum)
+                    }
+                }
+            }
+            else{
+                alert("您即将前往登录页")
+                this.$store.commit('getRouter',this.$router.history.current.fullPath)
+                this.$router.push('/Login')
+            }
+           
         },
         //热评点赞
         goodIncrease1(index){
-            if(this.hotCommentList[index].goodImgFlag==false){
-                this.hotCommentList[index].goodImgFlag=true
-                this.hotCommentList[index].goodNum-=1
-                //发表评论，第一个参数是第几条评论，第二个参数是评论的个数
-                this.$api.gameInfo.goodIncrease(this.hotCommentList[index].comId,this.hotCommentList[index].goodNum)
-            }
-            else{
-                this.hotCommentList[index].goodImgFlag=false
-                this.hotCommentList[index].goodNum+=1
-                this.$api.gameInfo.goodIncrease(this.hotCommentList[index].comId,this.hotCommentList[index].goodNum)
-                //判断点赞和差评，不能同时存在，并且数量上要相应的变化
-                if( this.hotCommentList[index].badImgFlag==false){
-                    this.hotCommentList[index].badImgFlag=true
-                    this.hotCommentList[index].badNum-=1
-                    this.$api.gameInfo.badIncrease(this.hotCommentList[index].comId,this.hotCommentList[index].badNum)
-                }
-            }
-        },
-        //热评差评
-        badIncrease1(index){
-            if(this.hotCommentList[index].badImgFlag==false){
-                this.hotCommentList[index].badImgFlag=true
-                this.hotCommentList[index].badNum-=1
-                this.$api.gameInfo.badIncrease(this.hotCommentList[index].comId,this.hotCommentList[index].badNum)
-            }else{
-                this.hotCommentList[index].badImgFlag=false
-                this.hotCommentList[index].badNum+=1
-                this.$api.gameInfo.badIncrease(this.hotCommentList[index].comId,this.hotCommentList[index].badNum)
+            if(loginName){
                 if(this.hotCommentList[index].goodImgFlag==false){
                     this.hotCommentList[index].goodImgFlag=true
                     this.hotCommentList[index].goodNum-=1
+                    //发表评论，第一个参数是第几条评论，第二个参数是评论的个数
                     this.$api.gameInfo.goodIncrease(this.hotCommentList[index].comId,this.hotCommentList[index].goodNum)
                 }
+                else{
+                    this.hotCommentList[index].goodImgFlag=false
+                    this.hotCommentList[index].goodNum+=1
+                    this.$api.gameInfo.goodIncrease(this.hotCommentList[index].comId,this.hotCommentList[index].goodNum)
+                    //判断点赞和差评，不能同时存在，并且数量上要相应的变化
+                    if( this.hotCommentList[index].badImgFlag==false){
+                        this.hotCommentList[index].badImgFlag=true
+                        this.hotCommentList[index].badNum-=1
+                        this.$api.gameInfo.badIncrease(this.hotCommentList[index].comId,this.hotCommentList[index].badNum)
+                    }
+                }
             }
+            else{
+                alert("您即将前往登录页")
+                this.$store.commit('getRouter',this.$router.history.current.fullPath)
+                this.$router.push('/Login')
+            }
+            
+        },
+        //热评差评
+        badIncrease1(index){
+            if(loginName){
+                if(this.hotCommentList[index].badImgFlag==false){
+                    this.hotCommentList[index].badImgFlag=true
+                    this.hotCommentList[index].badNum-=1
+                    this.$api.gameInfo.badIncrease(this.hotCommentList[index].comId,this.hotCommentList[index].badNum)
+                }else{
+                    this.hotCommentList[index].badImgFlag=false
+                    this.hotCommentList[index].badNum+=1
+                    this.$api.gameInfo.badIncrease(this.hotCommentList[index].comId,this.hotCommentList[index].badNum)
+                    if(this.hotCommentList[index].goodImgFlag==false){
+                        this.hotCommentList[index].goodImgFlag=true
+                        this.hotCommentList[index].goodNum-=1
+                        this.$api.gameInfo.goodIncrease(this.hotCommentList[index].comId,this.hotCommentList[index].goodNum)
+                    }
+                }
+            }
+            else{
+                alert("您即将前往登录页")
+                this.$store.commit('getRouter',this.$router.history.current.fullPath)
+                this.$router.push('/Login') 
+            }
+           
         }
     },
     filters:{

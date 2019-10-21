@@ -85,7 +85,12 @@ export default {
               message:'登录成功',
               type:'success'
             })
-            this.$router.push("/").catch(err => console.log(err));
+            if(this.$store.state.newRouter){
+                this.$router.push(`${this.$store.state.newRouter}`)
+            }else{
+               this.$router.push("/").catch(err => console.log(err));
+            }
+           
         }else{
           this.$message.error("该用户不存在或密码错误")
         }

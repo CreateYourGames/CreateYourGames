@@ -15,6 +15,7 @@ export default new Vuex.Store({
     //  pwd:checkPass
     },//这里用来存放登录成功的信息
     searchDisplay: false, //模糊查询框的显示隐藏
+    newRouter:'',   //登录页跳转的路由
 
     // network:true //判断是否有网
   },
@@ -30,6 +31,10 @@ export default new Vuex.Store({
     //存入用户信息
     getToken(state,params){
       state.token=params
+    },
+    //存入登录页跳转的不同的路由
+    getRouter(state,params){
+      state.newRouter=params
     }
    /*  changeNetwork(store, param) { 
       store.network = param;
