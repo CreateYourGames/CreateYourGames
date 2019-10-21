@@ -79,6 +79,7 @@ export default {
 
     return {
       btnText: "获取验证码",
+      Judge: true,
       pictureList: [
         { id: 1, img: require("@/assets/images/login/yx1.png") },
         { id: 2, img: require("@/assets/images/login/yx2.png") },
@@ -90,33 +91,63 @@ export default {
         checkPass: ""
       },
       rules: {
-        userPhone: {validator: userPhone,required: true,trigger: "blur"},
+        userPhone: { validator: userPhone, required: true, trigger: "blur" },
         Pass: [
           { required: true, message: "请输入密码", trigger: "blur" },
           { min: 6, max: 16, message: "密码长度为6-16个字符", trigger: "blur" }
         ],
-        checkPass: { required: true, validator: CheckPass, message: "", trigger: "blur" }
+        checkPass: {
+          required: true,
+          validator: CheckPass,
+          message: "",
+          trigger: "blur"
+        }
       }
     };
   },
   methods: {
     submitForm(formName) {
-      this.$api.register.register({
-        loginName: this.ruleForm.userPhone,
-        pwd: this.ruleForm.Pass
-      });
-      var obj = {
-        loginName: this.ruleForm.userPhone,
-        pwd: this.ruleForm.Pass
-      };
-      this.$store.commit("getToken", obj);
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$router.push("/RegisterPerfect").catch(err => console.log(err));
-        } else {
-          return false;
-        }
-      });
+      if (this.Judge === true) {
+        this.$api.register.register({
+          loginName: this.ruleForm.userPhone,
+          pwd: this.ruleForm.Pass
+        });
+        var obj = {
+          loginName: this.ruleForm.userPhone,
+          pwd: this.ruleForm.Pass
+        };
+        // console.log("xxxx:" + this.Judge);
+        this.$store.commit("getToken", obj);
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            this.$router
+              .push("/RegisterPerfect")
+              .catch(err => console.log(err));
+          } else {
+            return false;
+          }
+        });
+      } else {
+        this.$confirm("该用户已被注册", "提示", {
+          confirmButtonText: "重新注册",
+          cancelButtonText: "返回登录",
+          type: "warning"
+        })
+          .then(() => {
+            this.$message({
+              type: "success",
+              message: "重新注册"
+            });
+            this.$router.push("/Register")
+          })
+          .catch(() => {
+            this.$message({
+              type: "success",
+              message: "返回登录"
+            });
+            this.$router.push("/Login")
+          });
+      }
     },
     // 验证码的点击事件
     sendMessage() {
@@ -147,14 +178,12 @@ export default {
         .registerJudge(this.ruleForm.userPhone)
         .then(res => {
           if (res == false) {
-            this.$message.error("该用户已存在");
+            // this.$message.error("该用户已存在");
           }
+          this.Judge = false;
           return res;
         });
     }
-    // backHome(){
-    //     this.$router.push('/')
-    // }
   }
 };
 </script>

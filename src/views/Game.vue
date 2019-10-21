@@ -26,6 +26,9 @@
           <option value="smallGame">小游戏</option>
           <option value="shoot">射击</option>
         </select>
+
+        <search ref="search" :gameList='gameList' @search='searchGames'></search>
+
       </div>
     </div>
   </div>
