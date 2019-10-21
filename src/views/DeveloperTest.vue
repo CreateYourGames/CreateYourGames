@@ -119,6 +119,7 @@ export default {
   },
   mounted() {
     this.timer();
+    // this.getCookie();
   },
   watch: {
     second: {
@@ -206,6 +207,9 @@ export default {
             //点击最后一个"下一步”,并且却提交后结束计时
             this.minutes = 0;
             this.seconds = 0;
+            if (this.TotalScore == 100) {
+              return this.$api.developerTest.developerTest({loginName:this.$store.state.token.loginName});
+            }
           })
           .catch(() => {
             this.$message({
@@ -305,7 +309,7 @@ export default {
         span {
           color: #fec003;
           font-size: 34px;
-          span{
+          span {
             line-height: 34px;
             font-size: 26px;
             margin-left: 10px;

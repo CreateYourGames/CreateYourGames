@@ -4,7 +4,6 @@
       <Header></Header>
     </div>
 
-    <!-- <el-page-header content="安全中心"></el-page-header> -->
     <div class="content">
       <el-steps :active="active" process-status="wait" align-center>
         <el-step title="填写账号" style="font-size:10px"></el-step>
@@ -24,7 +23,7 @@
           class="demo-ruleForm"
         >
           <el-form-item prop="userName" label-width="31px">
-            <span>账号</span>
+            <span>手机号</span>
             <el-input type="text" v-model="ruleForm.userName" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
@@ -160,8 +159,12 @@ export default {
           }
         ],
         userName: [
-          { required: true, message: "请输入账号", trigger: "blur" },
-          { min: 3, max: 7, message: "账号长度为3-7个字符", trigger: "blur" }
+          { required: true, message: "请输入手机号", trigger: "blur" },
+          {
+            pattern: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,
+            message: "手机格式不对"
+          }
+          
         ],
         Pass: [
           { required: true, message: "请输入密码", trigger: "blur" },
@@ -277,8 +280,7 @@ export default {
 .container {
   width: 100%;
   height: 100%;
-  // background-image: url("../assets/images/login/bg.jpg");
-  background-image: url("../assets/images/login/tp2.jpg");
+  background-image: url("../assets/images/login/pic2.jpg");
   background-attachment: fixed;
   background-size: 100% 100%;
 

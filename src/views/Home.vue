@@ -13,7 +13,7 @@
                         </div>
                         <div class="user-name">{{ userInfo.userName}}</div>
                     </div>
-                    <div class="list-btn" @click="listFlag = !listFlag">
+                    <div v-if="loginFlag" class="list-btn" @click="listFlag = !listFlag">
                         <img v-if="!listFlag" src="../assets/images/home/list-down.png" alt="">
                         <img v-else src="../assets/images/home/list-up.png" alt="">
                     </div>
@@ -191,8 +191,10 @@
                   console.log(res.userMsg);
                   console.log(res);
                   const info = res.userMsg[0];
-                  this.userInfo.userIcon = info.picture || this.defaultIcon;
+                  this.userInfo.userIcon = info.picture;
                   this.userInfo.userName = info.nickName;
+                  this.userInfo.isDeveloper = info.flag;
+                  console.log(this.userInfo.isDeveloper);
                   console.log(res.userMsg[0]);
               }).catch(err => console.log(err));
           }

@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div class="comment-item">
-                    <p>热评区</p>
+                    <p style="color:red">热评区</p>
                     <div class="item" v-for="(item,index) in hotCommentList" :key="item.id">
                         <div class="item-userInfo">
                             <img :src="item.picture" alt="用户头像">
@@ -114,7 +114,8 @@
                                 {{item.comTime|formDate}}
                             </div>
                         </div>
-                    </div>       
+                    </div>
+                    <div class="loadingMore">点击加载更多~</div>      
                 </div>
                 <div v-if="commentFlag">
                         暂无评论~
@@ -244,7 +245,7 @@ export default {
         },
         //添加到喜欢
         addToLove(){
-            if(loginName){
+            if(this.loginName){
                 var love={
                     userLoginName:'18338514073',
                     gameId:this.id
@@ -275,12 +276,12 @@ export default {
         },
         //发表评论
         async publish(){
-            if(loginName){
+            if(this.loginName){
                 const date=new Date()
                 const now=date.getFullYear()+"-"+(date.getMonth()+1).toString().padStart(2,'0')+"-"+date.getDate().toString().padStart(2,'0')
                 const obj={
                     picture:this.userImg,
-                    userLoginName:loginName,
+                    userLoginName:this.loginName,
                     gameId:this.id,
                     comTime:now,
                     goodNum:0,
@@ -300,7 +301,7 @@ export default {
                 })
                 this.comment=''
                 //再次发送请求
-                await this.$api.gameInfo.gameInfoApi({id:this.id,loginName:loginName}).then(res=>{
+                await this.$api.gameInfo.gameInfoApi({id:this.id,loginName:this.loginName}).then(res=>{
                     console.log(res)
                     this.commentList=res.newCommentList
                 })
@@ -313,7 +314,7 @@ export default {
         },
         //点赞
         goodIncrease(index){
-            if(loginName){
+            if(this.loginName){
                 if(this.commentList[index].goodImgFlag==false){
                     this.commentList[index].goodImgFlag=true
                     this.commentList[index].goodNum-=1
@@ -341,7 +342,7 @@ export default {
         },
         //差评
         badIncrease(index){
-            if(loginName){
+            if(this.loginName){
                 if(this.commentList[index].badImgFlag==false){
                     this.commentList[index].badImgFlag=true
                     this.commentList[index].badNum-=1
@@ -366,7 +367,7 @@ export default {
         },
         //热评点赞
         goodIncrease1(index){
-            if(loginName){
+            if(this.loginName){
                 if(this.hotCommentList[index].goodImgFlag==false){
                     this.hotCommentList[index].goodImgFlag=true
                     this.hotCommentList[index].goodNum-=1
@@ -394,7 +395,7 @@ export default {
         },
         //热评差评
         badIncrease1(index){
-            if(loginName){
+            if(this.loginName){
                 if(this.hotCommentList[index].badImgFlag==false){
                     this.hotCommentList[index].badImgFlag=true
                     this.hotCommentList[index].badNum-=1
@@ -646,6 +647,10 @@ export default {
                     }
                 }
                
+            }
+            .loadingMore{
+                cursor: pointer;
+                font-weight: 600
             }
         }
         .ranking-list{
