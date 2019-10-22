@@ -4,6 +4,8 @@ import gameCenter from './gameCenter'
 import register from './register'
 import registerPerfect from './registerPerfect'
 import login from './login'
+import personal from './personal'
+import updateGameInfo from './updateGameInfo'
 import developerTest from './developerTest'
 import loginInfo from './home'
 //将接口导出
@@ -13,6 +15,8 @@ export default{
     register,
     registerPerfect,
     login,
+    personal,
+    updateGameInfo,
     developerTest,
     loginInfo
 }

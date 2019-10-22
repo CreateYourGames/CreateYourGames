@@ -18,25 +18,34 @@ export default {
     return{
       isDel:true,
       password:'',
+      gameId:'',
     }
   },
-
   methods:{
-    del(){
+    del(id){
       this.isDel = !this.isDel;
+      this.gameId = id
+      console.log(id,'123456789')
+      console.log(this.gameId,"传过去的gameID0")
     },
     blur(){
-      var passwordReg = '123456';
+      var passwordReg = this.$store.state.token.pwd;
+      console.log(passwordReg)
       if(passwordReg === this.password){
+        this.isDel = !this.isDel;
         alert('删除成功')
-        this.del()
+        let value = this.gameId
+        console.log(value,"传过去的gameID")
+        this.$api.personal.delGame(value).then(res=>{
+        })
+
       }else{
+        this.isDel = !this.isDel;
         alert('删除失败')
-        this.del()
       }
     },
     defineDel(){
-      
+
     }
   }
 };
