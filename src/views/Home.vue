@@ -183,34 +183,40 @@
                 defaultIcon: require('../assets/images/home/icon-default.jpg')
             }
         },
-        created(){
-          if(this.$store.state.token.loginName){
-              this.loginFlag = true;
-              console.log(this.$store.state.token.loginName);
-              this.$api.loginInfo.getLoginInfo(this.$store.state.token.loginName).then(res => {
-                  console.log(res.userMsg);
-                  console.log(res);
-                  const info = res.userMsg[0];
-                  this.userInfo.userIcon = info.picture;
-                  this.userInfo.userName = info.nickName;
-                  this.userInfo.isDeveloper = info.flag;
-                  console.log(this.userInfo.isDeveloper);
-                  console.log(res.userMsg[0]);
-              }).catch(err => console.log(err));
-          }
+        created() {
+            console.log('退出登录');
+            // 进入首页判断当前是否登录（Vuex中是否存在loginName）
+            if (this.$store.state.token.loginName) {
+                this.loginFlag = true;
+                console.log(this.$store.state.token.loginName, '当前登录用户账号');
+                this.$api.loginInfo.getLoginInfo(this.$store.state.token.loginName).then(res => {
+                    console.log(res.userMsg);
+                    const info = res.userMsg[0];
+                    this.userInfo.userIcon = info.picture;
+                    this.userInfo.userName = info.nickName;
+                    this.userInfo.isDeveloper = info.flag;
+                    console.log(this.userInfo.isDeveloper, '当前用户是否为开发者');
+                    console.log(res.userMsg[0]);
+                }).catch(err => console.log(err));
+            }
+            else{
+                this.loginFlag = false;
+            }
         },
         methods: {
             //登录跳转
             login() {
                 this.$router.push('/Login');
             },
-            exitLogin(){
+            exitLogin() {
                 this.$store.state.token = {};
+                // console.log(this.$store.state.token);
+                // this.$router.go(0);
                 this.$router.push('/Login');
             },
             // 游戏库跳转
             toGameCenter() {
-                this.$router.push('/Game')
+                this.$router.push('/GameCenter')
             },
             // 排行榜跳转
             toRankingList() {
@@ -225,7 +231,7 @@
                 this.$router.push('/PublishGameTips')
             },
             // 开发者测试跳转
-            toDeveloperTest(){
+            toDeveloperTest() {
                 this.$router.push('/Developer')
             },
             // 个人信息跳转
@@ -280,7 +286,7 @@
             .personal {
                 position: relative;
                 margin-right: 100px;
-                .a{
+                .a {
                     display: flex;
                     align-items: center;
                     .unlogin {
@@ -289,7 +295,7 @@
                         margin-right: 20px;
                         cursor: pointer;
                     }
-                    .login{
+                    .login {
                         display: flex;
                         align-items: center;
                         cursor: pointer;
@@ -308,33 +314,33 @@
                             font-size: 14px;
                         }
                     }
-                    .list-btn{
+                    .list-btn {
                         position: relative;
                         display: flex;
                         align-items: center;
-                        img{
+                        img {
                             width: 12px;
                             height: 12px;
                         }
                     }
                 }
-                .list{
+                .list {
                     position: absolute;
                     right: 0;
                     margin-top: 10px;
                     background-color: rgba(32, 39, 77, 0.8);
                     color: #ffffff;
-                    li{
+                    li {
                         width: 130px;
                         padding: 5px 10px;
                         text-align: center;
                         cursor: pointer;
                         border-left: 2px solid #ddd;
                         margin-bottom: 3px;
-                        &:last-of-type{
+                        &:last-of-type {
                             /*border-bottom: 1px solid #ddd;*/
                         }
-                        &:hover{
+                        &:hover {
                             background-color: #dddddd;
                             color: #000;
                         }
