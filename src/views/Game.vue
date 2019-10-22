@@ -512,7 +512,7 @@ export default {
         margin-right: 10%;
 
         .search {
-          margin-top: -40px;
+          margin-top: -30px;
           z-index: 9999;
         }
 
