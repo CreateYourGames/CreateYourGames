@@ -21,230 +21,237 @@
             <conform ref="delGame"></conform>
         </div>
 
-        <!-- content -->
-        <div class="content">
-            <div class="publish">
-                <span>发布的游戏</span>
-                <div class="block">
-                    <div v-if="publishList.length>5">
-                        <img
-                                class="left"
-                                @mouseover="leftOver()"
-                                @mouseout="leftOut()"
-                                v-on:click="left"
-                                :src="hover1?img1:img2"
-                        />
-                        <img
-                                class="right"
-                                @mouseover="rightOver()"
-                                @mouseout="rightOut()"
-                                v-on:click="right"
-                                :src="hover2?img3:img4"
-                        />
-                    </div>
-                    <div v-else></div>
-                    <ul ref="ul">
-                        <li
-                                v-for="(publish,index) in publishList"
-                                :key="index"
-                                :class="{style:i === index}"
-                                @mouseover="overStyle(index)"
-                                @mouseout="outStyle(index)"
-                        >
-                            <img :src="publish.img" alt/>
-                            <div v-show="publish.flag">
-                                <p class="details" @click="jumpGameDetails()">查看详情</p>
-                                <div class="ud">
-                                    <p class="update" @click="jumpGame()">修改信息&nbsp;</p>
-                                    <p class="delete" @click="delGame()">&nbsp;删除游戏</p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+    <!-- content -->
+    <div class="content">
+      <div class="publish">
+        <span>发布的游戏</span>
+        <div class="block">
+          <div v-if="publishList.length>5">
+            <img
+              class="left"
+              @mouseover="leftOver()"
+              @mouseout="leftOut()"
+              v-on:click="left"
+              :src="hover1?img1:img2"
+            />
+            <img
+              class="right"
+              @mouseover="rightOver()"
+              @mouseout="rightOut()"
+              v-on:click="right"
+              :src="hover2?img3:img4"
+            />
+          </div>
+          <div v-else></div>
+          <ul ref="ul">
+            <li
+              v-for="(publish,index) in publishList"
+              :key="index"
+              :class="{style:i === index}"
+              @mouseover="overStyle(index)"
+              @mouseout="outStyle(index)"
+            >
+              <img :src="publish.gamePic" alt />
+              <div v-show="publish.flag">
+                <p class="details" @click="jumpGameDetails(index)">查看详情</p>
+                <div class="ud">
+                  <p class="update" @click="jumpGame(index)">修改信息&nbsp;</p>
+                  <p class="delete" @click="delGame(publish.gameId)">&nbsp;删除游戏</p>
                 </div>
-            </div>
-            <div class="rl">
-                <div class="recently">
-                    <span>最近的游戏</span>
-                    <ul>
-                        <li v-for="game in gameList" :key="game.id" @click="jumpGameDetails">
-                            <img :src="game.img" alt/>
-                            <p class="gameName">{{game.name}}</p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="like">
-                    <span>喜欢的游戏</span>
-                    <ul>
-                        <li
-                                v-for="(favor,index) in favorList"
-                                :key="index"
-                                v-bind:class="{active:ind === index}"
-                                @mouseover="addStyle(index)"
-                                @mouseout="removeStyle(index)"
-                        >
-                            <img :src="favor.img" alt/>
-                            <div v-bind:class="{bott:!(newInd===index)}">
-                                <div class="bot">
-                                    <p class="detail" @click="jumpGameDetails">查看详情&nbsp;</p>
-                                    <p class="cancel" @click="cancelFavor(favor.id)">&nbsp;取消喜欢</p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+              </div>
+            </li>
+          </ul>
         </div>
+      </div>
+      <div class="rl">
+        <div class="recently">
+          <span>最近的游戏</span>
+          <ul>
+            <li v-for="(game) in gameList" :key="game.id" @click="jumpGameDetails">
+              <img :src="game.gamePic" alt />
+              <p class="gameName">{{game.name}}</p>
+            </li>
+          </ul>
+        </div>
+        <div class="like">
+          <span>喜欢的游戏</span>
+          <ul>
+            <li
+              v-for="(favor,index) in favorList"
+              :key="index"
+              v-bind:class="{active:ind === index}"
+              @mouseover="addStyle(index)"
+              @mouseout="removeStyle(index)"
+            >
+              <img :src="favor.gamePic" alt />
+              <div v-bind:class="{bott:!(newInd===index)}">
+                <div class="bot">
+                  <p class="detail" @click="jumpGameDetails">查看详情&nbsp;</p>
+                  <p class="cancel" @click="cancelFavor(favor.id)">&nbsp;取消喜欢</p>
+                </div>
+            </div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-    import Conform from "@/components/personal/Conform";
+import Conform from "@/components/personal/Conform";
+export default {
+  components: {
+    Conform
+  },
+  data() {
+    return {
+      // 删除gameid
+      gameId:'',
+      // 切换左图判定值
+      hover1: true,
+      // 切换右图标判定值
+      hover2: true,
+      // 切换图标
+      img1: require("@/assets/images/personal/left1.png"),
+      img2: require("@/assets/images/personal/left2.png"),
+      img3: require("@/assets/images/personal/right1.png"),
+      img4: require("@/assets/images/personal/right2.png"),
+      // 放大放小索引值
+      newInd: "",
+      i: "",
+      ind: "",
+      img104: require("../assets/images/personal/104.jpg"),
+      publishList: [
+        {
+          id: 1,
+          img: require("@/assets/images/personal/104.jpg"),
+          flag: false
+        },
+        {
+          id: 2,
+          img: require("@/assets/images/personal/105.jpg"),
+          flag: false
+        },
+        {
+          id: 3,
+          img: require("@/assets/images/personal/103.jpg"),
+          flag: false
+        },
+        {
+          id: 4,
+          img: require("@/assets/images/personal/01.png"),
+          flag: false
+        },
+        {
+          id: 5,
+          img: require("@/assets/images/personal/game1.png"),
+          flag: false
+        },
+        {
+          id: 6,
+          img: require("@/assets/images/personal/info2.jpg"),
+          flag: false
+        },
+        {
+          id: 7,
+          img: require("@/assets/images/personal/game2.png"),
+          flag: false
+        },
+        {
+          id: 8,
+          img: require("@/assets/images/personal/info.jpg"),
+          flag: false
+        }
+      ],
+      gameList: [
+        {
+          id: 1,
+          name: "游戏1",
+          img: require("@/assets/images/personal/game1.png")
+        },
+        {
+          id: 2,
+          name: "游戏2",
+          img: require("@/assets/images/personal/game2.png")
+        },
+        {
+          id: 3,
+          name: "游戏3",
+          img: require("@/assets/images/personal/game3.png")
+        },
+        {
+          id: 4,
+          name: "游戏4",
+          img: require("@/assets/images/personal/game4.png")
+        }
+      ],
+      favorList: [
+        {
+          id: 1,
+          name: "游戏1",
+          img: require("@/assets/images/personal/love1.jpg"),
+          flag: false
+        },
+        {
+          id: 4,
+          name: "游戏4",
+          img: require("@/assets/images/personal/love4.jpg"),
+          flag: false
+        }
+      ]
+    };
+  },
+  created(){
+     //请求到发布游戏的相关数据
+     console.log(111)
+     let val = this.$store.state.token.loginName
+        this.$api.personal.publishGame(val).then(res=>{
+            this.publishList=res.publishList
+            console.log(res)
+        }),
+        this.$api.personal.recentGame(val).then(res=>{
+            this.gameList=res.gameList
+            console.log(res)
+        }),
+        this.$api.personal.favorGame(val).then(res=>{
+            this.favorList=res.favorList
+            console.log(res)
+        })
+  },
+  mounted() {
+    console.log(this.$refs.ul.style.width);
+    this.$refs.ul.style.width = 170 * this.publishList.length + "px";
+  },
+  methods: {
+    // 路由跳转
+    go() {
+      this.$router.push("/Personal/UpdateInfo").catch(err => console.log(err));
+    },
+    jumpGame(i) {
+      console.log(i,"index")
+      this.$router
+        .push('/Personal/UpdateGameInfo?id='+this.publishList[i].gameId)
+        .catch(err => console.log(err));
+    },
+    goHome() {
+      this.$router.push("/");
+    },
+    jumpGameDetails() {
+      this.$router.push("/GameInfo");
+    },
+    cancelFavor(id) {
+      this.favorList.forEach((item, index) => {
+        if (item.id == id) {
+          console.log(this.favorList.splice(0, 1));
+        }
+      });
+    },
 
-    export default {
-        components: {
-            Conform
-        },
-        data() {
-            return {
-                // 切换左图判定值
-                hover1: true,
-                // 切换右图标判定值
-                hover2: true,
-                // 切换图标
-                img1: require("@/assets/images/personal/left1.png"),
-                img2: require("@/assets/images/personal/left2.png"),
-                img3: require("@/assets/images/personal/right1.png"),
-                img4: require("@/assets/images/personal/right2.png"),
-                // 放大放小索引值
-                newInd: "",
-                i: "",
-                ind: "",
-                img104: require("../assets/images/personal/104.jpg"),
-                publishList: [
-                    {
-                        id: 1,
-                        img: require("@/assets/images/personal/104.jpg"),
-                        flag: false
-                    },
-                    {
-                        id: 2,
-                        img: require("@/assets/images/personal/105.jpg"),
-                        flag: false
-                    },
-                    {
-                        id: 3,
-                        img: require("@/assets/images/personal/103.jpg"),
-                        flag: false
-                    },
-                    {
-                        id: 4,
-                        img: require("@/assets/images/personal/01.png"),
-                        flag: false
-                    },
-                    {
-                        id: 5,
-                        img: require("@/assets/images/personal/game1.png"),
-                        flag: false
-                    },
-                    {
-                        id: 6,
-                        img: require("@/assets/images/personal/info2.jpg"),
-                        flag: false
-                    },
-                    {
-                        id: 7,
-                        img: require("@/assets/images/personal/game2.png"),
-                        flag: false
-                    },
-                    {
-                        id: 8,
-                        img: require("@/assets/images/personal/info.jpg"),
-                        flag: false
-                    }
-                ],
-                gameList: [
-                    {
-                        id: 1,
-                        name: "游戏1",
-                        img: require("@/assets/images/personal/game1.png")
-                    },
-                    {
-                        id: 2,
-                        name: "游戏2",
-                        img: require("@/assets/images/personal/game2.png")
-                    },
-                    {
-                        id: 3,
-                        name: "游戏3",
-                        img: require("@/assets/images/personal/game3.png")
-                    },
-                    {
-                        id: 4,
-                        name: "游戏4",
-                        img: require("@/assets/images/personal/game4.png")
-                    }
-                ],
-                favorList: [
-                    {
-                        id: 1,
-                        name: "游戏1",
-                        img: require("@/assets/images/personal/love1.jpg"),
-                        flag: false
-                    },
-                    {
-                        id: 2,
-                        name: "游戏2",
-                        img: require("@/assets/images/personal/love2.jpg"),
-                        flag: false
-                    },
-                    {
-                        id: 3,
-                        name: "游戏3",
-                        img: require("@/assets/images/personal/love3.jpg"),
-                        flag: false
-                    },
-                    {
-                        id: 4,
-                        name: "游戏4",
-                        img: require("@/assets/images/personal/love4.jpg"),
-                        flag: false
-                    }
-                ]
-            };
-        },
-        mounted() {
-            console.log(this.$refs.ul.style.width);
-            this.$refs.ul.style.width = 170 * this.publishList.length + "px";
-        },
-        methods: {
-            // 路由跳转
-            go() {
-                this.$router.push("/Personal/UpdateInfo").catch(err => console.log(err));
-            },
-            jumpGame() {
-                this.$router
-                    .push("/Personal/UpdateGameInfo")
-                    .catch(err => console.log(err));
-            },
-            goHome() {
-                this.$router.push("/");
-            },
-            jumpGameDetails() {
-                this.$router.push("/GameInfo");
-            },
-            cancelFavor(id) {
-                this.favorList.forEach((item, index) => {
-                    if (item.id == id) {
-                        console.log(this.favorList.splice(0, 1));
-                    }
-                });
-            },
-
-            // 删除游戏
-            delGame() {
-                this.$refs.delGame.del()
-            },
+    // 删除游戏
+    delGame(id) {
+      this.$refs.delGame.del(id)
+    },
 
             //发布的游戏 手表移动事件
             overStyle(index) {
