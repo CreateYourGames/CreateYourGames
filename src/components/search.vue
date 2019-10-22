@@ -67,16 +67,19 @@ export default {
         align-items: center;
         input{
             width: 250px;height: 32px;
-            border: 1px solid rgb(184, 182, 182);
+            border: 1px solid #d8dce0;
             outline: none;
-            color: white;
+            color: #1e262c;
             font-size: 14px;
             padding-left: 10px;
             border-radius: 3px;
-            background: rgba($color: #000, $alpha: 0.5);
+            background: #d8dce0;
         }
         .el-button{
+            border: none;
+            background-color: #d8dce0;
             margin-left: 10px;
+            color: black;
         }
         .searchContent{
             width: 250px;max-height: 175px;
