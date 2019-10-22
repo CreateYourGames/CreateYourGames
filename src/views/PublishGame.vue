@@ -126,13 +126,19 @@
                     }
                 }
                 .step2 {
-                    background-color: rgba(9, 218, 65, 0.4);
+                    /*background-color: rgba(9, 218, 65, 0.4);*/
+                    background-color: rgba(0, 0, 0, 0.6);
+                    &:hover{
+                        transition: all 0.6s;
+                        background-color: rgba(9, 218, 65, 0.4);
+                    }
                 }
                 .step3 {
-                    background-color: rgba(199, 218, 47, 0.4);
-                }
-                .step4 {
-                    background-color: rgba(218, 141, 44, 0.4);
+                    background-color: rgba(0, 0, 0, 0.6);
+                    &:hover{
+                        transition: all 0.6s;
+                        background-color: rgba(199, 218, 47, 0.4);
+                    }
                 }
             }
         }

@@ -1,9 +1,6 @@
 <template>
     <div class="ranking-list">
         <topNav></topNav>
-        <div class="toGameCenter" @click="toGameCenter">
-            <i class="left"></i>去玩游戏
-        </div>
         <div class="ranking">
             <div class="ranking-nav" :style="{backgroundColor:rankingNavColor[rankingFlag.leftRank2 == 0 ? rankingFlag.rightRank2 : rankingFlag.leftRank2]}">
                 <p class="nav-title">{{ rankingName }}</p>
@@ -413,34 +410,12 @@
             opacity: 0.8;
             cursor: pointer;
         }
-        .toGameCenter {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100px;
-            line-height: 30px;
-            color: #ffffff;
-            margin: 40px 0 0 0;
-            border: 1px solid #ffffff;
-            border-left: none;
-            text-align: center;
-            border-radius: 0 10px 10px 0;
-            cursor: pointer;
-            .left {
-                display: block;
-                width: 15px;
-                height: 15px;
-                background-image: url("../assets/images/rankingList/left.png");
-                background-size: 100% 100%;
-                margin-right: 5px;
-            }
-        }
         .ranking {
             display: flex;
             flex-direction: column;
             align-items: center;
             color: #ffffff;
-            margin-top: -30px;
+            margin-top: 20px;
             .ranking-nav {
                 width: 300px;
                 height: 70px;
