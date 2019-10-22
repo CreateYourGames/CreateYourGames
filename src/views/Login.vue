@@ -141,9 +141,9 @@ export default {
                     message: "登录成功",
                     type: "success"
                   });
-                  if(this.$store.state.newRouter){
-                      this.$router.push(`${this.$store.state.newRouter}`)
-                  }else{
+                  if (this.$store.state.newRouter) {
+                    this.$router.push(`${this.$store.state.newRouter}`);
+                  } else {
                     this.$router.push("/").catch(err => console.log(err));
                   }
                 } else {
@@ -151,16 +151,43 @@ export default {
                 }
               });
           } else {
-            console.log('未保存密码')
+            console.log("未保存密码");
             this.$store.state.rememberPwd = false;
-            this.$router.push("/").catch(err => console.log(err));
+
+            this.$api.login
+              .login({
+                Id: this.ruleForm.userPhone,
+                Pwd: this.ruleForm.checkPass
+              })
+              .then(res => {
+                if (res == true) {
+                  var obj = {
+                    loginName: this.ruleForm.userPhone,
+                    pwd: this.ruleForm.checkPass
+                  };
+                  this.$store.commit("getToken", obj);
+                  this.$message({
+                    message: "登录成功",
+                    type: "success"
+                  });
+                  if (this.$store.state.newRouter) {
+                    this.$router.push(`${this.$store.state.newRouter}`);
+                  } else {
+                    this.$router.push("/").catch(err => console.log(err));
+                  }
+                } else {
+                  this.$message.error("该用户不存在或密码错误");
+                }
+              });
+
+            // this.$router.push("/").catch(err => console.log(err));
             console.log("清空Cookie");
             // 清空Cookie
             this.clearCookie();
             console.log("清空Tookie");
             // 清空token
             var obj = {
-              loginName:this.ruleForm.userPhone,
+              loginName: this.ruleForm.userPhone,
               pwd: null
             };
             this.$store.commit("getToken", obj);
