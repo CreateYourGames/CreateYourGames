@@ -89,29 +89,13 @@
                   <p class="detail" @click="jumpGameDetails">查看详情&nbsp;</p>
                   <p class="cancel" @click="cancelFavor(favor.id)">&nbsp;取消喜欢</p>
                 </div>
-                <div class="like">
-                    <span>喜欢的游戏</span>
-                    <ul>
-                        <li
-                                v-for="(favor,index) in favorList"
-                                :key="index"
-                                v-bind:class="{active:ind === index}"
-                                @mouseover="addStyle(index)"
-                                @mouseout="removeStyle(index)"
-                        >
-                            <img :src="favor.img" alt/>
-                            <div v-bind:class="{bott:!(newInd===index)}">
-                                <div class="bot">
-                                    <p class="detail" @click="jumpGameDetails">查看详情&nbsp;</p>
-                                    <p class="cancel" @click="cancelFavor(favor.id)">&nbsp;取消喜欢</p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
             </div>
+            </li>
+          </ul>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
