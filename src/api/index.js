@@ -8,6 +8,7 @@ import personal from './personal'
 import updateGameInfo from './updateGameInfo'
 import developerTest from './developerTest'
 import loginInfo from './home'
+import suggest from './suggest'
 //将接口导出
 export default{
     gameInfo,
@@ -18,5 +19,6 @@ export default{
     personal,
     updateGameInfo,
     developerTest,
-    loginInfo
+    loginInfo,
+    suggest
 }

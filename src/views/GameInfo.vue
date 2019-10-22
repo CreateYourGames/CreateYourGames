@@ -236,7 +236,6 @@ export default {
                 this.commentFlag=true
             }
         })
-       
     },
     methods:{
         //返回首页
@@ -245,13 +244,13 @@ export default {
         },
         //返回游戏库
         toGameCenter(){
-            this.$router.push('/GameCenter')
+            this.$router.push('/Game')
         },
         //添加到喜欢
         addToLove(){
             if(this.loginName){
                 var love={
-                    userLoginName:'18338514073',
+                    userLoginName:this.loginName,
                     gameId:this.id
                 }
                 this.imgFlag=!this.imgFlag
