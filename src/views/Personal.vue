@@ -208,15 +208,15 @@ export default {
      let val = this.$store.state.token.loginName
         this.$api.personal.publishGame(val).then(res=>{
             this.publishList=res.publishList
-            console.log(res)
+            // console.log(res)
         }),
         this.$api.personal.recentGame(val).then(res=>{
             this.gameList=res.gameList
-            console.log(res)
+            // console.log(res)
         }),
         this.$api.personal.favorGame(val).then(res=>{
             this.favorList=res.favorList
-            console.log(res)
+            // console.log(res)
         })
   },
   mounted() {
