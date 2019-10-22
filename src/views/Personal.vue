@@ -339,7 +339,6 @@ export default {
                             border: 5px solid rgba(0, 0, 0, 0.9);
                         }
                         .info {
-                            margin-left: 5%;
                             color: #fff;
                             box-sizing: border-box;
                             padding: 5px;

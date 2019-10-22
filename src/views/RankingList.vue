@@ -627,20 +627,6 @@
                             }
                         }
                     }
-                    /*.list-item:nth-of-type(8n + 2) {*/
-                        /*.list-index {*/
-                            /*p {*/
-                                /*color: #ffca3e;*/
-                            /*}*/
-                        /*}*/
-                    /*}*/
-                    /*.list-item:nth-of-type(8n + 3) {*/
-                        /*.list-index {*/
-                            /*p {*/
-                                /*color: #f3b228;*/
-                            /*}*/
-                        /*}*/
-                    /*}*/
                 }
                 .ranking-left {
                     display: flex;
