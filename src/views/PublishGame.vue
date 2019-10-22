@@ -142,7 +142,7 @@
                 }
             }
         }
-        /*.nav-game{
+       /* .nav-game{
             width: 600px;
             height: 700px;
             margin: 0 auto;

@@ -8,7 +8,7 @@
                 </div>
                 <div class="suggest-tip">
                     你们随便提提，我们反正是不会改的๑乛◡乛๑
-                    <textarea cols="60" rows="10" placeholder="此处填写建议" v-model="textMessage"></textarea>
+                    <textarea @input="inputJudge" cols="60" rows="10" placeholder="此处填写建议" v-model="textMessage"></textarea>
                 </div>
                 <div class="submit">
                     <img :src="submitImg" alt=""
@@ -35,8 +35,15 @@
                 mouseUpImg: require('../assets/images/suggest/submit.png')
             };
         },
-
         methods: {
+            //输入前判断用户是否登录
+            inputJudge(){
+                if(this.$store.state.newRouter==''){
+                    alert("您需要先进行登录操作")
+                    this.$store.commit('getRouter',this.$router.history.current.fullPath)
+                    this.$router.push('/Login')
+                }
+            },
             goTo() {
                 // 点击最后一个"下一步”，弹出确认提交按钮
                 this.$confirm("确认提交?", "提示", {
@@ -45,11 +52,13 @@
                     type: "warning"
                 })
                     .then(() => {
-                        this.$message({
-                            type: "success",
-                            message: "提交成功!"
-                        });
-                        this.$router.push("/");
+                        this.$api.suggest.submitSuggest({suggest:this.textMessage,loginName:this.$store.state.token.loginName}).then(()=>{
+                            this.$message({
+                                type: "success",
+                                message: "提交成功!"
+                            });
+                            this.$router.push("/");
+                        }) 
                     })
                     .catch(() => {
                         this.$message({
@@ -69,7 +78,7 @@
         },
         components: {
             topNav
-        }
+        },
     };
 </script>
 

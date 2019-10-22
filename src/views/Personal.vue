@@ -1,14 +1,22 @@
 <template>
-  <div class="nav-person">
-    <!-- 顶部盒子 -->
-    <div class="nav">
-      <div class="nav-bottom">
-        <div class="top-content">
-          <div class="user-info">
-            <img src="@/assets/images/personal/01.png" alt />
-            <div class="info">
-              <p class="user-name">用户名字</p>
-              <p class="user-intro">这个人很懒什么都没留下</p>
+<div>
+    <div class="nav-person">
+        <!-- 顶部盒子 -->
+        <div class="nav">
+            <div class="nav-bottom">
+                <div class="top-content">
+                    <div class="user-info">
+                        <img :src="picture" alt/>
+                        <div class="info">
+                            <p class="user-name">{{nickName}}</p>
+                            <p class="user-intro">{{personalInfo}}</p>
+                        </div>
+                    </div>
+                    <div class="btn-box">
+                        <button @click="goHome">返回主页</button>
+                        <button @click="go">编辑资料</button>
+                    </div>
+                </div>
             </div>
           </div>
           <div class="btn-box">
@@ -16,8 +24,8 @@
             <button @click="go">编辑资料</button>
           </div>
         </div>
-      </div>
-    </div>
+      
+
 
     <div>
       <conform ref="delGame"></conform>
@@ -56,7 +64,7 @@
             >
               <img :src="publish.gamePic" alt />
               <div v-show="publish.flag">
-                <p class="details" @click="jumpGameDetails(index)">查看详情</p>
+                <p class="details" @click="jumpGameDetails(publish.gameId)">查看详情</p>
                 <div class="ud">
                   <p class="update" @click="jumpGame(index)">修改信息&nbsp;</p>
                   <p class="delete" @click="delGame(publish.gameId)">&nbsp;删除游戏</p>
@@ -91,8 +99,8 @@
               <img :src="favor.gamePic" alt />
               <div v-bind:class="{bott:!(newInd===index)}">
                 <div class="bot">
-                  <p class="detail" @click="jumpGameDetails">查看详情&nbsp;</p>
-                  <p class="cancel" @click="cancelFavor(favor.id)">&nbsp;取消喜欢</p>
+                  <p class="detail" @click="jumpGameDetails(favor.gameId)">查看详情&nbsp;</p>
+                  <p class="cancel" @click="cancelFavor(favor.gameId)">&nbsp;取消喜欢</p>
                 </div>
               </div>
             </li>
@@ -101,6 +109,7 @@
       </div>
     </div>
   </div>
+  
 </template>
 
 <script>
@@ -120,6 +129,10 @@ export default {
       hover1: true,
       // 切换右图标判定值
       hover2: true,
+      userMsg:'',
+      picture:'',
+      nickName:'',
+      personalInfo:'',
       // 切换图标
       img1: require("@/assets/images/personal/left1.png"),
       img2: require("@/assets/images/personal/left2.png"),
@@ -210,24 +223,32 @@ export default {
       ]
     };
   },
-  created() {
-    //请求到发布游戏的相关数据
-    console.log(111);
-    let val = this.$store.state.token.loginName;
-    this.$api.personal.publishGame(val).then(res => {
-      this.publishList = res.publishList;
-      console.log(res);
-    }),
-      this.$api.personal.recentGame(val).then(res => {
-        this.gameList = res.gameList;
-        console.log(res);
-      }),
-      this.$api.personal.favorGame(val).then(res => {
-        this.favorList = res.favorList;
-        console.log(res);
-      });
 
-    // 请求是否为开发者
+    
+  created(){
+     //请求到发布游戏的相关数据
+     let val = this.$store.state.token.loginName
+        this.$api.personal.publishGame(val).then(res=>{
+            this.publishList=res.publishList
+            // console.log(res)
+        }),
+        this.$api.personal.recentGame(val).then(res=>{
+            this.gameList=res.gameList
+            // console.log(res)
+        }),
+        this.$api.personal.favorGame(val).then(res=>{
+            this.favorList=res.favorList
+            // console.log(res)
+        }),
+        this.$api.loginInfo.getLoginInfo(this.$store.state.token.loginName).then(res=>{
+            // console.log(res)
+            this.picture=res.userMsg[0].picture
+            this.nickName=res.userMsg[0].nickName
+            this.personalInfo=res.userMsg[0].personalInfo
+        })
+        .catch(err => console.log(err));
+
+        // 请求是否为开发者
     if (this.$store.state.token.loginName) {
       // this.loginFlag = true;
       console.log(this.$store.state.token.loginName);
@@ -243,7 +264,6 @@ export default {
           console.log("我是不是开发者："+this.isDeveloper);
           // console.log(res.userMsg[0]);
         })
-        .catch(err => console.log(err));
     }
   },
   mounted() {
@@ -264,17 +284,29 @@ export default {
     goHome() {
       this.$router.push("/");
     },
-    jumpGameDetails() {
-      this.$router.push("/GameInfo");
+    jumpGameDetails(id) {
+      console.log(id)
+      this.$router.push("/GameInfo?id="+id);
     },
     cancelFavor(id) {
-      this.favorList.forEach((item, index) => {
-        if (item.id == id) {
-          console.log(this.favorList.splice(0, 1));
-        }
-      });
-    },
+      var obj={
+        userLoginName:this.$store.state.token.loginName,
+        gameId:`${id}`
+      }
+      this.$api.gameInfo.removeLove(obj).then(()=>{
+        this.$message({
+          message:'取消喜欢成功',
+          type:"success"
+        })
+      }).catch(()=>{
+        this.$message.error("取消喜欢失败")
+      })
+      this.$api.personal.favorGame(val).then(res=>{
+          this.favorList=res.favorList
+          // console.log(res)
 
+      })
+    },
     // 删除游戏
     delGame(id) {
       this.$refs.delGame.del(id);

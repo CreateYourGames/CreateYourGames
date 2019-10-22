@@ -82,8 +82,7 @@ export default {
           gameDetail:
             "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
           gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20190705/9/1920x1080.jpg",
+          gamePic: require('../assets/images/gameCenter/game01.jpg'),
           gameCode: "代码正在准备中",
           publishTime: "2019-10-09T16:00:00.000Z"
         },
@@ -94,8 +93,7 @@ export default {
           gameType: "clever",
           gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
           gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20190228/4/1440x900.jpg",
+          gamePic: require('../assets/images/gameCenter/game02.jpg'),
           gameCode: "代码正在准备中",
           publishTime: "2019-10-10T16:00:00.000Z"
         },
@@ -107,8 +105,7 @@ export default {
           gameDetail:
             "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
           gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20180918/2/1440x900.jpg",
+          gamePic: require('../assets/images/gameCenter/game03.jpg'),
           gameCode: "代码正在准备中",
           publishTime: "2019-10-02T16:00:00.000Z"
         },
@@ -119,8 +116,7 @@ export default {
           gameType: "smallGame",
           gameDetail: "怀旧小游戏",
           gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20180918/10/1440x900.jpg",
+          gamePic: require('../assets/images/gameCenter/game04.jpg'),
           gameCode: "代码正在准备中",
           publishTime: "2019-09-30T16:00:00.000Z"
         },
@@ -132,8 +128,7 @@ export default {
           gameDetail:
             "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
           gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20181120/1/1440x900.jpg",
+          gamePic: require('../assets/images/gameCenter/game05.jpg'),
           gameCode: "代码正在准备中",
           publishTime: "2019-10-09T16:00:00.000Z"
         },
@@ -144,8 +139,7 @@ export default {
           gameType: "clever",
           gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
           gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20190705/13/1440x900.jpg",
+          gamePic: require('../assets/images/gameCenter/game06.jpg'),
           gameCode: "代码正在准备中",
           publishTime: "2019-10-10T16:00:00.000Z"
         },
@@ -157,8 +151,7 @@ export default {
           gameDetail:
             "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
           gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20180918/10/1440x900.jpg",
+          gamePic: require('../assets/images/gameCenter/game01.jpg'),
           gameCode: "代码正在准备中",
           publishTime: "2019-10-02T16:00:00.000Z"
         },
@@ -169,113 +162,104 @@ export default {
           gameType: "smallGame",
           gameDetail: "怀旧小游戏",
           gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20190228/4/1440x900.jpg",
+          gamePic: require('../assets/images/gameCenter/game02.jpg'),
           gameCode: "代码正在准备中",
           publishTime: "2019-09-30T16:00:00.000Z"
         }
       ],
       gameList: [
-        {
-          gameId: 1,
-          gameName: "飞机大战",
-          userId: "1",
-          gameType: "shoot",
-          gameDetail:
-            "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
-          gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20190705/9/1920x1080.jpg",
-          gameCode: "代码正在准备中",
-          publishTime: "2019-10-09T16:00:00.000Z"
-        },
-        {
-          gameId: 2,
-          gameName: "连连看",
-          userId: "3",
-          gameType: "clever",
-          gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
-          gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20190228/4/1440x900.jpg",
-          gameCode: "代码正在准备中",
-          publishTime: "2019-10-10T16:00:00.000Z"
-        },
-        {
-          gameId: 3,
-          gameName: "贪吃蛇",
-          userId: "2",
-          gameType: "smallGame",
-          gameDetail:
-            "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
-          gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20180918/2/1440x900.jpg",
-          gameCode: "代码正在准备中",
-          publishTime: "2019-10-02T16:00:00.000Z"
-        },
-        {
-          gameId: 4,
-          gameName: "打地鼠",
-          userId: "4",
-          gameType: "smallGame",
-          gameDetail: "怀旧小游戏",
-          gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20180918/10/1440x900.jpg",
-          gameCode: "代码正在准备中",
-          publishTime: "2019-09-30T16:00:00.000Z"
-        },
-        {
-          gameId: 5,
-          gameName: "飞机大战",
-          userId: "1",
-          gameType: "shoot",
-          gameDetail:
-            "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
-          gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20181120/1/1440x900.jpg",
-          gameCode: "代码正在准备中",
-          publishTime: "2019-10-09T16:00:00.000Z"
-        },
-        {
-          gameId: 6,
-          gameName: "连连看",
-          userId: "3",
-          gameType: "clever",
-          gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
-          gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20190705/13/1440x900.jpg",
-          gameCode: "代码正在准备中",
-          publishTime: "2019-10-10T16:00:00.000Z"
-        },
-        {
-          gameId: 7,
-          gameName: "贪吃蛇",
-          userId: "2",
-          gameType: "smallGame",
-          gameDetail:
-            "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
-          gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20180918/10/1440x900.jpg",
-          gameCode: "代码正在准备中",
-          publishTime: "2019-10-02T16:00:00.000Z"
-        },
-        {
-          gameId: 8,
-          gameName: "打地鼠",
-          userId: "4",
-          gameType: "smallGame",
-          gameDetail: "怀旧小游戏",
-          gameVersion: "1.0",
-          gamePic:
-            "https://yys.res.netease.com/pc/zt/20170731172708/data/picture/20190228/4/1440x900.jpg",
-          gameCode: "代码正在准备中",
-          publishTime: "2019-09-30T16:00:00.000Z"
-        }
+          {
+              gameId: 1,
+              gameName: "飞机大战",
+              userId: "1",
+              gameType: "shoot",
+              gameDetail:
+                  "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
+              gameVersion: "1.0",
+              gamePic: require('../assets/images/gameCenter/game01.jpg'),
+              gameCode: "代码正在准备中",
+              publishTime: "2019-10-09T16:00:00.000Z"
+          },
+          {
+              gameId: 2,
+              gameName: "连连看",
+              userId: "3",
+              gameType: "clever",
+              gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
+              gameVersion: "1.0",
+              gamePic: require('../assets/images/gameCenter/game02.jpg'),
+              gameCode: "代码正在准备中",
+              publishTime: "2019-10-10T16:00:00.000Z"
+          },
+          {
+              gameId: 3,
+              gameName: "贪吃蛇",
+              userId: "2",
+              gameType: "smallGame",
+              gameDetail:
+                  "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
+              gameVersion: "1.0",
+              gamePic: require('../assets/images/gameCenter/game03.jpg'),
+              gameCode: "代码正在准备中",
+              publishTime: "2019-10-02T16:00:00.000Z"
+          },
+          {
+              gameId: 4,
+              gameName: "打地鼠",
+              userId: "4",
+              gameType: "smallGame",
+              gameDetail: "怀旧小游戏",
+              gameVersion: "1.0",
+              gamePic: require('../assets/images/gameCenter/game04.jpg'),
+              gameCode: "代码正在准备中",
+              publishTime: "2019-09-30T16:00:00.000Z"
+          },
+          {
+              gameId: 5,
+              gameName: "飞机大战",
+              userId: "1",
+              gameType: "shoot",
+              gameDetail:
+                  "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
+              gameVersion: "1.0",
+              gamePic: require('../assets/images/gameCenter/game05.jpg'),
+              gameCode: "代码正在准备中",
+              publishTime: "2019-10-09T16:00:00.000Z"
+          },
+          {
+              gameId: 6,
+              gameName: "连连看",
+              userId: "3",
+              gameType: "clever",
+              gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
+              gameVersion: "1.0",
+              gamePic: require('../assets/images/gameCenter/game06.jpg'),
+              gameCode: "代码正在准备中",
+              publishTime: "2019-10-10T16:00:00.000Z"
+          },
+          {
+              gameId: 7,
+              gameName: "贪吃蛇",
+              userId: "2",
+              gameType: "smallGame",
+              gameDetail:
+                  "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
+              gameVersion: "1.0",
+              gamePic: require('../assets/images/gameCenter/game01.jpg'),
+              gameCode: "代码正在准备中",
+              publishTime: "2019-10-02T16:00:00.000Z"
+          },
+          {
+              gameId: 8,
+              gameName: "打地鼠",
+              userId: "4",
+              gameType: "smallGame",
+              gameDetail: "怀旧小游戏",
+              gameVersion: "1.0",
+              gamePic: require('../assets/images/gameCenter/game02.jpg'),
+              gameCode: "代码正在准备中",
+              publishTime: "2019-09-30T16:00:00.000Z"
+          }
       ]
     };
   },
@@ -390,10 +374,10 @@ export default {
 <style lang="scss" scoped>
 .container {
   .topNav{
+    // background-color: white;
     background-color: rgba(27, 27, 27, 1);
   }
   .header {
-    // border: solid 1px yellow;
     width: 75%;
     height: 90px;;
     overflow: hidden;
@@ -440,7 +424,6 @@ export default {
     margin-top: 30px;
 
     .left {
-      // border: solid 1px black;
       width: 73%;
       margin-left: 6%;
       // border: solid 1px red;
@@ -491,20 +474,19 @@ export default {
     }
 
     .right {
-      
       width: 25%;
       height: 100%;
       overflow: hidden;
       position: fixed;
       right: 0;
-      // border: solid 1px red;
+      // border: solid 1px white;
 
       .middle {
         padding: 30px;
         margin-right: 10%;
 
         .search {
-          margin-top: -28px;
+          margin-top: -40px;
           z-index: 9999;
         }
 
