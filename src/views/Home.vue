@@ -210,7 +210,7 @@
             },
             // 游戏库跳转
             toGameCenter() {
-                this.$router.push('/GameCenter')
+                this.$router.push('/Game')
             },
             // 排行榜跳转
             toRankingList() {
