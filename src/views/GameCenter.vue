@@ -33,12 +33,8 @@
 
       <div class="right">
         <div class="middle">
-          <!-- <div class="toRanking" @click="toRanking">
-            <span>瞅瞅排行榜&nbsp;-></span>
-          </div> -->
-
-            <!-- 游戏搜索框 -->
-        <search ref="search" :gameList="gameList" @search="searchGames"></search>
+          <!-- 游戏搜索框 -->
+          <search ref="search" :gameList="gameList" @search="searchGames"></search>
 
           <!-- 游戏选择框 -->
           <div class="tab">
@@ -411,12 +407,6 @@ export default {
           border-radius: 2px;
         }
       }
-      // .search {
-      //   // z-index: 9999999999;
-      //   position: absolute;
-      //   right: 30px;
-      //   top: -5px;
-      // }
     }
   }
 

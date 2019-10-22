@@ -35,6 +35,7 @@ const gameInfo={
         })
     },
     removeLove(value) {
+        console.log(value)
         return axios.get(`${www}/removeLove`, {
             params:value
         })

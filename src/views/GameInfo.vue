@@ -92,6 +92,9 @@
                             </div>
                         </div>
                     </div>  
+                    <div v-if="commentFlag">
+                        暂无评论~
+                    </div>
                     <p>评论区</p>
                     <div class="item" v-for="(item,index) in commentList" :key="index">
                         <div class="item-userInfo">
@@ -115,10 +118,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="loadingMore">点击加载更多~</div>      
-                </div>
-                <div v-if="commentFlag">
+                    <div v-if="commentFlag">
                         暂无评论~
+                    </div>
+                    <div v-if='loadingMore' class="loadingMore">点击加载更多~</div>      
                 </div>
             </div>
             <div class="ranking-list">
@@ -144,6 +147,7 @@ export default {
             goodImgFlag:false,
             commentFlag:false,
             qqFlag:true,
+            loadingMore:false,
             loginName:this.$store.state.token.loginName,
             comment:'',
             //分享功能动态传参
@@ -232,7 +236,6 @@ export default {
                 this.commentFlag=true
             }
         })
-       
     },
     methods:{
         //返回首页
@@ -241,13 +244,13 @@ export default {
         },
         //返回游戏库
         toGameCenter(){
-            this.$router.push('/GameCenter')
+            this.$router.push('/Game')
         },
         //添加到喜欢
         addToLove(){
             if(this.loginName){
                 var love={
-                    userLoginName:'18338514073',
+                    userLoginName:this.loginName,
                     gameId:this.id
                 }
                 this.imgFlag=!this.imgFlag
@@ -547,9 +550,7 @@ export default {
     .main{
         width: 70%;
         background-color: white;
-        margin: 0 auto;
-        position: relative;
-        top: -100px;
+        margin: -100px auto;
         border-radius: 5px;
         display: flex;
         justify-content: space-around;
@@ -601,7 +602,7 @@ export default {
                 .item{
                     text-align: left;
                     position: relative;
-                    width: 85%;height: 150px;
+                    width: 85%;height: 130px;
                     border-bottom: 1px solid #eee;
                     margin: 10px auto;
                     .item-userInfo{
@@ -615,6 +616,9 @@ export default {
                         }
                         span{
                             margin-left: 10px;
+                            // &:hover{
+                            //     color:blue
+                            // }
                         }
                     }   
                     .item-comment{
