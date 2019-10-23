@@ -3,17 +3,19 @@
         <!-- 顶部盒子 -->
         <div class="nav">
             <div class="nav-bottom">
-                <div class="nav-bottom-img"></div>
-                <img src="@/assets/images/personal/01.png" alt/>
-                <div class="info">
-                    <p style="font-size:22px;font-weight:100;margin-bottom:10px;">用户名字</p>
-                    <p style="font-size:14px;">这个人很懒什么都没留下</p>
+                <div class="top-content">
+                    <div class="user-info">
+                        <img src="@/assets/images/personal/01.png" alt/>
+                        <div class="info">
+                            <p class="user-name">用户名字</p>
+                            <p class="user-intro">这个人很懒什么都没留下</p>
+                        </div>
+                    </div>
+                    <div class="btn-box">
+                        <button @click="goHome">返回主页</button>
+                        <button @click="go">编辑资料</button>
+                    </div>
                 </div>
-                <button @click="go">编辑资料</button>
-            </div>
-            <div class="return" @click="goHome">
-                <img src="@/assets/images/personal/zuojiantou.png" alt/>
-                首页
             </div>
         </div>
 
@@ -309,92 +311,86 @@ export default {
         background-color: #eeeeee;
         // 顶部
         .nav {
-            height: 250px;
+            height: 230px;
             width: 100%;
-            background-image: url("../assets/images/personal/bj.jpg");
+            background-image: url("../assets/images/personal/personal.jpg");
             background-repeat: no-repeat;
             background-size: cover;
             position: relative;
-            .return {
-                color: #fff;
-                cursor: pointer;
-                vertical-align: middle;
-                position: absolute;
-                margin-top: 10px;
-                margin-left: 10px;
-                img {
-                    width: 15px;
-                    height: 15px;
-                    vertical-align: middle;
-                }
-            }
             .nav-bottom {
+                display: flex;
+                justify-content: center;
                 width: 100%;
-                height: 90px;
-                background-color: rgba(128, 128, 128, 0.4);
+                height: 70px;
+                background-color: rgba(0, 0, 0, 0.9);
                 position: absolute;
                 bottom: 0px;
-                .nav-bottom-img {
-                    width: 150px;
-                    height: 150px;
-                    border-radius: 10px;
-                    position: absolute;
-                    background-image: ("../assets/images/personal/01.png");
-                    bottom: 20px;
-                    left: 200px;
-                }
-                img {
-                    width: 150px;
-                    height: 150px;
-                    border-radius: 150px;
-                    position: absolute;
-                    bottom: 20px;
-                    left: 200px;
-                }
-                .info {
-                    position: absolute;
-                    left: 370px;
-                    top: 13px;
-                    color: #fff;
-                    opacity: 1 !important;
-                }
-                @keyframes glow {
-                    0% {
-                        border-color: #393;
-                        box-shadow:
-                                0 0 5px rgba(0,255,0,.2),
-                                inset 0 0 5px rgba(0,255,0,.1),
-                                0 1px 0 #393;
+                .top-content{
+                    display: flex;
+                    justify-content: space-between;
+                    width: 55%;
+                    .user-info{
+                        display: flex;
+                        img {
+                            width: 120px;
+                            height: 120px;
+                            border-radius: 50%;
+                            margin-top: -60px;
+                            border: 5px solid rgba(0, 0, 0, 0.9);
+                        }
+                        .info {
+                            color: #fff;
+                            box-sizing: border-box;
+                            padding: 5px;
+                            .user-name{
+                                font-size: 22px;
+                                margin-bottom: 5px;
+                            }
+                            .user-intro{
+                                white-space: nowrap;
+                                /*margin: 5px;*/
+                            }
+                        }
                     }
-                    100% {
-                        border-color: #6f6;
-                        box-shadow:
-                                0 0 20px rgba(0,255,0,.6),
-                                inset 0 0 10px rgba(0,255,0,.4),
-                                0 1px 0 #393;
+                    .btn-box{
+                        display: flex;
+                        align-items: center;
+                        @keyframes glow {
+                            0% {
+                                border-color: #393;
+                                box-shadow:
+                                        0 0 5px rgba(0,255,0,.2),
+                                        inset 0 0 5px rgba(0,255,0,.1),
+                                        0 1px 0 #393;
+                            }
+                            100% {
+                                border-color: #6f6;
+                                box-shadow:
+                                        0 0 20px rgba(0,255,0,.6),
+                                        inset 0 0 10px rgba(0,255,0,.4),
+                                        0 1px 0 #393;
+                            }
+                        }
+                        button {
+                            width: 90px;
+                            height: 40px;
+                            background-color: transparent;
+                            color: #fff;
+                            border: none;
+                            border-radius: 10px;
+                            margin: 5px;
+                            outline: none;
+                            cursor: pointer;
+                            animation: glow 800ms ease-out infinite alternate;
+                        }
                     }
-                }
-                button {
-                    width: 90px;
-                    height: 40px;
-                    background-color: transparent;
-                    color: #fff;
-                    border: none;
-                    border-radius: 10px;
-                    position: absolute;
-                    right: 300px;
-                    top: 25px;
-                    outline: none;
-                    cursor: pointer;
-                    animation: glow 800ms ease-out infinite alternate;
                 }
             }
         }
         // content
         .content {
-            padding-left: 90px;
             width: 1100px;
-            margin: 0px auto;
+            margin: 0 auto;
             // 发布游戏
             .publish {
                 width: 1000px;
@@ -448,13 +444,13 @@ export default {
                     }
                     &.style {
                         opacity: 1;
-                        transform: scale(1.2, 1.2);
-                        transition: all 0.6s;
+                        transform: scale(1.1, 1.1);
+                        transition: all 0.3s;
                     }
                     img {
                         width: 120px;
                         height: 120px;
-                        border-radius: 30px;
+                        border-radius: 15px;
                         vertical-align: middle;
                     }
                     .details {
@@ -482,7 +478,9 @@ export default {
             .rl {
                 width: 850px;
                 display: flex;
-                margin: 0px 12%;
+                justify-content: center;
+                padding-left: 5%;
+                margin: 0 12%;
                 .recently {
                     width: 400px;
                     height: 500px;
@@ -506,7 +504,7 @@ export default {
                         img {
                             width: 120px;
                             height: 120px;
-                            border-radius: 30px;
+                            border-radius: 15px;
                         }
                         .gameName {
                             text-align: center;
@@ -540,8 +538,8 @@ export default {
                         vertical-align: middle;
                         &.active {
                             opacity: 1;
-                            transform: scale(1.2, 1.2);
-                            transition: all 0.6s;
+                            transform: scale(1.1, 1.1);
+                            transition: all 0.3s;
                         }
                         .bott {
                             display: none;
@@ -563,7 +561,7 @@ export default {
                         img {
                             width: 120px;
                             height: 120px;
-                            border-radius: 30px;
+                            border-radius: 15px;
                         }
                         .gameName {
                             text-align: center;

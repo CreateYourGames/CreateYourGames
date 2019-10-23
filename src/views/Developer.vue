@@ -50,27 +50,6 @@ export default {
               message: "已取消进入考试"
             });
           });
-      // }else{
-      //   this.$confirm("亲！您还未登录或注册！是否前往注册？", "提示", {
-      //     confirmButtonText: "登录",
-      //     cancelButtonText: "回主页",
-      //     type: "warning"
-      //   })
-      //     .then(() => {
-      //       this.$message({
-      //         type: "success",
-      //         message: "前往登录"
-      //       });
-      //       this.$router.push("/login");
-      //     })
-      //     .catch(() => {
-      //       this.$message({
-      //         type: "info",
-      //         message: "返回主页"
-      //       });
-      //       this.$router.push("/");
-      //     });
-      // }
     }
   },
   components: {
@@ -87,26 +66,22 @@ export default {
   background-attachment: fixed;
   background-size: 100% 100%;
 
-  .el-page-header {
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
-  }
-
   .content {
     width: 100%;
-    height: 540px;
-    position: relative;
+    height: calc(100% - 60px);
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .test {
       width: 800px;
       height: 500px;
       background: rgba(255, 255, 255, 0.9);
-      // background-color: white;
-      position: absolute;
-      left: 50%;
-      top: 35%;
-      transform: translate(-50%, -35%);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
       .title {
         width: 800px;
@@ -118,11 +93,7 @@ export default {
       .nav {
         width: 80%;
         height: 60%;
-        position: absolute;
-        left: 50%;
-        top: 45%;
-        transform: translate(-50%, -45%);
-        // border: solid 1px red;
+
         h1 {
           width: 100%;
           text-align: center;
@@ -136,13 +107,8 @@ export default {
       }
 
       .el-button {
-        position: absolute;
-        left: 50%;
-        top: 85%;
-        transform: translate(-50%, -85%);
         width: 300px;
         margin: 10px;
-        animation: glow 800ms ease-out infinite alternate;
       }
     }
   }
