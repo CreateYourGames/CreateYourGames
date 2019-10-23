@@ -11,7 +11,7 @@ export default {
 </script>
 <style>
 .el-carousel__container{
-    height: 400px;
+    height: 100%;
     border-radius: 15px;
 }
   .el-carousel__item h3 {
@@ -30,7 +30,7 @@ export default {
     height:100%;
   }
   .el-carousel__item:nth-of-type(3) {
-    background:url('http://img0.imgtn.bdimg.com/it/u=2600038704,2545588318&fm=11&gp=0.jpg');
+    background:url('../../assets/images/publishGame/publish-bg10.jpg');
     height:100%;
   }.el-carousel__item:nth-of-type(4) {
     background:url('http://00.minipic.eastday.com/20170815/20170815145451_d41d8cd98f00b204e9800998ecf8427e_10.jpeg');

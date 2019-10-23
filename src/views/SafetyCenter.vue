@@ -324,15 +324,6 @@ export default {
   background-attachment: fixed;
   background-size: 100% 100%;
 
-  .el-page-header {
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
-    background: rgba(255, 255, 255, 0.3);
-    background-color: white;
-    text-align: center;
-  }
-
   .content {
     margin: 0 auto;
     width: 800px;
