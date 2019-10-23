@@ -1,5 +1,8 @@
 <template>
   <div class="change-emil">
+    <Header></Header>
+
+
     <div class="nav-emil">
       <form action>
         <div>
@@ -35,6 +38,7 @@
 </template>
 
 <script>
+import Header from "@/components/SafetyCenter/Header";
 export default {
   data(){
     return{
@@ -87,6 +91,9 @@ export default {
         }, 1000);
       }
     }
+  }, 
+  components: {
+    Header
   }
 };
 </script>
@@ -94,8 +101,12 @@ export default {
 <style lang="scss" scoped>
 .change-emil{
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  Header{
+    background-color: black;
+  }
 }
 .nav-emil {
   width: 800px;

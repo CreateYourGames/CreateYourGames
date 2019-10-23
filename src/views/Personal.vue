@@ -1,22 +1,14 @@
 <template>
-<div>
-    <div class="nav-person">
-        <!-- 顶部盒子 -->
-        <div class="nav">
-            <div class="nav-bottom">
-                <div class="top-content">
-                    <div class="user-info">
-                        <img :src="picture" alt/>
-                        <div class="info">
-                            <p class="user-name">{{nickName}}</p>
-                            <p class="user-intro">{{personalInfo}}</p>
-                        </div>
-                    </div>
-                    <div class="btn-box">
-                        <button @click="goHome">返回主页</button>
-                        <button @click="go">编辑资料</button>
-                    </div>
-                </div>
+  <div class="nav-person">
+    <!-- 顶部盒子 -->
+    <div class="nav">
+      <div class="nav-bottom">
+        <div class="top-content">
+          <div class="user-info">
+            <img :src="picture" alt />
+            <div class="info">
+              <p class="user-name">{{nickName}}</p>
+              <p class="user-intro">{{personalInfo}}</p>
             </div>
           </div>
           <div class="btn-box">
@@ -24,9 +16,8 @@
             <button @click="go">编辑资料</button>
           </div>
         </div>
-      
-
-
+      </div>
+    </div>
     <div>
       <conform ref="delGame"></conform>
     </div>
@@ -34,7 +25,7 @@
     <!-- content -->
     <div class="content">
       <!-- 开发者部分 -->
-      <div class="publish" v-if="isDeveloper===true">
+      <div class="publish" v-if="isDeveloper===1">
         <span>发布的游戏</span>
         <div class="block">
           <div v-if="publishList.length>5">
@@ -79,37 +70,59 @@
       <div class="rl">
         <div class="recently">
           <span>最近的游戏</span>
-          <ul>
-            <li v-for="(game) in gameList" :key="game.id" @click="jumpGameDetails">
-              <img :src="game.gamePic" alt />
-              <p class="gameName">{{game.name}}</p>
-            </li>
-          </ul>
+
+          <div class="middle" v-if="gameList.length===0">
+            <!-- 没有“最近的游戏” -->
+            <div class="noGame">
+              <p>亲！暂时还没有玩过游戏！快去玩游戏吧！</p>
+              <button @click="goGame()">前往游戏库</button>
+            </div>
+            <!-- 有“最近的游戏” -->
+            <div class="mid-Game">
+              <ul>
+                <li v-for="(game) in gameList" :key="game.id" @click="jumpGameDetails">
+                  <img :src="game.gamePic" alt />
+                  <p class="gameName">{{game.name}}</p>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
         <div class="like">
           <span>喜欢的游戏</span>
-          <ul>
-            <li
-              v-for="(favor,index) in favorList"
-              :key="index"
-              v-bind:class="{active:ind === index}"
-              @mouseover="addStyle(index)"
-              @mouseout="removeStyle(index)"
-            >
-              <img :src="favor.gamePic" alt />
-              <div v-bind:class="{bott:!(newInd===index)}">
-                <div class="bot">
-                  <p class="detail" @click="jumpGameDetails(favor.gameId)">查看详情&nbsp;</p>
-                  <p class="cancel" @click="cancelFavor(favor.gameId)">&nbsp;取消喜欢</p>
+
+          <!-- 没有“喜欢的游戏的游戏” -->
+          <div class="middle" v-if="favorList.length===0">
+            <!-- 没有“喜欢的游戏” -->
+            <div class="noGame">
+              <p>亲！暂时还没有玩过游戏！快去玩游戏吧！</p>
+              <button @click="goGame()">前往游戏库</button>
+            </div>
+          </div>
+
+          <div class="mid-Game">
+            <ul>
+              <li
+                v-for="(favor,index) in favorList"
+                :key="index"
+                v-bind:class="{active:ind === index}"
+                @mouseover="addStyle(index)"
+                @mouseout="removeStyle(index)"
+              >
+                <img :src="favor.gamePic" alt />
+                <div v-bind:class="{bott:!(newInd===index)}">
+                  <div class="bot">
+                    <p class="detail" @click="jumpGameDetails(favor.gameId)">查看详情&nbsp;</p>
+                    <p class="cancel" @click="cancelFavor(favor.gameId)">&nbsp;取消喜欢</p>
+                  </div>
                 </div>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  
 </template>
 
 <script>
@@ -129,10 +142,10 @@ export default {
       hover1: true,
       // 切换右图标判定值
       hover2: true,
-      userMsg:'',
-      picture:'',
-      nickName:'',
-      personalInfo:'',
+      userMsg: "",
+      picture: "",
+      nickName: "",
+      personalInfo: "",
       // 切换图标
       img1: require("@/assets/images/personal/left1.png"),
       img2: require("@/assets/images/personal/left2.png"),
@@ -186,85 +199,83 @@ export default {
         }
       ],
       gameList: [
-        {
-          id: 1,
-          name: "游戏1",
-          img: require("@/assets/images/personal/game1.png")
-        },
-        {
-          id: 2,
-          name: "游戏2",
-          img: require("@/assets/images/personal/game2.png")
-        },
-        {
-          id: 3,
-          name: "游戏3",
-          img: require("@/assets/images/personal/game3.png")
-        },
-        {
-          id: 4,
-          name: "游戏4",
-          img: require("@/assets/images/personal/game4.png")
-        }
+        // {
+        //   id: 1,
+        //   name: "游戏1",
+        //   img: require("@/assets/images/personal/game1.png")
+        // },
+        // {
+        //   id: 2,
+        //   name: "游戏2",
+        //   img: require("@/assets/images/personal/game2.png")
+        // },
+        // {
+        //   id: 3,
+        //   name: "游戏3",
+        //   img: require("@/assets/images/personal/game3.png")
+        // },
+        // {
+        //   id: 4,
+        //   name: "游戏4",
+        //   img: require("@/assets/images/personal/game4.png")
+        // }
       ],
       favorList: [
-        {
-          id: 1,
-          name: "游戏1",
-          img: require("@/assets/images/personal/love1.jpg"),
-          flag: false
-        },
-        {
-          id: 4,
-          name: "游戏4",
-          img: require("@/assets/images/personal/love4.jpg"),
-          flag: false
-        }
+        // {
+        //   id: 1,
+        //   name: "游戏1",
+        //   img: require("@/assets/images/personal/love1.jpg"),
+        //   flag: false
+        // },
+        // {
+        //   id: 4,
+        //   name: "游戏4",
+        //   img: require("@/assets/images/personal/love4.jpg"),
+        //   flag: false
+        // },
+        // {
+        //   id: 1,
+        //   name: "游戏1",
+        //   img: require("@/assets/images/personal/love1.jpg"),
+        //   flag: false
+        // },
+        // {
+        //   id: 4,
+        //   name: "游戏4",
+        //   img: require("@/assets/images/personal/love4.jpg"),
+        //   flag: false
+        // }
       ]
     };
   },
 
-    
-  created(){
-     //请求到发布游戏的相关数据
-     let val = this.$store.state.token.loginName
-        this.$api.personal.publishGame(val).then(res=>{
-            this.publishList=res.publishList
-            // console.log(res)
-        }),
-        this.$api.personal.recentGame(val).then(res=>{
-            this.gameList=res.gameList
-            // console.log(res)
-        }),
-        this.$api.personal.favorGame(val).then(res=>{
-            this.favorList=res.favorList
-            // console.log(res)
-        }),
-        this.$api.loginInfo.getLoginInfo(this.$store.state.token.loginName).then(res=>{
-            // console.log(res)
-            this.picture=res.userMsg[0].picture
-            this.nickName=res.userMsg[0].nickName
-            this.personalInfo=res.userMsg[0].personalInfo
-        })
-        .catch(err => console.log(err));
-
-        // 请求是否为开发者
-    if (this.$store.state.token.loginName) {
-      // this.loginFlag = true;
-      console.log(this.$store.state.token.loginName);
+  created() {
+    //请求到发布游戏的相关数据
+    let val = this.$store.state.token.loginName;
+    this.$api.personal.publishGame(val).then(res => {
+      this.publishList = res.publishList;
+      // console.log(res)
+    }),
+      this.$api.personal.recentGame(val).then(res => {
+        this.gameList = res.gameList;
+        // console.log(res)
+      }),
+      this.$api.personal.favorGame(val).then(res => {
+        this.favorList = res.favorList;
+        // console.log(res)
+      }),
       this.$api.loginInfo
         .getLoginInfo(this.$store.state.token.loginName)
         .then(res => {
-          // console.log(res.userMsg);
-          // console.log(res);
-          // const info = res.userMsg[0];
-          // this.userInfo.userIcon = info.picture;
-          // this.userInfo.userName = info.nickName;
-          this.isDeveloper = true;
-          console.log("我是不是开发者："+this.isDeveloper);
-          // console.log(res.userMsg[0]);
+          // console.log(res)
+          this.picture = res.userMsg[0].picture;
+          this.nickName = res.userMsg[0].nickName;
+          this.personalInfo = res.userMsg[0].personalInfo;
+
+          // 请求判断是否为开发者
+          this.isDeveloper = res.userMsg[0].flag;
         })
-    }
+        .catch(err => console.log(err));
   },
   mounted() {
     console.log(this.$refs.ul.style.width);
@@ -284,32 +295,42 @@ export default {
     goHome() {
       this.$router.push("/");
     },
+
+    // 前往游戏库
+    goGame() {
+      this.$router.push("/GameCenter");
+    },
+
     jumpGameDetails(id) {
-      console.log(id)
-      this.$router.push("/GameInfo?id="+id);
+      console.log(id);
+      this.$router.push("/GameInfo?id=" + id);
     },
     cancelFavor(id) {
-      var obj={
-        userLoginName:this.$store.state.token.loginName,
-        gameId:`${id}`
-      }
-      this.$api.gameInfo.removeLove(obj).then(()=>{
-        this.$message({
-          message:'取消喜欢成功',
-          type:"success"
+      var obj = {
+        userLoginName: this.$store.state.token.loginName,
+        gameId: `${id}`
+      };
+      this.$api.gameInfo
+        .removeLove(obj)
+        .then(() => {
+          this.$message({
+            message: "取消喜欢成功",
+            type: "success"
+          });
+          this.$router.go(0);
         })
-      }).catch(()=>{
-        this.$message.error("取消喜欢失败")
-      })
-      this.$api.personal.favorGame(val).then(res=>{
-          this.favorList=res.favorList
-          // console.log(res)
-
-      })
+        .catch(() => {
+          this.$message.error("取消喜欢失败");
+        });
+      this.$api.personal.favorGame(val).then(res => {
+        this.favorList = res.favorList;
+        // console.log(res)
+      });
     },
     // 删除游戏
     delGame(id) {
       this.$refs.delGame.del(id);
+      this.$router.go(0);
     },
 
     //发布的游戏 手表移动事件
@@ -445,8 +466,12 @@ export default {
   .content {
     width: 1100px;
     margin: 0 auto;
+
+    // 开发者部分
     // 发布游戏
     .publish {
+      // border: solid 1px red;
+
       width: 1000px;
       height: 200px;
       margin: 50px auto;
@@ -528,17 +553,25 @@ export default {
         }
       }
     }
+
+    // 开发者和普通用户共同部分
     // 最近和喜欢
     .rl {
-      width: 850px;
+      // border: solid 1px black;
+      width: 1000px;
       display: flex;
       justify-content: center;
-      padding-left: 5%;
-      margin: 0 12%;
+      margin: 50px auto;
+
+      // 最近的游戏
       .recently {
+        // border: solid 1px yellow;
+
         width: 400px;
         height: 500px;
         position: relative;
+        margin-right: 30px;
+
         span {
           height: 23px;
           border-bottom: 2px solid #fec003;
@@ -550,22 +583,69 @@ export default {
           position: absolute;
           left: 0px;
         }
-        ul li {
-          display: inline-block;
-          margin-right: 40px;
-          margin-top: 40px;
-          cursor: pointer;
-          img {
-            width: 120px;
-            height: 120px;
-            border-radius: 15px;
-          }
-          .gameName {
+
+        .middle {
+          border: solid 1px red;
+          height: calc(100% - 60px);
+          margin-top: 60px;
+
+          position: relative;
+          // 没有“最近的游戏”
+          .noGame {
+            width: 400px;
             text-align: center;
-            font-size: 14px;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+
+            p {
+              padding: 15px 30px;
+              line-height: 45px;
+              font-size: 26px;
+            }
+            button {
+              width: 150px;
+              height: 45px;
+              margin-top: 30px;
+              border: none;
+              border-radius: 30px;
+              background-color: #fec003;
+              color: white;
+              font-size: 18px;
+              cursor: pointer;
+            }
+          }
+
+          .mid-Game {
+          
+            ul li {
+              display: inline-block;
+              margin-right: 40px;
+              margin-top: 40px;
+              cursor: pointer;
+              img {
+                width: 120px;
+                height: 120px;
+                border-radius: 15px;
+                // border: solid 1px red;
+
+                &:hover {
+                  opacity: 1;
+                  transform: scale(1.1, 1.1);
+                  transition: all 0.3s;
+                }
+              }
+              .gameName {
+                text-align: center;
+                font-size: 14px;
+              }
+            }
           }
         }
       }
+
+      // 喜欢的游戏
       .like {
         width: 400px;
         height: 500px;
@@ -581,45 +661,86 @@ export default {
           position: absolute;
           left: 0px;
         }
-        ul {
-          padding-top: 40px;
+
+        // 没有“喜欢的游戏”
+        .middle {
+          border: solid 1px red;
+          height: calc(100% - 60px);
+          margin-top: 60px;
+
+          position: relative;
+          // 没有“喜欢的游戏”
+          .noGame {
+            width: 400px;
+            text-align: center;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+
+            p {
+              padding: 15px 30px;
+              line-height: 45px;
+              font-size: 26px;
+            }
+            button {
+              width: 150px;
+              height: 45px;
+              margin-top: 30px;
+              border: none;
+              border-radius: 30px;
+              background-color: #fec003;
+              color: white;
+              font-size: 18px;
+              cursor: pointer;
+            }
+          }
         }
-        ul li {
-          display: inline-block;
-          margin-right: 40px;
-          height: 160px;
-          margin-bottom: 20px;
-          vertical-align: middle;
-          &.active {
-            opacity: 1;
-            transform: scale(1.1, 1.1);
-            transition: all 0.3s;
-          }
-          .bott {
-            display: none;
-          }
-          .bot {
-            text-align: center;
-            .detail {
-              display: inline-block;
-              font-size: 12px;
-              cursor: pointer;
+
+        // 有“喜欢的游戏”
+        .mid-Game {
+          // border: solid 1px red;
+          height: calc(100% - 60px);
+          margin-top: 60px;
+          padding: 20px 20px 0 30px;
+          // 有“喜欢的游戏”
+          ul li {
+            display: inline-block;
+            margin: 10px 25px;
+            height: 160px;
+            vertical-align: middle;
+            &.active {
+              opacity: 1;
+              transform: scale(1.1, 1.1);
+              transition: all 0.3s;
             }
-            .cancel {
-              display: inline-block;
-              border-left: 1px solid #fec003;
-              font-size: 12px;
-              cursor: pointer;
+            .bott {
+              display: none;
             }
-          }
-          img {
-            width: 120px;
-            height: 120px;
-            border-radius: 15px;
-          }
-          .gameName {
-            text-align: center;
-            font-size: 14px;
+            .bot {
+              text-align: center;
+              .detail {
+                display: inline-block;
+                font-size: 12px;
+                cursor: pointer;
+              }
+              .cancel {
+                display: inline-block;
+                border-left: 1px solid #fec003;
+                font-size: 12px;
+                cursor: pointer;
+              }
+            }
+            img {
+              width: 120px;
+              height: 120px;
+              border-radius: 15px;
+              // border: solid 1px red;
+            }
+            .gameName {
+              text-align: center;
+              font-size: 14px;
+            }
           }
         }
       }
