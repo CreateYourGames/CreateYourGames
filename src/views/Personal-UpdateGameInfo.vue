@@ -4,12 +4,13 @@
       <form action="/api/updateGame" method="post" enctype="multipart/form-data">
         <label for class="special">游戏图标：</label>
         <div class="container">
-          <input type="text" name="gameId" value="GameInfo[0].gameId" style="display:none;">
-          <img class="game-img" name="gamePic" :src="GameInfo[0].gamePic" alt />
-          <input type="file" ref="input" name="gamePic" id style="display:none;" />
+          <!-- <input type="file" name="picture"> -->
+          <input type="text" name="gameId" :value="GameInfo[0].gameId" style="display:none;">
+          <img class="game-img" name="gamePic" :src="pic" alt />
+          <input type="file" ref="input" name="picture" style="display:none;" @change="changeImg()" />
           <div class="up-gm-img" @click="fileClick"  @mouseover="addStyle"  v-bind:class="{style:enable}"
           @mouseout="removeStyle">
-        </div>
+          </div>
         </div>
         <label for>游戏名称：</label>
         <input type="text" name="gameName" id :value="GameInfo[0].gameName" />
@@ -55,7 +56,9 @@ export default {
       return{
         enable: false,
         selected:'all',
+        inputid:"input",
         id:'',
+        pic:'',
         GameInfo:[
           {
           }
@@ -69,10 +72,28 @@ export default {
       this.$api.updateGameInfo.updateGameInfo(val).then(res=>{
             console.log(res)
             this.GameInfo = res.GameInfo
+            this.pic=res.GameInfo[0].gamePic
             console.log(this.GameInfo[0].gameName)
         })
     },
    methods: {
+     changeImg(){
+      let event=event||window.event
+      console.log(event.target.files[0])
+      this.pic=this.getObjectURL(event.target.files[0])
+      console.log(this.pic)
+     },
+     getObjectURL (file) {
+      let url = null ;
+      if (window.createObjectURL!=undefined) { // basic
+        url = window.createObjectURL(file) ;
+      }else if (window.webkitURL!=undefined) { // webkit or chrome
+        url = window.webkitURL.createObjectURL(file) ;
+      }else if (window.URL!=undefined) { // mozilla(firefox)
+        url = window.URL.createObjectURL(file) ;
+      }
+      return url ;
+    },
     fileClick() {
       this.$refs.input.dispatchEvent(new MouseEvent("click"));
     },
@@ -102,7 +123,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('../assets/images/personal/gameupdate.jpg');
+  // background-image: url('../assets/images/personal/gameupdate.jpg');
   background-repeat: no-repeat;
   background-size:100% 100%;
   // border: 1px solid black;
