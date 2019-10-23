@@ -178,9 +178,9 @@ export default {
         .registerJudge(this.ruleForm.userPhone)
         .then(res => {
           if (res == false) {
+            this.Judge = false;
             // this.$message.error("该用户已存在");
           }
-          this.Judge = false;
           return res;
         });
     }
