@@ -2,7 +2,7 @@
   <div class="container">
     <topNav></topNav>
     <div class="header">
-      <div class="contant">
+      <div class="content">
         <p class="title" v-if="tabType==='all'">所有类型</p>
         <p class="title" v-if="tabType==='clever'">益智</p>
         <p class="title" v-if="tabType==='smallGame'">小游戏</p>
@@ -385,11 +385,12 @@ export default {
     z-index: 999;
     top: 60px;
     background-color: #ffffff;
-    .contant {
+    .content {
       padding-top: 21px;
       position: relative;
       .title {
         margin-left: 130px;
+          font-size: 20px;
       }
       .progress-bar {
         width: 90%;
@@ -420,22 +421,20 @@ export default {
     background-size: 100% 100%;
     display: flex;
     flex-direction: row;
-
     margin-top: 30px;
-
     .left {
       width: 73%;
       margin-left: 6%;
       // border: solid 1px red;
       .middle {
-        padding: 30px 10px 30px 16px;
+        padding: 40px 10px 30px 16px;
         // margin-left:100px;
         // 游戏框
         .item {
           text-align: center;
           width: 45%;
           // height: 320px;
-          margin-right: 30px;
+          margin-right: 25px;
           float: left;
           display: flex;
           flex-direction: column;
@@ -447,20 +446,23 @@ export default {
           position: relative;
           img {
             width: 100%;
-            height: 210px;
-            margin-top: 35px;
-            border-radius: 10px;
+            height: 220px;
+            margin-top: 25px;
             background: rgba($color: #000, $alpha: 0.5);
             // border: solid 1px white;
           }
           p {
             // margin: 10px 0;
+              text-align: left;
             color: white;
             width: 100%;
-            height: 30px;
-            line-height: 30px;
-            background-color: rgba(27, 27, 27, 0.7);
-            border-radius: 0 0 10px 10px;
+            height: 50px;
+            line-height: 50px;
+              box-sizing: border-box;
+              padding-left: 20px;
+              font-size: 20px;
+            background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5),  rgba(0, 0, 0, 0));
+            /*border-radius: 0 0 10px 10px;*/
 
             position: absolute;
             bottom: 0px;

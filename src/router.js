@@ -125,15 +125,24 @@ export default new Router({
             name: 'GamePlaying',
             component: () => import('./views/GamePlaying.vue')
         }
-
-
-
         ,
         //游戏进行页
         {
             path: '/Game',
             name: 'Game',
             component: () => import('./views/GameCenter.vue')
+        },
+        // game-打地鼠游戏界面
+        {
+            path: '/game1',
+            name: 'game1',
+            component: () => import('./views/game/game-mouse.vue')
+        },
+        // game-popStar 消灭星星
+        {
+            path: '/game/popStar',
+            name: 'popStar',
+            component: () => import('./views/game/game-popStar.vue')
         }
     ]
 })

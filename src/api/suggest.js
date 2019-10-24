@@ -5,6 +5,7 @@ let www = base.proxy; //这里方便了更改域名的话统一修改域名
 const submitSuggest = {
     // 获取用户信息
     submitSuggest(value) {
+
         return axios.post(`${www}/suggest`,value);
     },
 }
