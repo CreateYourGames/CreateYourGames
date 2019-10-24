@@ -196,6 +196,8 @@
                     console.log(res.userMsg);
                     const info = res.userMsg[0];
                     this.userInfo.userIcon = info.picture;
+                    //将图片放到store，方便头部公共组件调用
+                    this.$store.commit('getPic',info.picture)
                     this.userInfo.userName = info.nickName;
                     this.userInfo.isDeveloper = info.flag;
                     console.log(this.userInfo.isDeveloper, '当前用户是否为开发者');

@@ -1,7 +1,6 @@
 <template>
   <div class="change-emil">
     <Header></Header>
-
     <div class="contant">
       <div class="nav-emil">
         <form action>
@@ -9,7 +8,7 @@
             <label for>邮箱账号：</label>
             <div class="middle">
               <input
-                v-model="Emil"
+                v-model="Email"
                 @blur="emilBlur"
                 type="text"
                 name
@@ -18,7 +17,6 @@
               />
               <span class="emil-tips" v-if="!regFlag">邮箱格式不正确</span>
             </div>
-
             <input
               type="button"
               class="code"
@@ -43,8 +41,8 @@
             </div>
           </div>
           <div class="btn">
-            <button class="define" @click="goPerson()">取消</button>
-            <button class="define" @click="go()">确定</button>
+            <button type="button" class="define" @click="goPerson()">取消</button>
+            <button type="button" class="define" @click="go()">确定</button>
           </div>
         </form>
       </div>
@@ -74,7 +72,7 @@ export default {
       YZM: "", //书写的验证码
       yzm: "", //发送的验证码
 
-      Emil: "",
+      Email: "",
       regFlag: true,
       rules: {
         emil: [{ required: true, message: "请填写邮箱", trigger: "change" }]
@@ -83,16 +81,22 @@ export default {
   },
   methods: {
     go() {
-      // if(this.codeFlag===true){
-      //   // 如果正确，则发送给后台让其改数据
-      //    this.$api.verify.personalEmail({
-      //     loginName: this.$store.state.token.loginName,
-      //     Email: this.Emil
-      //   });
-      //   this.$router.push("/Personal/UpdateInfo").catch(err => console.log(err));
-      // }
+      if(this.YZM&&this.codeFlag==true){
+        // 如果正确，则发送给后台让其改数据
+        this.$api.verify.UpdateEmail({
+          loginName: this.$store.state.token.loginName,
+          Email: this.Email
+        }).then(res=>{
+          if(res==true){
+            this.$message({
+                message: '修改邮箱成功',
+                type: 'success'
+            });
+            this.$router.push('/Personal/UpdateInfo')
+          }
+        });
+      }
     },
-
     // 取消，回个人信息页
     goPerson() {
       this.$router.push("/Personal/UpdateInfo").catch(err => console.log(err));
@@ -101,7 +105,7 @@ export default {
     // 判断验证码是否正确
     JudgeYZM() {
       this.Flag = true;
-      if (this.YZM === this.yzm) {
+      if (this.YZM == this.yzm) {
         this.codeFlag = true;
       } else {
         this.codeFlag = false;
@@ -109,27 +113,27 @@ export default {
     },
 
     emilBlur() {
-      var emilReg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
-      this.regFlag = emilReg.test(this.Emil);
+      var emilReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+      this.regFlag = emilReg.test(this.Email);
     },
     // 获取验证码
     getCode() {
       // 给新邮箱发送验证码
-      // this.$api.verify
-      //   .PersonalEmail({email:this.Email})
-      //   .then(res => {
-      //     // 接收邮箱验证码
-      //     this.yzm = res.randomNum;
-      //     console.log(res.randomNum);
-      //   });
-
+      this.$api.verify
+        .PersonalEmail({email:this.Email})
+        .then(res => {
+          // 接收邮箱验证码
+          this.yzm = res.emailCode;
+        });
       // 验证码60秒倒计时
       if (!this.timer) {
         this.timer = setInterval(() => {
           if (this.countdown > 0 && this.countdown <= 60) {
             this.countdown--;
+            this.codeDisabled = true;
             if (this.countdown !== 0) {
               this.codeMsg = "重新发送(" + this.countdown + ")";
+              this.codeDisabled = true;
             } else {
               clearInterval(this.timer);
               this.codeMsg = "获取验证码";

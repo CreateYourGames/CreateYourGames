@@ -277,8 +277,12 @@ export default {
         .catch(err => console.log(err));
   },
   mounted() {
-    // console.log(this.$refs.ul.style.width);
-    this.$refs.ul.style.width = 170 * this.publishList.length + "px";
+    setTimeout(() => {
+        console.log(this.$refs.ul);
+        this.$refs.ul.style.width = 170 * this.publishList.length + "px";
+    }, 500);
+   
+    
   },
   methods: {
     // 路由跳转

@@ -533,6 +533,7 @@
                     font-size: 14px;
                     border-right: 1px solid #ddd;
                     .name {
+                        width: 200px;
                         p {
                             margin: 0 20px;
                             font-size: 25px;
@@ -547,7 +548,7 @@
                         display: flex;
                         justify-content: space-between;
                         line-height: 25px;
-                        margin-left: 200px;
+                        margin-left: 160px;
                         .setLove {
                             width: 90px;
                             border: 1px solid #ccc;
@@ -580,6 +581,9 @@
                             height: 20px;
                             cursor: pointer;
                         }
+                    }
+                    .game-start{
+                        margin-right: 20px;
                     }
                 }
                 .content-info {
