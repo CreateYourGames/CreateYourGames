@@ -461,7 +461,7 @@ export default {
             margin: 5px;
             outline: none;
             cursor: pointer;
-            animation: glow 800ms ease-out infinite alternate;
+            animation: glow 1000ms ease-out infinite alternate;
           }
         }
       }

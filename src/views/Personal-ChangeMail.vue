@@ -31,7 +31,7 @@
               <input type="text" v-model="YZM" @blur="JudgeYZM" name id placeholder="请输入您的验证码" />
             </div>
 
-            <div v-if="codeFlag && Flag & YZM!=''" style="margin-top:-38px;">
+            <div v-if="codeFlag && Flag && YZM!=''" style="margin-top:-38px;">
               <img style="margin-right:5px;" src="@/assets/images/personal/dagou.png" alt />
               <span>验证通过</span>
             </div>
@@ -118,6 +118,7 @@ export default {
     },
     // 获取验证码
     getCode() {
+
       // 给新邮箱发送验证码
       this.$api.verify
         .PersonalEmail({email:this.Email})

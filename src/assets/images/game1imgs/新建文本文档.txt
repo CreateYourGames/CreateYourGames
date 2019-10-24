@@ -17,7 +17,7 @@
       @mouseup="up"
      >
       <div class="score">
-        <img src="../../assets/images/game-Images/game-mouse/score.png" alt />
+        <img src="../../assets/images/game1imgs/score.png" alt />
         <span class="init-score">{{score}}</span>
       </div>
       <div class="life">
@@ -339,7 +339,7 @@ export default {
   .ground {
     width: 700px;
     height: 500px;
-    background-image: url("../../assets/images/game-Images/game-mouse/bg_canvas.png");
+    background-image: url("../../assets/images/game1imgs/bg_canvas.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     position: relative;

@@ -26,6 +26,19 @@ const verify = {
         return axios.post(`${www}/sendEmail`, value)
     },
 
+
+
+    // 发送新旧手机号，更新数据
+    // personalPhone(value) {
+    //     console.log(value);
+    //     return axios.get(`${www}/xxx`, value)
+    // },
+    // // 发送账号和新邮箱让其更改数据
+    // personalEmail(value) {
+    //     console.log(value);
+    //     return axios.get(`${www}/xxx`, value)
+    // },
+
 }
 
 export default verify
