@@ -134,6 +134,14 @@ export default new Router({
             path: '/Game',
             name: 'Game',
             component: () => import('./views/GameCenter.vue')
+        },
+
+
+        // 打地鼠游戏界面
+        {
+            path:'/game1',
+            name:'game1',
+            component: () => import('./views/game/game1.vue')
         }
     ]
 })
