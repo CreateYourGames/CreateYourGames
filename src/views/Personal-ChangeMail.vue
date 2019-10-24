@@ -33,7 +33,7 @@
               <input type="text" v-model="YZM" @blur="JudgeYZM" name id placeholder="请输入您的验证码" />
             </div>
 
-            <div v-if="codeFlag && Flag & YZM!=''" style="margin-top:-38px;">
+            <div v-if="codeFlag && Flag && YZM!=''" style="margin-top:-38px;">
               <img style="margin-right:5px;" src="@/assets/images/personal/dagou.png" alt />
               <span>验证通过</span>
             </div>
@@ -83,14 +83,14 @@ export default {
   },
   methods: {
     go() {
-      // if(this.codeFlag===true){
-      //   // 如果正确，则发送给后台让其改数据
-      //    this.$api.verify.personalEmail({
-      //     loginName: this.$store.state.token.loginName,
-      //     Email: this.Emil
-      //   });
-      //   this.$router.push("/Personal/UpdateInfo").catch(err => console.log(err));
-      // }
+      if(this.codeFlag===true){
+        // 如果正确，则发送给后台让其改数据
+         this.$api.verify.personalEmail({
+          loginName: this.$store.state.token.loginName,
+          Email: this.Emil
+        });
+        this.$router.push("/Personal/UpdateInfo").catch(err => console.log(err));
+      }
     },
 
     // 取消，回个人信息页
@@ -114,14 +114,16 @@ export default {
     },
     // 获取验证码
     getCode() {
+
       // 给新邮箱发送验证码
-      // this.$api.verify
-      //   .PersonalEmail({email:this.Email})
-      //   .then(res => {
-      //     // 接收邮箱验证码
-      //     this.yzm = res.randomNum;
-      //     console.log(res.randomNum);
-      //   });
+      this.$api.verify
+        .PersonalEmail({email:this.Emil})
+        .then(res => {
+          // 接收邮箱验证码
+          this.yzm = res.emailCode;
+          console.log("YZM"+res.emailCode);
+        });
+
 
       // 验证码60秒倒计时
       if (!this.timer) {

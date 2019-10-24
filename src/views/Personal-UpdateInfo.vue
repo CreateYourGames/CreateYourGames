@@ -63,7 +63,7 @@
           </div>
           <div>
             <label for>手机号：</label>
-            <input type="text" v-model="this.tel" readonly style="border:none;margin-top:5px;" />
+            <input type="text" v-model="tel" readonly style="border:none;margin-top:5px;" />
             <button @click="jumpTel()">修改手机</button>
           </div>
           <div>
@@ -145,8 +145,6 @@ export default {
         }
         return url ;
     },
-
-
 
     jumpEmil() {
       this.$router.push("/Personal/ChangeMail").catch(err => console.log(err));

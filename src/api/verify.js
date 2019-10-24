@@ -9,25 +9,24 @@ const verify = {
         console.log(value);
         return axios.post(`${www}/sendSms`, value)
     },
-
-
-    // 发送新旧手机号
-    personalPhone(value) {
-        console.log(value);
-        return axios.get(`${www}/sendSms`, value)
-    },
-
-
     // 验证码：给新邮箱发
     PersonalEmail(value) {
         console.log(value);
-        return axios.post(`${www}/sendSms`, value)
+        return axios.post(`${www}/sendEmail`, value)
     },
-    // 发送账号和新邮箱让其更改数据
-    PersonalEmail(value) {
-        console.log(value);
-        return axios.get(`${www}/sendSms`, value)
-    },
+
+
+
+    // 发送新旧手机号，更新数据
+    // personalPhone(value) {
+    //     console.log(value);
+    //     return axios.get(`${www}/xxx`, value)
+    // },
+    // // 发送账号和新邮箱让其更改数据
+    // personalEmail(value) {
+    //     console.log(value);
+    //     return axios.get(`${www}/xxx`, value)
+    // },
 
 }
 
