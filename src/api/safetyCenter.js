@@ -7,6 +7,7 @@ const safety={
     judgeUser(value){
         return axios.post(`${www}/judgeUser`, value)
     },
+    
     //第二步验证，发送邮箱或者手机验证码进行验证
     sendSms(value){
         return axios.post(`${www}/sendSms`,value)

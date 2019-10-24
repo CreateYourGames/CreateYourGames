@@ -16,6 +16,18 @@ const personal={
     },
     delGame(value){
         return axios.get(`${www}/delgame?gameId=${value}`)
-    }
+    },
+
+    
+    // 修改后的个人信息
+    PersonalInfo(value){
+        console.log(value);
+        return axios.post(`${www}/updateInfo`,{ 
+             params:value,
+             headers:{
+            "Content-Type":'multipart/form-data'
+        },})
+    },
+
 }
 export default personal
