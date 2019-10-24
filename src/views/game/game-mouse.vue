@@ -8,7 +8,7 @@
       @mouseup="up"
      >
       <div class="score">
-        <img src="../../assets/images/game1imgs/score.png" alt />
+        <img src="../../assets/images/game-Images/game-mouse/score.png" alt />
         <span class="init-score">{{score}}</span>
       </div>
       <div class="life">
@@ -29,7 +29,7 @@ export default {
       ground2: "ground2",
       num:'',
         //   gif图
-      img:require("../../assets/images/game1imgs/bomb.gif"),
+      img:require("../../assets/images/game-Images/game-mouse/bomb.gif"),
 
     //   洞口位置
       holes:[
@@ -136,7 +136,7 @@ export default {
         mouse.style.width = '100px'
         mouse.style.height = '73px'
         mouse.style.top = '-8px'
-        mouse.style.backgroundImage = `url(${require(`../../assets/images/game1imgs/mouse${this.num}.png`)})`
+        mouse.style.backgroundImage = `url(${require(`../../assets/images/game-Images/game-mouse/mouse${this.num}.png`)})`
         mouse.style.backgroundSize = '100%'
         // console.log(mouse)
         // console.log(this.appear[1],'appear得值')
@@ -219,15 +219,15 @@ export default {
   height: 550px;
   margin: 100px auto;
   .ground1 {
-    cursor: url("../../assets/images/game1imgs/hammer.png"), auto;
+    cursor: url("../../assets/images/game-Images/game-mouse/hammer.png"), auto;
   }
   .ground2 {
-    cursor: url("../../assets/images/game1imgs/hammer2.png"), auto;
+    cursor: url("../../assets/images/game-Images/game-mouse/hammer2.png"), auto;
   }
   .ground {
     width: 700px;
     height: 500px;
-    background-image: url("../../assets/images/game1imgs/bg_canvas.png");
+    background-image: url("../../assets/images/game-Images/game-mouse/bg_canvas.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     position: relative;
