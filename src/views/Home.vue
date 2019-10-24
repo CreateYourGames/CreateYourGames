@@ -98,6 +98,9 @@
             <div class="tips">
                 抵制不良游戏，拒绝盗版游戏，注意自我保护，谨防上当受骗，适度游戏益脑，沉迷游戏伤身，合理安排时间，享受健康生活。
             </div>
+            <div class="security">
+                互联网ICP备案：<a href="http://www.beian.miit.gov.cn/">浙ICP备19043392号</a>
+            </div>
         </div>
     </div>
 </template>
@@ -599,13 +602,25 @@
             }
         }
         .footer {
-            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             background-color: rgba(0, 0, 0, 0.4);
             margin-top: 70px;
+            box-sizing: border-box;
+            padding: 10px 0;
             .tips {
-                line-height: 40px;
+                line-height: 30px;
                 text-align: center;
                 opacity: 0.5;
+            }
+            .security{
+                line-height: 30px;
+                color: #a4a4a4;
+                a{
+                    color: #a4a4a4;
+                }
             }
         }
     }

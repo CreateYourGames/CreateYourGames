@@ -9,6 +9,7 @@ import updateGameInfo from './updateGameInfo'
 import developerTest from './developerTest'
 import loginInfo from './home'
 import suggest from './suggest'
+import safety from './safetyCenter'
 //将接口导出
 export default{
     gameInfo,
@@ -20,5 +21,6 @@ export default{
     updateGameInfo,
     developerTest,
     loginInfo,
-    suggest
+    suggest,
+    safety
 }

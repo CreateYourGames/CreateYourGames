@@ -3,7 +3,6 @@
     <div class="top">
       <Header></Header>
     </div>
-
     <div class="content">
       <el-steps :active="active" process-status="wait" align-center>
         <el-step title="填写账号" style="font-size:10px"></el-step>
@@ -124,7 +123,7 @@ export default {
       vercode: "",
       btnDisabled: false,
       btnText: "获取验证码",
-
+      yzm:'',
       active: 1,
       tabType: 1,
       ruleForm: {
@@ -147,7 +146,7 @@ export default {
         Phone: [
           { required: true, trigger: "blur" },
           {
-            pattern: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,
+            pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/,
             message: "手机格式不对"
           }
         ],
@@ -161,7 +160,7 @@ export default {
         userName: [
           { required: true, message: "请输入手机号", trigger: "blur" },
           {
-            pattern: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,
+            pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/,
             message: "手机格式不对"
           }
           
@@ -181,9 +180,34 @@ export default {
     next(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.active++ > 3) this.active = 0;
-          // this.$router.push("/login").catch(err => console.log(err));
-        } else {
+          if(this.active==1){
+             this.$api.safety.judgeUser({loginName:this.ruleForm.userName}).then(res=>{
+                if(res.success==true){
+                  this.active++
+                  console.log(this.active)
+                }
+                else if(res.success==false){
+                  this.$message.error('您的验证码无效')
+                }
+              }).catch(err=>console.log(err))
+          }
+          else if(this.active==2){
+            if(this.vercode&&this.yzm==this.vercode){
+              this.active++
+            }
+            else{
+              this.$message.error('您的验证码无效')
+            }
+          }
+          else if(this.active==3){
+            this.$api.safety.updatePwd({password:this.ruleForm.Pass,loginName:this.ruleForm.userName}).then(res=>{
+              if(res.success==true){
+                this.active++
+              }
+            })
+          }
+        } 
+        else {
           return false;
         }
       });
@@ -194,11 +218,24 @@ export default {
     tab(index) {
       this.tabType = index;
     },
-
     // 验证码的点击事件
     sendMessage() {
       if (this.btnDisabled) {
         return;
+      }
+      // alert("aaa")
+      //判断是手机验证还是邮箱验证
+      if(this.tabType==1){
+        this.$api.safety.sendEmail({email:this.ruleForm.Email}).then(res=>{
+          console.log(res.emailCode)
+          this.yzm=res.emailCode
+        })
+      }
+      else if(this.tabType==2){
+        this.$api.safety.sendSms({phone:this.ruleForm.Phone}).then(res=>{
+          console.log(res.randomNum)
+          this.yzm=res.randomNum
+        })
       }
       this.getSecond(60);
     },
@@ -206,12 +243,15 @@ export default {
     getSecond(wait) {
       let _this = this;
       let _wait = wait;
+       
       if (wait == 0) {
         this.btnDisabled = false;
         this.btnText = "获取验证码";
         wait = _wait;
+     
       } else {
         this.btnDisabled = true;
+         
         this.btnText = "验证码(" + wait + "s)";
         wait--;
         setTimeout(function() {
@@ -283,15 +323,6 @@ export default {
   background-image: url("../assets/images/login/pic2.jpg");
   background-attachment: fixed;
   background-size: 100% 100%;
-
-  .el-page-header {
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
-    background: rgba(255, 255, 255, 0.3);
-    background-color: white;
-    text-align: center;
-  }
 
   .content {
     margin: 0 auto;
