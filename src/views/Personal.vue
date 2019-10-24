@@ -22,12 +22,12 @@
       <conform ref="delGame"></conform>
     </div>
 
-    <!-- content -->
     <div class="content">
       <!-- 开发者部分 -->
       <div class="publish" v-if="isDeveloper===1">
         <span>发布的游戏</span>
-        <div class="block">
+        <!-- 有发布 -->
+        <div class="block" v-if="publishList.length!=0">
           <div v-if="publishList.length>5">
             <img
               class="left"
@@ -54,6 +54,7 @@
               @mouseout="outStyle(index)"
             >
               <img :src="publish.gamePic" alt />
+              <!-- <img :src="publish.img" alt /> -->
               <div v-show="publish.flag">
                 <p class="details" @click="jumpGameDetails(index)">查看详情</p>
                 <div class="ud">
@@ -64,44 +65,52 @@
             </li>
           </ul>
         </div>
+        <!-- 无发布 -->
+        <div class="noGame" v-if="publishList.length===0">
+          <p>亲！暂时还没有发布过游戏哦！快去发布游戏吧！</p>
+          <button @click="goPublish()">前往发布游戏</button>
+        </div>
       </div>
-      <div class="rl">
 
+      <!-- 所有用户 -->
+      <div class="rl">
         <!-- 最近的游戏 -->
         <div class="recently">
           <span>最近的游戏</span>
 
+          <!-- 无最近game -->
           <div class="middle" v-if="gameList.length===0">
-            <!-- 没有“最近的游戏” -->
             <div class="noGame">
-              <p>亲！暂时还没有玩过游戏！快去玩游戏吧！</p>
+              <p>亲！暂时还没有玩过游戏！<br/>快去玩游戏吧！</p>
               <button @click="goGame()">前往游戏库</button>
             </div>
-            <!-- 有“最近的游戏” -->
-            <div class="mid-Game">
-              <ul>
-                <li v-for="(game) in gameList" :key="game.id" @click="jumpGameDetails">
-                  <img :src="game.gamePic" alt />
-                  <p class="gameName">{{game.name}}</p>
-                </li>
-              </ul>
-            </div>
+          </div>
+
+          <!-- 有最近game -->
+          <div class="mid-Game" v-if="gameList.length!=0">
+            <ul>
+              <li v-for="(game) in gameList" :key="game.id" @click="jumpGameDetails">
+                <img :src="game.gamePic" alt />
+                <p class="gameName">{{game.name}}</p>
+              </li>
+            </ul>
           </div>
         </div>
+
         <!-- 喜欢的游戏 -->
         <div class="like">
           <span>喜欢的游戏</span>
 
-          <!-- 没有“喜欢的游戏的游戏” -->
+          <!-- 没有喜欢-->
           <div class="middle" v-if="favorList.length===0">
-            <!-- 没有“喜欢的游戏” -->
+            <!-- 没有喜欢 -->
             <div class="noGame">
-              <p>亲！暂时还没有玩过游戏！快去玩游戏吧！</p>
+              <p>亲！暂时还没有喜欢过的游戏！<br/>快去玩游戏吧！</p>
               <button @click="goGame()">前往游戏库</button>
             </div>
           </div>
-
-          <div class="mid-Game">
+          <!-- 有喜欢 -->
+          <div class="mid-Game" v-if="favorList.length!=0">
             <ul>
               <li
                 v-for="(favor,index) in favorList"
@@ -134,6 +143,8 @@ export default {
   },
   data() {
     return {
+      isDeveloper: 0,
+
       // 删除gameid
       gameId: "",
       // 切换左图判定值
@@ -183,16 +194,6 @@ export default {
         // {
         //   id: 6,
         //   img: require("@/assets/images/personal/info2.jpg"),
-        //   flag: false
-        // },
-        // {
-        //   id: 7,
-        //   img: require("@/assets/images/personal/game2.png"),
-        //   flag: false
-        // },
-        // {
-        //   id: 8,
-        //   img: require("@/assets/images/personal/info.jpg"),
         //   flag: false
         // }
       ],
@@ -276,7 +277,7 @@ export default {
         .catch(err => console.log(err));
   },
   mounted() {
-    console.log(this.$refs.ul.style.width);
+    // console.log(this.$refs.ul.style.width);
     this.$refs.ul.style.width = 170 * this.publishList.length + "px";
   },
   methods: {
@@ -297,6 +298,9 @@ export default {
     // 前往游戏库
     goGame() {
       this.$router.push("/GameCenter");
+    },
+    goPublish() {
+      this.$router.push("/PublishGameTips");
     },
 
     jumpGameDetails(id) {
@@ -329,7 +333,7 @@ export default {
     // 删除游戏
     delGame(id) {
       this.$refs.delGame.del(id);
-      this.$router.go(0);
+      // this.$router.go(0);
     },
 
     //发布的游戏 手表移动事件
@@ -458,63 +462,64 @@ export default {
         }
       }
     }
-
-    
   }
   // content
-    .content {
-      width: 1100px;
-      margin: 0 auto;
+  .content {
+    width: 1100px;
+    margin: 0 auto;
+    height: calc(100% - 230px);
 
-      // 开发者部分
-      // 发布游戏
-      .publish {
-        // border: solid 1px red;
+    // 开发者部分
+    // 发布游戏
+    .publish {
+      width: 1000px;
+      height: 200px;
+      margin: 50px auto;
+      display: flex;
+      justify-content: space-around;
+      position: relative;
 
-        width: 1000px;
+      span {
+        height: 23px;
+        border-bottom: 2px solid #fec003;
+        display: block;
+        width: 110px;
+        text-align: center;
+        line-height: 20px;
+        font-size: 20px;
+        position: absolute;
+        left: 80px;
+      }
+
+      .block {
         height: 200px;
-        margin: 50px auto;
-        display: flex;
-        justify-content: space-around;
-        position: relative;
-        left: -5px;
-        .block {
-          height: 250px;
-          width: 800px;
-          margin-top: 30px;
-          overflow: hidden;
-          padding-left: 20px;
-          padding-top: 20px;
-          .left {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            left: 50px;
-            top: 80px;
-          }
-          .right {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            right: 50px;
-            top: 80px;
-          }
-        }
-        span {
-          height: 23px;
-          border-bottom: 2px solid #fec003;
-          display: block;
-          width: 110px;
-          text-align: center;
-          line-height: 20px;
-          font-size: 20px;
+        width: 855px;
+        margin-top: 30px;
+        display: block;
+        overflow: hidden;
+        padding-left: 30px;
+        padding-top: 20px;
+
+        // border: solid 1px red;
+        .left {
           position: absolute;
-          left: 118px;
+          width: 40px;
+          height: 40px;
+          left: 50px;
+          top: 90px;
         }
+        .right {
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          right: 50px;
+          top: 80px;
+        }
+
         ul li {
           height: 200px;
           display: inline-block;
-          margin-right: 40px;
+          margin-right: 45px;
           vertical-align: middle;
           // border:1px solid red;
           .cacher {
@@ -553,196 +558,224 @@ export default {
         }
       }
 
-      // 开发者和普通用户共同部分
-      // 最近和喜欢
-      .rl {
-        // border: solid 1px black;
-        width: 1000px;
-        display: flex;
-        justify-content: center;
-        margin: 50px auto;
+      // 没有“发布的游戏”
+      .noGame {
+        // border: solid 1px #d8dce0;
+        margin-top: 30px;
+        width: 830px;
+        height: 150px;
+        text-align: center;
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -40%);
+        p {
+          padding: 15px 30px;
+          line-height: 45px;
+          font-size: 21px;
+        }
+        button {
+          width: 145px;
+          height: 38px;
+          margin-top: 10px;
+          border: none;
+          border-radius: 30px;
+          background-color: #fec003;
+          color: white;
+          font-size: 18px;
+          cursor: pointer;
+        }
+      }
+    }
 
-        // 最近的游戏
-        .recently {
-          // border: solid 1px yellow;
+    // 开发者和普通用户共同部分
+    // 最近和喜欢
+    .rl {
+      width: 1000px;
+      display: flex;
+      justify-content: center;
+      margin: 50px auto;
 
-          width: 400px;
-          height: 500px;
+      // 最近的游戏
+      .recently {
+        width: 400px;
+        height: 100%;
+        position: relative;
+        margin-right: 30px;
+
+        span {
+          height: 23px;
+          border-bottom: 2px solid #fec003;
+          display: block;
+          width: 110px;
+          text-align: center;
+          line-height: 20px;
+          font-size: 20px;
+          position: absolute;
+          left: 0px;
+        }
+
+        // 无最近游戏
+        .middle {
+          // border: solid 1px #d8dce0;
+          height: 440px;
+          margin-top: 60px;
+
           position: relative;
-          margin-right: 30px;
-
-          span {
-            height: 23px;
-            border-bottom: 2px solid #fec003;
-            display: block;
-            width: 110px;
+          // 没有“最近的游戏”
+          .noGame {
+            width: 400px;
             text-align: center;
-            line-height: 20px;
-            font-size: 20px;
             position: absolute;
-            left: 0px;
-          }
+            top: 10%;
+            left: 40%;
+            transform: translate(-50%, -10%);
 
-          .middle {
-            border: solid 1px red;
-            height: calc(100% - 60px);
-            margin-top: 60px;
-
-            position: relative;
-            // 没有“最近的游戏”
-            .noGame {
-              width: 400px;
-              text-align: center;
-              position: absolute;
-              top: 40%;
-              left: 50%;
-              transform: translate(-50%, -40%);
-
-              p {
-                padding: 15px 30px;
-                line-height: 45px;
-                font-size: 26px;
-              }
-              button {
-                width: 150px;
-                height: 45px;
-                margin-top: 30px;
-                border: none;
-                border-radius: 30px;
-                background-color: #fec003;
-                color: white;
-                font-size: 18px;
-                cursor: pointer;
-              }
+            p {
+              padding: 15px 30px;
+              line-height: 45px;
+              font-size: 21px;
             }
-
-            .mid-Game {
-              ul li {
-                display: inline-block;
-                margin-right: 40px;
-                margin-top: 40px;
-                cursor: pointer;
-                img {
-                  width: 120px;
-                  height: 120px;
-                  border-radius: 15px;
-                  // border: solid 1px red;
-
-                  &:hover {
-                    opacity: 1;
-                    transform: scale(1.1, 1.1);
-                    transition: all 0.3s;
-                  }
-                }
-                .gameName {
-                  text-align: center;
-                  font-size: 14px;
-                }
-              }
+            button {
+              width: 140px;
+              height: 40px;
+              margin-top: 20px;
+              border: none;
+              border-radius: 30px;
+              background-color: #fec003;
+              color: white;
+              font-size: 18px;
+              cursor: pointer;
             }
           }
         }
+        // 最近游戏
+        .mid-Game {
+          height: calc(100% - 60px);
+          margin-top: 60px;
+          ul li {
+            display: inline-block;
+            margin: 5px;
+            margin-right: 35px;
+            cursor: pointer;
+            img {
+              width: 120px;
+              height: 120px;
+              border-radius: 15px;
 
-        // 喜欢的游戏
-        .like {
-          width: 400px;
-          height: 500px;
-          position: relative;
-          span {
-            height: 23px;
-            border-bottom: 2px solid #fec003;
-            display: block;
-            width: 110px;
-            text-align: center;
-            line-height: 20px;
-            font-size: 20px;
-            position: absolute;
-            left: 0px;
-          }
-
-          // 没有“喜欢的游戏”
-          .middle {
-            border: solid 1px red;
-            height: calc(100% - 60px);
-            margin-top: 60px;
-
-            position: relative;
-            // 没有“喜欢的游戏”
-            .noGame {
-              width: 400px;
-              text-align: center;
-              position: absolute;
-              top: 40%;
-              left: 50%;
-              transform: translate(-50%, -40%);
-
-              p {
-                padding: 15px 30px;
-                line-height: 45px;
-                font-size: 26px;
-              }
-              button {
-                width: 150px;
-                height: 45px;
-                margin-top: 30px;
-                border: none;
-                border-radius: 30px;
-                background-color: #fec003;
-                color: white;
-                font-size: 18px;
-                cursor: pointer;
-              }
-            }
-          }
-
-          // 有“喜欢的游戏”
-          .mid-Game {
-            // border: solid 1px red;
-            height: calc(100% - 60px);
-            margin-top: 60px;
-            padding: 20px 20px 0 30px;
-            // 有“喜欢的游戏”
-            ul li {
-              display: inline-block;
-              margin: 10px 25px;
-              height: 160px;
-              vertical-align: middle;
-              &.active {
+              &:hover {
                 opacity: 1;
                 transform: scale(1.1, 1.1);
                 transition: all 0.3s;
               }
-              .bott {
-                display: none;
+            }
+            .gameName {
+              text-align: center;
+              font-size: 14px;
+            }
+          }
+        }
+      }
+
+      // 喜欢的游戏
+      .like {
+        width: 400px;
+        height: 100%;
+        position: relative;
+        span {
+          height: 23px;
+          border-bottom: 2px solid #fec003;
+          display: block;
+          width: 110px;
+          text-align: center;
+          line-height: 20px;
+          font-size: 20px;
+          position: absolute;
+          left: 0px;
+        }
+
+        // 没有“喜欢的游戏”
+        .middle {
+          height: 440px;
+          margin-top: 60px;
+          // border: solid 1px #d8dce0;
+          position: relative;
+          // 没有“喜欢的游戏”
+          .noGame {
+            width: 400px;
+            text-align: center;
+            position: absolute;
+            top: 10%;
+            left: 45%;
+            transform: translate(-50%, -10%);
+
+            p {
+              padding: 15px 30px;
+              line-height: 45px;
+              font-size: 21px;
+            }
+            button {
+              width: 140px;
+              height: 40px;
+              margin-top: 20px;
+              border: none;
+              border-radius: 30px;
+              background-color: #fec003;
+              color: white;
+              font-size: 18px;
+              cursor: pointer;
+            }
+          }
+        }
+
+        // 有“喜欢的游戏”
+        .mid-Game {
+          // border: solid 1px red;
+          height: calc(100% - 60px);
+          margin-top: 60px;
+          // 有“喜欢的游戏”
+          ul li {
+            display: inline-block;
+            margin: 5px;
+            margin-right: 35px;
+            height: 160px;
+            vertical-align: middle;
+            &.active {
+              opacity: 1;
+              transform: scale(1.1, 1.1);
+              transition: all 0.3s;
+            }
+            .bott {
+              display: none;
+            }
+            .bot {
+              text-align: center;
+              .detail {
+                display: inline-block;
+                font-size: 12px;
+                cursor: pointer;
               }
-              .bot {
-                text-align: center;
-                .detail {
-                  display: inline-block;
-                  font-size: 12px;
-                  cursor: pointer;
-                }
-                .cancel {
-                  display: inline-block;
-                  border-left: 1px solid #fec003;
-                  font-size: 12px;
-                  cursor: pointer;
-                }
+              .cancel {
+                display: inline-block;
+                border-left: 1px solid #fec003;
+                font-size: 12px;
+                cursor: pointer;
               }
-              img {
-                width: 120px;
-                height: 120px;
-                border-radius: 15px;
-                // border: solid 1px red;
-              }
-              .gameName {
-                text-align: center;
-                font-size: 14px;
-              }
+            }
+            img {
+              width: 120px;
+              height: 120px;
+              border-radius: 15px;
+              // border: solid 1px red;
+            }
+            .gameName {
+              text-align: center;
+              font-size: 14px;
             }
           }
         }
       }
     }
+  }
 }
 </style>

@@ -4,14 +4,22 @@
     <div class="info-nav" ref="style">
       <input type="file" ref="input" name id style="display:none;" />
       <div>
-        <img src="@/assets/images/personal/01.png" alt width="100" height="100" />
-        <div
-          class="origin"
-          v-bind:class="{style:enable}"
-          @click="fileClick"
-          @mouseover="addStyle"
-          @mouseout="removeStyle"
-        ></div>
+        <!-- 头像 -->
+        <div class="upload-image">
+          <input
+            class="upload-btn"
+            type="file"
+            name="image"
+            accept="image/*"
+            ref="upload"
+            
+            @change="IconChange($event)"
+            v-bind:class="{style:enable}"
+            @mouseover="addStyle"
+            @mouseout="removeStyle"
+          />
+          <img class="img" :src="picture" alt />
+        </div>
       </div>
       <div class="butt">
         <button @click="save()">保存</button>
@@ -24,22 +32,43 @@
       <div class="content">
         <form action>
           <div>
-            <label for>用户名：</label>
-            <input type="text" v-model="personalInfo[0].name" readonly style="border:none;" />
+            <label for>昵称：</label>
+            <input type="text" v-model="nickName" />
+            <!-- <input type="text" v-model="this.nickName" readonly style="border:none;" /> -->
           </div>
           <div>
+            <label for>性别：</label>
+            <select name="sex" v-model="radio">
+              <option value="男">男</option>
+              <option value="女">女</option>
+            </select>
+            <!-- <input type="text" v-model="this.nickName" readonly style="border:none;" /> -->
+          </div>
+          <el-form status-icon label-width="80px" ref="ruleForm" class="demo-ruleForm">
+            <el-form-item label prop="Birth" label-width="0">
+              <label for style="float:left">出生年月：</label>
+              <el-date-picker
+                style="margin-top:5px;"
+                v-model="birth"
+                value-format="yyyy-MM-dd"
+                type="date"
+                placeholder="选择日期"
+              ></el-date-picker>
+            </el-form-item>
+          </el-form>
+          <div>
             <label for>邮箱：</label>
-            <input type="text" v-model="personalInfo[0].emil" />
-            <p @click="jumpEmil()">修改绑定邮箱</p>
+            <input type="text" v-model="email" readonly style="border:none;margin-top:5px;" />
+            <button @click="jumpEmil()">修改邮箱</button>
           </div>
           <div>
             <label for>手机号：</label>
-            <input type="text" v-model="personalInfo[0].phone" />
-            <p @click="jumpTel()">修改绑定手机</p>
+            <input type="text" v-model="this.tel" readonly style="border:none;margin-top:5px;" />
+            <button @click="jumpTel()">修改手机</button>
           </div>
           <div>
             <label for class="special">个人简介：</label>
-            <textarea cols="30" rows="10" v-model="personalInfo[0].intro"></textarea>
+            <textarea cols="30" rows="10" v-model="personalInfo"></textarea>
           </div>
         </form>
       </div>
@@ -52,17 +81,73 @@ export default {
   data() {
     return {
       enable: false,
-      personalInfo: [
-        {
-          name: "孙永祥是憨批",
-          emil: "1461523882@qq.com",
-          phone: "1461523882",
-          intro: "东方不亮西方亮，憨批啥样祥哥啥样"
-        }
-      ]
+
+
+      // 个人信息
+      picture: "",
+      nickName: "",
+      radio: "", //性别
+      value: "", //出生日期
+      email: "",
+      tel: "",
+      birth: "",
+      personalInfo: ""
     };
   },
+  created() {
+    // 获取“个人信息”
+    this.$api.loginInfo
+      .getLoginInfo(this.$store.state.token.loginName)
+      .then(res => {
+        // console.log(res)
+        this.picture = res.userMsg[0].picture; //头像
+        this.nickName = res.userMsg[0].nickName; //个人昵称
+        this.radio = res.userMsg[0].gender; //性别
+        (this.birth = res.userMsg[0].birthDate), //日期
+          (this.email = res.userMsg[0].email); //邮箱
+        this.tel = res.userMsg[0].userLoginName; //联系方式
+        this.personalInfo = res.userMsg[0].personalInfo; //个人简介
+      })
+      .catch(err => console.log(err));
+
+  },
+  mounted() {
+    console.log(this.$refs.upload.uploadFiles)
+    console.log(this.$refs.upload)
+    console.log(this.$refs.upload.value)
+  },
   methods: {
+     IconChange(e) {
+      const file = e.target.files[0];
+      // console.log(file);
+      // 获取图片的大小，做大小限制有用
+      let imgSize = file.size;
+      console.log(imgSize);
+      const _this = this; // this指向问题，所以在外面先定义
+      // 比如上传头像限制5M大小，这里获取的大小单位是b
+      if (imgSize <= 5000 * 1024) {
+        // 合格
+        _this.errorStr = "";
+        _this.picture = this.getObjectURL(file)
+
+      } else {
+        this.$message.error("图片大小不符，请重新上传大小5M以内的图片!");
+      }
+    },
+      getObjectURL (file) {
+        let url = null ;
+        if (window.createObjectURL!=undefined) { // basic
+            url = window.createObjectURL(file) ;
+        }else if (window.webkitURL!=undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }else if (window.URL!=undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        }
+        return url ;
+    },
+
+
+
     jumpEmil() {
       this.$router.push("/Personal/ChangeMail").catch(err => console.log(err));
     },
@@ -80,7 +165,20 @@ export default {
     },
     save() {
       this.$router.push("/Personal");
+
+      //修改个人信息
+      return this.$api.personal.PersonalInfo({
+        loginName: this.$store.state.token.loginName,//旧手机号
+        picture: this.$refs.upload.uploadFiles,
+        nickName: this.nickName,
+        gender: this.radio,
+        birthDate: this.birth,
+        email: this.email,
+        userLoginName: this.tel,//新手机号
+        personalInfo: this.personalInfo
+      });
     },
+
     cancel() {
       this.$router.push("/Personal");
     }
@@ -104,22 +202,39 @@ export default {
   background-image: url("../assets/images/personal/info.jpg");
   //   background-repeat: no-repeat;
   //   background-size: 100% 100%;
-  img {
-    width: 150px;
-    height: 150px;
-    border-radius: 100px;
-    margin-top: 30px;
+  // img {
+  //     width: 150px;
+  //     height: 150px;
+  //     border-radius: 100px;
+  //     margin-top: 30px;
+  //   }
+
+  .upload-image {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    .upload-btn {
+      display: block;
+      opacity: 0.5;
+      width: 150px;
+      height: 150px;
+      border-radius: 100px;
+      position: absolute;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+    }
+    .img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      // margin-top: 30px;
+      border-radius: 100px;
+    }
   }
-  .origin {
-    width: 150px;
-    height: 150px;
-    border-radius: 100px;
-    position: absolute;
-    top: 30px;
-    left: 45%;
-    cursor: pointer;
-    color: #fff;
-  }
+
   .style {
     width: 150px;
     height: 150px;
@@ -130,8 +245,6 @@ export default {
     background-repeat: no-repeat;
     background-position: 50% 50%;
     position: absolute;
-    top: 30px;
-    left: 45%;
     cursor: pointer;
   }
   .butt {
@@ -161,7 +274,6 @@ export default {
 
 // content
 .content {
-  width: 800px;
   height: 600px;
   text-align: right;
   // border: 1px solid red;
@@ -170,45 +282,74 @@ export default {
       margin-top: 20px;
       display: flex;
       align-items: center;
-      p{
+      p {
         cursor: pointer;
         height: 40px;
         vertical-align: middle;
         line-height: 45px;
-        margin-left: 20px;
+        margin-right: 20px;
       }
     }
   }
   .special {
     margin-top: -150px;
-    width: 250px;
     text-align: right;
+    width: 100px;
   }
   label {
-    font-size: 20px;
-    width: 250px;
+    font-size: 18px;
     text-align: right;
+    margin-right: 15px;
+    width: 100px;
   }
   input {
-    width: 290px;
+    width: 270px;
     height: 40px;
     margin-top: 10px;
     outline: none;
     background-color: #eeeeee;
     border: 1px solid gray;
-    border-radius: 20px;
-    padding-left: 10px;
+    border-radius: 10px;
+    padding-left: 15px;
+  }
+  // .el-date-picker{
+  //    width: 270px;
+  //   height: 40px;
+  //   margin-top: -10px;
+  //   outline: none;
+  //   background-color: #eeeeee;
+  //   border: 1px solid gray;
+  //   border-radius: 10px;
+  //   padding-left: 15px;
+  // }
+  select {
+    width: 270px;
+    height: 40px;
+    margin-top: 10px;
+    background-color: #eeeeee;
+    border: 1px solid gray;
+    padding-left: 15px;
+  }
+  button {
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-left: -90px;
   }
   textarea {
-    width: 290px;
+    width: 270px;
     height: 200px;
     margin-top: 10px;
     font-size: 16px;
     font-family: 微软雅黑;
     background-color: #eeeeee;
     outline: none;
-    border-radius: 20px;
-    padding-left: 10px;
+    border-radius: 10px;
+    padding: 12px;
   }
 }
 </style>
