@@ -11,8 +11,7 @@
                 v-model="oldPhone"
                 @blur="oldBlur"
                 type="text"
-                name
-                id
+                disabled
                 placeholder="请输入您原先绑定的手机号"
               />
               <span class="tel-tips" v-if="!regFlag1">手机号格式不正确</span>

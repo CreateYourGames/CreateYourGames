@@ -214,9 +214,9 @@
                 this.$router.push('/Login');
             },
             exitLogin() {
-                this.$store.state.token = {};
-                // console.log(this.$store.state.token);
-                // this.$router.go(0);
+                // this.$store.state.token = {};
+                this.$store.commit('getToken',null)
+                this.$store.commit('getRouter',null)
                 this.$router.push('/Login');
             },
             // 游戏库跳转
