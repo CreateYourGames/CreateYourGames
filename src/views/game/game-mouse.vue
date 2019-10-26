@@ -2,10 +2,10 @@
 <div class="nav">
   <div v-if="result" class="result">
     <p>最高分是{{score}}</p>
-    <img class="cat" src="../../assets/images/game1imgs/cat.gif" alt="">
+    <img class="cat" src="../../assets/images/game-Images/game-mouse/cat.gif" alt="">
     <ul>
-      <li><img class="start" @click="start" src="../../assets/images/game1imgs/gamestart.png" alt=""></li>
-      <li><img class="out" @click="quit" src="../../assets/images/game1imgs/out.png" alt=""></li>
+      <li><img class="start" @click="start" src="../../assets/images/game-Images/game-mouse/gamestart.png" alt=""></li>
+      <li><img class="out" @click="quit" src="../../assets/images/game-Images/game-mouse/out.png" alt=""></li>
     </ul>
   </div>
   <div class="newGame" ref="newGame"></div>
@@ -30,8 +30,8 @@
   <!-- 组件 -->
   <div class="component">
     <ul>
-      <li><img class="start" @click="start" src="../../assets/images/game1imgs/gamestart.png" alt=""></li>
-      <li><img class="out" @click="quit" src="../../assets/images/game1imgs/out.png" alt=""></li>
+      <li><img class="start" @click="start" src="../../assets/images/game-Images/game-mouse/gamestart.png" alt=""></li>
+      <li><img class="out" @click="quit" src="../../assets/images/game-Images/game-mouse/out.png" alt=""></li>
     </ul>
   </div>
 </div>
@@ -48,16 +48,16 @@ export default {
     i:0,
     arr:[
       {
-        src:require('../../assets/images/game1imgs/start1.png')
+        src:require('../../assets/images/game-Images/game-mouse/start1.png')
       },
       {
-        src:require('../../assets/images/game1imgs/start2.png')
+        src:require('../../assets/images/game-Images/game-mouse/start2.png')
       },
       {
-        src:require('../../assets/images/game1imgs/start3.png')
+        src:require('../../assets/images/game-Images/game-mouse/start3.png')
       },
       {
-        src:require('../../assets/images/game1imgs/start0.png')
+        src:require('../../assets/images/game-Images/game-mouse/start0.png')
       }
       ,
       {
@@ -70,9 +70,9 @@ export default {
     ground2: "ground2",
     num:'',
     //   gif图
-    img:require("../../assets/images/game1imgs/bomb.gif"),
+    img:require("../../assets/images/game-Images/game-mouse/bomb.gif"),
     // 加十分
-    imgadd:require('../../assets/images/game1imgs/addScore.png'),
+    imgadd:require('../../assets/images/game-Images/game-mouse/addScore.png'),
     //   洞口位置
     holes:[
           {
@@ -161,7 +161,7 @@ export default {
             this.appear[i]=hole
             // 遮罩层
             var hide = document.createElement('img')
-            hide.src = require(`../../assets/images/game1imgs/mask${this.hide}.png`)
+            hide.src = require(`../../assets/images/game-Images/game-mouse/mask${this.hide}.png`)
             hide.style.left = this.holes[i].x+'px'
             hide.style.top = this.holes[i].y+'px'
             hide.style.position = 'absolute'
@@ -192,7 +192,7 @@ export default {
         mouse.style.height = '73px'
         mouse.style.top = '20px'
         mouse.style.zIndex = 2*i
-        mouse.style.backgroundImage = `url(${require(`../../assets/images/game1imgs/mouse${this.num}.png`)})`
+        mouse.style.backgroundImage = `url(${require(`../../assets/images/game-Images/game-mouse/mouse${this.num}.png`)})`
         mouse.style.backgroundSize = '100%'
         this.mouse[i] = mouse
         this.appear[i].appendChild(mouse)
@@ -232,7 +232,7 @@ export default {
                 boom.style.position = 'absolute'
                 boom.style.width = '100px'
                 boom.style.height = '73px'
-                this.mouse[i].style.backgroundImage = `url(${require(`../../assets/images/game1imgs/hit${this.hit[i]}.png`)})`
+                this.mouse[i].style.backgroundImage = `url(${require(`../../assets/images/game-Images/game-mouse/hit${this.hit[i]}.png`)})`
                 this.mouse[i].appendChild(boom)
                 clearInterval(this.mouse[i].timer)
             }else{
@@ -287,7 +287,7 @@ export default {
 <style lang="scss" scoped>
 .nav{
   width: 100%;
-  background-image: url('../../assets/images/game1imgs/1.jpg');
+  background-image: url('../../assets/images/game-Images/game-mouse/1.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   border: 1px solid #fff;
@@ -353,10 +353,10 @@ export default {
   height: 550px;
   margin: 100px auto;
   .ground1 {
-    cursor: url("../../assets/images/game1imgs/hammer01.png"), auto;
+    cursor: url("../../assets/images/game-Images/game-mouse/hammer01.png"), auto;
   }
   .ground2 {
-    cursor: url("../../assets/images/game1imgs/hammer02.png"), auto;
+    cursor: url("../../assets/images/game-Images/game-mouse/hammer02.png"), auto;
   }
   .ground {
     width: 700px;
