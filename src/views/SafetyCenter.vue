@@ -223,6 +223,14 @@ export default {
       if (this.btnDisabled) {
         return;
       }
+      if(this.tabType==1&&this.ruleForm.Email==''){
+        alert("请您先输入邮箱账号")
+        return
+      }
+      if(this.tabType==2&&this.ruleForm.Phone==''){
+        alert("请您先输入手机号")
+        return
+      }
       // alert("aaa")
       //判断是手机验证还是邮箱验证
       if(this.tabType==1){

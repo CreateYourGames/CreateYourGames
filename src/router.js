@@ -143,6 +143,18 @@ export default new Router({
             path: '/game/popStar',
             name: 'popStar',
             component: () => import('./views/game/game-popStar.vue')
+        },
+        // game-my2048游戏界面
+        {
+            path: '/game/my2048',
+            name: 'game2',
+            component: () => import('./views/game/game-2048.vue')
+        },
+        //打飞机
+        {
+            path:'/game/plane',
+            name:'plane',
+            component:()=>import('./views/game/game-plane.vue')
         }
     ]
 })

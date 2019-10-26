@@ -22,11 +22,7 @@ const personal={
     // 修改后的个人信息
     PersonalInfo(value){
         console.log(value);
-        return axios.post(`${www}/updateInfo`,{ 
-             params:value,
-             headers:{
-            "Content-Type":'multipart/form-data'
-        },})
+        return axios.post(`${www}/updateInfo`,value) 
     },
 
 }

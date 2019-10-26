@@ -14,6 +14,7 @@ export default new Vuex.Store({
     searchDisplay: false, //模糊查询框的显示隐藏
     newRouter:'',   //登录页跳转的路由
     rememberPwd: false, // 是否记住密码
+    picture:''        //用户头像
 
     // network:true //判断是否有网
   },
@@ -33,6 +34,10 @@ export default new Vuex.Store({
     //存入登录页跳转的不同的路由
     getRouter(state,params){
       state.newRouter=params
+    },
+    //首页获取用户头像存入头像
+    getPic(state,params){
+      state.picture=params
     }
    /*  changeNetwork(store, param) { 
       store.network = param;

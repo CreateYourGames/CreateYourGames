@@ -2,35 +2,37 @@
   <div class="info">
     <!-- 顶部 -->
     <div class="info-nav" ref="style">
-      <input type="file" ref="input" name id style="display:none;" />
+      <!-- <input type="file" ref="input" name id style="display:none;" /> -->
       <div>
         <!-- 头像 -->
         <div class="upload-image">
-          <input
-            class="upload-btn"
-            type="file"
-            name="image"
-            accept="image/*"
-            ref="upload"
-            
-            @change="IconChange($event)"
-            v-bind:class="{style:enable}"
-            @mouseover="addStyle"
-            @mouseout="removeStyle"
-          />
+          <form action="/api/updateInfo" method="post" ref="form" enctype="multipart/form-data">
+            <input type="hidden" name="loginName" :value="$store.state.token.loginName">
+            <input
+                class="upload-btn"
+                type="file"
+                name="image"
+                accept="image/*"
+                ref="upload"
+                @change="IconChange($event)"
+                v-bind:class="{style:enable}"
+                @mouseover="addStyle"
+                @mouseout="removeStyle"
+              />
+            <div class="butt">
+              <input type="button" @click="save()" value="保存">
+              <input type="button" @click="cancel()" value="取消">
+            </div>
+          </form>
           <img class="img" :src="picture" alt />
         </div>
-      </div>
-      <div class="butt">
-        <button @click="save()">保存</button>
-        <button @click="cancel()">取消</button>
-      </div>
+      </div> 
     </div>
-
     <!-- 内容 -->
     <div class="info-out">
       <div class="content">
-        <form action>
+        <div class="form">
+        <!-- <form action> -->
           <div>
             <label for>昵称：</label>
             <input type="text" v-model="nickName" />
@@ -38,9 +40,9 @@
           </div>
           <div>
             <label for>性别：</label>
-            <select name="sex" v-model="radio">
-              <option value="男">男</option>
-              <option value="女">女</option>
+            <select v-model="sex">
+              <option value="0">男</option>
+              <option value="1">女</option>
             </select>
             <!-- <input type="text" v-model="this.nickName" readonly style="border:none;" /> -->
           </div>
@@ -57,22 +59,47 @@
             </el-form-item>
           </el-form>
           <div>
-            <label for>邮箱：</label>
-            <input type="text" v-model="email" readonly style="border:none;margin-top:5px;" />
-            <button @click="jumpEmil()">修改邮箱</button>
+              <label for>昵称：</label>
+              <input type="text" v-model="nickName" />
+              <!-- <input type="text" v-model="this.nickName" readonly style="border:none;" /> -->
+            </div>
+            <div>
+              <label for>性别：</label>
+              <select name="sex" v-model="radio">
+                <option value="男">男</option>
+                <option value="女">女</option>
+              </select>
+            
+            </div>
+            <el-form status-icon label-width="80px" ref="ruleForm" class="demo-ruleForm">
+              <el-form-item label prop="Birth" label-width="0">
+                <label for style="float:left">出生年月：</label>
+                <el-date-picker
+                  style="margin-top:5px;"
+                  v-model="birth"
+                  value-format="yyyy-MM-dd"
+                  type="date"
+                  placeholder="选择日期"
+                ></el-date-picker>
+              </el-form-item>
+            </el-form>
+            <div>
+              <label for>邮箱：</label>
+              <input type="text" v-model="email" readonly style="border:none;margin-top:5px;" />
+              <button type="button" @click="jumpEmil()">修改邮箱</button>
+            </div>
+            <div>
+              <label for>手机号：</label>
+              <input type="text" v-model="this.tel" readonly style="border:none;margin-top:5px;" />
+              <button type="button" @click="jumpTel()">修改手机</button>
+            </div>
+            <div>
+              <label for class="special">个人简介：</label>
+              <textarea cols="30" rows="10" v-model="personalInfo"></textarea>
+            </div>
           </div>
-          <div>
-            <label for>手机号：</label>
-            <input type="text" v-model="tel" readonly style="border:none;margin-top:5px;" />
-            <button @click="jumpTel()">修改手机</button>
-          </div>
-          <div>
-            <label for class="special">个人简介：</label>
-            <textarea cols="30" rows="10" v-model="personalInfo"></textarea>
-          </div>
-        </form>
-      </div>
-    </div>
+        </div>
+  </div>
   </div>
 </template>
 
@@ -81,17 +108,16 @@ export default {
   data() {
     return {
       enable: false,
-
-
       // 个人信息
       picture: "",
       nickName: "",
-      radio: "", //性别
+      sex: "", //性别
       value: "", //出生日期
       email: "",
       tel: "",
       birth: "",
-      personalInfo: ""
+      personalInfo: "",
+      file:''
     };
   },
   created() {
@@ -103,8 +129,8 @@ export default {
         this.picture = res.userMsg[0].picture; //头像
         this.nickName = res.userMsg[0].nickName; //个人昵称
         this.radio = res.userMsg[0].gender; //性别
-        (this.birth = res.userMsg[0].birthDate), //日期
-          (this.email = res.userMsg[0].email); //邮箱
+        this.birth = res.userMsg[0].birthDate, //日期
+        this.email = res.userMsg[0].email; //邮箱
         this.tel = res.userMsg[0].userLoginName; //联系方式
         this.personalInfo = res.userMsg[0].personalInfo; //个人简介
       })
@@ -112,29 +138,28 @@ export default {
 
   },
   mounted() {
-    console.log(this.$refs.upload.uploadFiles)
-    console.log(this.$refs.upload)
-    console.log(this.$refs.upload.value)
+    // console.log(this.$refs.upload.uploadFiles)
+    // console.log(this.$refs.upload)
+    // console.log(this.$refs.upload.value)
   },
   methods: {
-     IconChange(e) {
+    IconChange(e) {
       const file = e.target.files[0];
-      // console.log(file);
+      console.log(file);
+      this.file=file
       // 获取图片的大小，做大小限制有用
       let imgSize = file.size;
-      console.log(imgSize);
       const _this = this; // this指向问题，所以在外面先定义
       // 比如上传头像限制5M大小，这里获取的大小单位是b
       if (imgSize <= 5000 * 1024) {
         // 合格
         _this.errorStr = "";
         _this.picture = this.getObjectURL(file)
-
       } else {
         this.$message.error("图片大小不符，请重新上传大小5M以内的图片!");
       }
     },
-      getObjectURL (file) {
+    getObjectURL (file) {
         let url = null ;
         if (window.createObjectURL!=undefined) { // basic
             url = window.createObjectURL(file) ;
@@ -145,16 +170,15 @@ export default {
         }
         return url ;
     },
-
     jumpEmil() {
       this.$router.push("/Personal/ChangeMail").catch(err => console.log(err));
     },
     jumpTel() {
       this.$router.push("/Personal/ChangeTel").catch(err => console.log(err));
     },
-    fileClick() {
-      this.$refs.input.dispatchEvent(new MouseEvent("click"));
-    },
+    // fileClick() {
+    //   this.$refs.input.dispatchEvent(new MouseEvent("click"));
+    // },
     addStyle() {
       this.enable = true;
     },
@@ -162,18 +186,20 @@ export default {
       this.enable = false;
     },
     save() {
-      this.$router.push("/Personal");
-
+      this.$refs.form.submit()
       //修改个人信息
-      return this.$api.personal.PersonalInfo({
+      this.$api.personal.PersonalInfo({
         loginName: this.$store.state.token.loginName,//旧手机号
-        picture: this.$refs.upload.uploadFiles,
         nickName: this.nickName,
-        gender: this.radio,
+        gender: this.sex,
         birthDate: this.birth,
         email: this.email,
         userLoginName: this.tel,//新手机号
         personalInfo: this.personalInfo
+      }).then(res=>{
+        if(res==true){
+          this.$router.push("/Personal");
+        }
       });
     },
 
@@ -220,6 +246,7 @@ export default {
       height: 150px;
       border-radius: 100px;
       position: absolute;
+      top: 25px;
       border: none;
       cursor: pointer;
       color: #fff;
@@ -249,7 +276,7 @@ export default {
     position: absolute;
     right: 150px;
     bottom: 20px;
-    button {
+    input {
       width: 100px;
       height: 30px;
       margin-left: 30px;
@@ -275,7 +302,7 @@ export default {
   height: 600px;
   text-align: right;
   // border: 1px solid red;
-  form {
+  .form {
     div {
       margin-top: 20px;
       display: flex;
