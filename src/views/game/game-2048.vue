@@ -1,9 +1,10 @@
 <template>
-  <div class="container">
+<div class="game-2048">
+ <div class="container">
     <div class="content">
       <div class="btn">
         <button style="margin-bottom: 5px;" @click="goRefresh()">New Game</button>
-        <button @click="goGame()">Go GameCenter</button>
+        <button @click="goGame()" style="background-color: #76c47d">Go GameCenter</button>
       </div>
       <div class="mid">
         <p>SCORE</p>
@@ -24,6 +25,8 @@
       <button @click="goGame()">Go GameCenter</button>
     </div>
   </div>
+</div>
+ 
 </template>
 
 <script>
@@ -435,8 +438,16 @@ export default {
 * {
   margin: 0;
   padding: 0;
+  
 }
-.container {
+.game-2048{
+  width: 100%;
+  height: 100%;
+  background: url("../../assets/images/game-Images/game-2048/1.jpg");
+  background-attachment: fixed;
+  background-size: 100% 100%;
+
+  .container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -537,4 +548,7 @@ export default {
     background-color: #76c47d;
   }
 }
+
+}
+
 </style>
