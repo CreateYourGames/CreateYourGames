@@ -28,7 +28,7 @@ export default {
   width: 100%;
 
   .contant {
-    background:rgba(255,255,255,0.3);
+    background:rgba(27, 27, 27, 0.7);
     display: flex;
     flex-direction: row;
     padding:12px 0;
