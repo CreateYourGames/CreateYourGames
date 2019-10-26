@@ -271,17 +271,23 @@ export default {
         //检测子弹和飞机碰撞
         danger(enemy){
             for(var i=0;i<this.bullets.length;i++){
-                //获取子弹的位置
-                var bulletL=this.bullets[i].style.left
-                var bulletT=this.bullets[i].style.top
-                //获取敌机的位置
-                var enemyL=enemy.style.left
-                var enemyT=enemy.style.top
-                //获取敌机的宽高
-                var enemyW=this.getStyle(enemy,'width')
-                var enemyH=this.getStyle(enemy,'height')
+                // 得到子弹的左上边距
+                var bulletL = this.getStyle(this.bullets[i],"left")
+                ,	bulletT = this.getStyle(this.bullets[i],"top");
+                // console.log(bulletL,bulletT)
+                // 得到敌机的左上边距
+                var enemyL = this.getStyle(enemy,"left")
+                ,	enemyT = this.getStyle(enemy,"top");
+                // console.log(enemyL,enemyT)
+                // 得到敌机的宽高
+                var enemyW = this.getStyle(enemy,"width")
+                ,	enemyH = this.getStyle(enemy,"height");
+                // console.log( enemyW)
+                var condition = bulletL + this.bulletW >= enemyL && bulletL <= enemyL + enemyW && bulletT + this.bulletH == enemyT;
+                // console.log(condition)
             }
-            console.log(enemyH,enemyW)
+            // console.log(condition)
+            
         },
     },
 }
