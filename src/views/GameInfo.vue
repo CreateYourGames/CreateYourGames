@@ -46,7 +46,7 @@
                     </div>
                     <div class="game-start">
                         <el-row>
-                            <el-button round type="primary">开始游戏</el-button>
+                            <el-button round type="primary" @click="toPlaying">开始游戏</el-button>
                         </el-row>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
                     <li v-for="(item,index) in rankingList" :key='index'>
                         <span>{{index+1}}</span>
                         <span><img :src="item.picture" alt=""></span>
-                        <span>{{item.gameScore}}</span>
+                        <span>{{item.score}}</span>
                     </li>
                 </ul>
             </div>
@@ -177,7 +177,7 @@
                 commentFlag: false,
                 qqFlag: true,
                 loadingMore: false,
-                gameImg:[],
+                gameImg: [],
                 loginName: this.$store.state.token.loginName,
                 // 游戏简介
                 gameDetail: '',
@@ -261,7 +261,7 @@
             this.$api.gameInfo.gameInfoApi({id: this.id, loginName: this.$store.state.token.loginName}).then(res => {
                 this.gameName = res.gameInfo[0].gameName;
                 console.log(this.gameName);
-                this.gameImg=res.gameInfo[0].gamePic.split('|')
+                this.gameImg = res.gameInfo[0].gamePic.split('|')
                 this.gameDetail = res.gameInfo[0].gameDetail
                 this.hotCommentList = res.hotCommentList
                 this.rankingList = res.rankList
@@ -281,9 +281,20 @@
             },
             //返回游戏库
             toGameCenter() {
-                this.$router.push('/Game')
+                this.$router.push('/GameCenter');
             },
-            //添加到喜欢
+            //获取url游戏id
+            getGameId() {
+                const query = window.location.hash;
+                const pair = query.split("=");
+                return pair[1];
+            },
+            //开始游戏
+            toPlaying() {
+                const gameId = this.getGameId();
+                this.$router.push(`/Game/${gameId}`);
+            },
+            // 添加到喜欢
             addToLove() {
                 if (this.loginName) {
                     var love = {
@@ -317,7 +328,7 @@
             //发表评论
             async publish() {
                 if (this.loginName) {
-                    if(this.comment==''){
+                    if (this.comment == '') {
                         this.$message.error("请先输入内容")
                         return
                     }
@@ -588,7 +599,7 @@
                             cursor: pointer;
                         }
                     }
-                    .game-start{
+                    .game-start {
                         margin-right: 20px;
                     }
                 }

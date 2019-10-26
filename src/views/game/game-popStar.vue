@@ -85,7 +85,7 @@
                 // 当前关卡数
                 level: 1,
                 // 当前关卡目标分
-                targetScore: 7000,
+                targetScore: 700,
                 // 连击判断符
                 goodFlag: 0,
                 // 加分判断符
@@ -337,16 +337,21 @@
             },
             // 退出游戏，若已登录则上传分数
             exitGame(){
-                this.$api.gameCenter.showAllGames({
-                    loginName: this.$store.state.token.loginName,
-                    gameScore: this.totalScore,
-                    gameId: value.gameId
-                }).then(res => {
-                    console.log(res);
+                if(this.$store.state.token.loginName){
+                    this.$api.gameScore.uploadScore({
+                        loginName: this.$store.state.token.loginName,
+                        gameScore: this.totalScore,
+                        gameId: window.location.hash.split('/')[2]
+                    }).then(res => {
+                        console.log(res);
+                        this.$router.push('/GameCenter');
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                }
+                else{
                     this.$router.push('/GameCenter');
-                }).catch(err => {
-                    console.log(err);
-                })
+                }
 
             },
             restart(){

@@ -119,40 +119,34 @@ export default new Router({
             name: 'GameInfo',
             component: () => import('./views/GameInfo.vue')
         },
-        //游戏进行页
+        // 游戏进行页
         {
             path: '/GamePlaying',
             name: 'GamePlaying',
             component: () => import('./views/GamePlaying.vue')
         }
         ,
-        //游戏进行页
-        {
-            path: '/Game',
-            name: 'Game',
-            component: () => import('./views/GameCenter.vue')
-        },
-        // game-打地鼠游戏界面
-        {
-            path: '/game1',
-            name: 'game1',
-            component: () => import('./views/game/game-mouse.vue')
-        },
         // game-popStar 消灭星星
         {
-            path: '/game/popStar',
+            path: '/game/1',
             name: 'popStar',
             component: () => import('./views/game/game-popStar.vue')
         },
+        // game-mouse 打地鼠
+        {
+            path: '/game/2',
+            name: 'mouse',
+            component: () => import('./views/game/game-mouse.vue')
+        },
         // game-my2048游戏界面
         {
-            path: '/game/my2048',
-            name: 'game2',
+            path: '/game/3',
+            name: '2048',
             component: () => import('./views/game/game-2048.vue')
         },
-        //打飞机
+        // game-plane 打飞机
         {
-            path:'/game/plane',
+            path:'/game/4',
             name:'plane',
             component:()=>import('./views/game/game-plane.vue')
         }
