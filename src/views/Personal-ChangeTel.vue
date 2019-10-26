@@ -11,8 +11,7 @@
                 v-model="oldPhone"
                 @blur="oldBlur"
                 type="text"
-                name
-                id
+                disabled
                 placeholder="请输入您原先绑定的手机号"
               />
               <span class="tel-tips" v-if="!regFlag1">手机号格式不正确</span>
@@ -63,8 +62,8 @@
             </div>
           </div>
           <div class="btn">
-            <button class="define" @click="goPerson()">取消</button>
-            <button class="define" @click="go()">确定</button>
+            <button type="button" class="define" @click="goPerson()">取消</button>
+            <button type="button" class="define" @click="go()">确定</button>
           </div>
         </form>
       </div>
@@ -90,31 +89,30 @@ export default {
       codeFlag: false,
       Flag: 0, //未验证时
 
-      oldPhone: "",
+      oldPhone: this.$store.state.token.loginName,
       newPhone: "",
-      yzm: "", //发送的验证码
+      yzm: "", //获得的验证码
       YZM: "", //输入的验证码
 
       regFlag1: true,
       regFlag2: true,
-      rules: {
-        phone: [
-          { required: true, message: "请填写手机号码", trigger: "change" }
-        ]
-      }
     };
   },
-  // mounted() {
-  //    console.log(this.$refs.btn);
-  // },
   methods: {
     go() {
-      if (this.codeFlag === true) {
-        this.$api.verify.personalPhone({
+      if (this.YZM && this.codeFlag == true) {
+        this.$api.verify.updatePhone({
           newPhone: this.newPhone,
           oldPhone: this.oldPhone
+        }).then(res=>{
+          if(res==true){
+            this.$message({
+              message:'修改手机号成功',
+              type:'success'
+            })
+            this.$router.push('/Personal/UpdateInfo')
+          }
         });
-        this.$router.push("/Personal/UpdateInfo");
       }
     },
     // 取消，回个人信息页
@@ -124,13 +122,10 @@ export default {
 
     JudgeYZM() {
       this.Flag = true;
-      if (this.YZM === this.yzm) {
+      if (this.YZM&&this.YZM == this.yzm) {
         this.codeFlag = true;
-        //  this.$api.verify.personalPhone({newPhone:this.newPhone,oldPhone:this.oldPhone});
       } else {
         this.codeFlag = false;
-        // console.log(this.$refs.sub);
-        //   this.$refs.sub.style.disabled=false;
       }
     },
     oldBlur() {
@@ -143,25 +138,24 @@ export default {
     },
     // 获取验证码
     getCode() {
-      // 发送新手机号
+      // 发送旧手机号
       this.$api.verify
-        .PersonalPhone({
-          // Tel: this.oldPhone,
-          phone: this.newPhone
+        .sendToOldPhone({
+          phone: this.oldPhone
         })
         .then(res => {
           this.yzm = res.randomNum;
           // yzm=res.randomNum;
-          console.log(res.randomNum);
         });
-
       // 验证码60秒倒计时
       if (!this.timer) {
         this.timer = setInterval(() => {
           if (this.countdown > 0 && this.countdown <= 60) {
             this.countdown--;
+            this.codeDisabled = true;
             if (this.countdown !== 0) {
               this.codeMsg = "重新发送(" + this.countdown + ")";
+              this.codeDisabled = true;
             } else {
               clearInterval(this.timer);
               this.codeMsg = "获取验证码";

@@ -150,5 +150,11 @@ export default new Router({
             name: 'game2',
             component: () => import('./views/game/game-2048.vue')
         },
+        //打飞机
+        {
+            path:'/game/plane',
+            name:'plane',
+            component:()=>import('./views/game/game-plane.vue')
+        }
     ]
 })

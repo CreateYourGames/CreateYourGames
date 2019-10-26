@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" @click="searchDisplay">
     <topNav></topNav>
     <div class="header">
       <div class="content">
@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <div class="Game" @click="searchDisplay">
+    <div class="Game" >
       <div class="left">
         <div class="middle">
           <!-- 游戏列表 -->
@@ -25,7 +25,7 @@
             :key="index"
             @click="toDetails(item.gameId-1)"
           >
-            <img :src="item.gamePic" alt="游戏图片" />
+            <img :src="item.gameLogo" alt="游戏图片" />
             <p>{{item.gameName}}</p>
           </div>
         </div>

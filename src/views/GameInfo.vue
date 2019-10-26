@@ -10,7 +10,7 @@
         <div class="content">
             <div class="game-content">
                 <div class="swiper1">
-                    <swiper class="swiper"></swiper>
+                    <swiper class="swiper" :swiperImage="gameImg"></swiper>
                 </div>
                 <div class="content-func">
                     <div class="name">
@@ -177,6 +177,7 @@
                 commentFlag: false,
                 qqFlag: true,
                 loadingMore: false,
+                gameImg:[],
                 loginName: this.$store.state.token.loginName,
                 // 游戏简介
                 gameDetail: '',
@@ -260,6 +261,7 @@
             this.$api.gameInfo.gameInfoApi({id: this.id, loginName: this.$store.state.token.loginName}).then(res => {
                 this.gameName = res.gameInfo[0].gameName;
                 console.log(this.gameName);
+                this.gameImg=res.gameInfo[0].gamePic.split('|')
                 this.gameDetail = res.gameInfo[0].gameDetail
                 this.hotCommentList = res.hotCommentList
                 this.rankingList = res.rankList
@@ -315,6 +317,10 @@
             //发表评论
             async publish() {
                 if (this.loginName) {
+                    if(this.comment==''){
+                        this.$message.error("请先输入内容")
+                        return
+                    }
                     const date = new Date();
                     const now = date.getFullYear() + "年" +
                         (date.getMonth() + 1).toString().padStart(2, '0') + "月" +
@@ -533,6 +539,7 @@
                     font-size: 14px;
                     border-right: 1px solid #ddd;
                     .name {
+                        width: 200px;
                         p {
                             margin: 0 20px;
                             font-size: 25px;
@@ -547,7 +554,7 @@
                         display: flex;
                         justify-content: space-between;
                         line-height: 25px;
-                        margin-left: 200px;
+                        margin-left: 160px;
                         .setLove {
                             width: 90px;
                             border: 1px solid #ccc;
@@ -580,6 +587,9 @@
                             height: 20px;
                             cursor: pointer;
                         }
+                    }
+                    .game-start{
+                        margin-right: 20px;
                     }
                 }
                 .content-info {
