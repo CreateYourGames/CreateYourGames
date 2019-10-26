@@ -1,12 +1,13 @@
 <template>
 <div class="nav">
-  <!-- <div v-if="newGame" class="newGame">
-    <img class="cat" src="../../assets/images/game1imgs/cat.gif" alt="">
+  <div v-if="result" class="result">
+    <p>最高分是{{score}}</p>
+    <img class="cat" src="../../assets/images/game-Images/game-mouse/cat.gif" alt="">
     <ul>
-      <li><img class="start" @click="start" src="../../assets/images/game1imgs/gamestart.png" alt=""></li>
-      <li><img class="out" @click="quit" src="../../assets/images/game1imgs/out.png" alt=""></li>
+      <li><img class="start" @click="start" src="../../assets/images/game-Images/game-mouse/gamestart.png" alt=""></li>
+      <li><img class="out" @click="quit" src="../../assets/images/game-Images/game-mouse/out.png" alt=""></li>
     </ul>
-  </div> -->
+  </div>
   <div class="newGame" ref="newGame"></div>
   <div class="game">
     <div
@@ -29,8 +30,8 @@
   <!-- 组件 -->
   <div class="component">
     <ul>
-      <li><img class="start" @click="start" src="../../assets/images/game1imgs/gamestart.png" alt=""></li>
-      <li><img class="out" @click="quit" src="../../assets/images/game1imgs/out.png" alt=""></li>
+      <li><img class="start" @click="start" src="../../assets/images/game-Images/game-mouse/gamestart.png" alt=""></li>
+      <li><img class="out" @click="quit" src="../../assets/images/game-Images/game-mouse/out.png" alt=""></li>
     </ul>
   </div>
 </div>
@@ -40,21 +41,40 @@
 export default {
   data() {
     return {
-      // 开始游戏
-      // newGame:'',
-      // 游戏start
-      gameStart:true,
-        // 锤子
-      istrue: true,
-      ground1: "ground1",
-      ground2: "ground2",
-      num:'',
-        //   gif图
-      img:require("../../assets/images/game1imgs/bomb.gif"),
-      // 加十分
-      imgadd:require('../../assets/images/game1imgs/addScore.png'),
+      // newGame
+      result:false,
+    //  遍历的数组
+    flag:false,
+    i:0,
+    arr:[
+      {
+        src:require('../../assets/images/game-Images/game-mouse/start1.png')
+      },
+      {
+        src:require('../../assets/images/game-Images/game-mouse/start2.png')
+      },
+      {
+        src:require('../../assets/images/game-Images/game-mouse/start3.png')
+      },
+      {
+        src:require('../../assets/images/game-Images/game-mouse/start0.png')
+      }
+      ,
+      {
+        src:''
+      }
+    ],
+    // 锤子
+    istrue: true,
+    ground1: "ground1",
+    ground2: "ground2",
+    num:'',
+    //   gif图
+    img:require("../../assets/images/game-Images/game-mouse/bomb.gif"),
+    // 加十分
+    imgadd:require('../../assets/images/game-Images/game-mouse/addScore.png'),
     //   洞口位置
-      holes:[
+    holes:[
           {
               x:130,
               y:158
@@ -121,11 +141,9 @@ export default {
     },
     //   锤子
     down() {
-      console.log("鼠标按下");
       this.istrue = !this.istrue;
     },
     up() {
-      console.log("鼠标抬起");
       this.istrue = !this.istrue;
     },
     // 老鼠洞
@@ -138,13 +156,12 @@ export default {
             hole.style.position = 'absolute'
             hole.style.width = '110px'
             hole.style.height = '110px'
-            // hole.style.border = '1px solid black'
             hole.style.top = this.holes[i].y+'px'
             this.$refs.ground.appendChild(hole)
             this.appear[i]=hole
             // 遮罩层
             var hide = document.createElement('img')
-            hide.src = require(`../../assets/images/game1imgs/mask${this.hide}.png`)
+            hide.src = require(`../../assets/images/game-Images/game-mouse/mask${this.hide}.png`)
             hide.style.left = this.holes[i].x+'px'
             hide.style.top = this.holes[i].y+'px'
             hide.style.position = 'absolute'
@@ -175,7 +192,7 @@ export default {
         mouse.style.height = '73px'
         mouse.style.top = '20px'
         mouse.style.zIndex = 2*i
-        mouse.style.backgroundImage = `url(${require(`../../assets/images/game1imgs/mouse${this.num}.png`)})`
+        mouse.style.backgroundImage = `url(${require(`../../assets/images/game-Images/game-mouse/mouse${this.num}.png`)})`
         mouse.style.backgroundSize = '100%'
         this.mouse[i] = mouse
         this.appear[i].appendChild(mouse)
@@ -186,7 +203,6 @@ export default {
         }, 2000);
 
         this.mouse[i].timer = timer
-        console.log(this.mouse[i].timer,'timer')
     },
     // 控制地鼠单次出现
     controlMouses(){
@@ -210,15 +226,13 @@ export default {
                 addScore.style.left = '40px'
                 addScore.style.position = 'absolute'
                 this.mouse[i].appendChild(addScore)
-                console.log(this.mouse[i].style,'+10分样式')
-
                 var boom = document.createElement('img')
                 boom.src = `${this.img}`
                 boom.style.top='-30px'
                 boom.style.position = 'absolute'
                 boom.style.width = '100px'
                 boom.style.height = '73px'
-                this.mouse[i].style.backgroundImage = `url(${require(`../../assets/images/game1imgs/hit${this.hit[i]}.png`)})`
+                this.mouse[i].style.backgroundImage = `url(${require(`../../assets/images/game-Images/game-mouse/hit${this.hit[i]}.png`)})`
                 this.mouse[i].appendChild(boom)
                 clearInterval(this.mouse[i].timer)
             }else{
@@ -238,56 +252,34 @@ export default {
   },
 
   mounted() {
+      // 倒计时
+      var start = document.createElement('img');
+      var timer1 = setInterval(() => {
+        if(this.i<4){
+        start.src = this.arr[this.i].src
+        this.$refs.newGame.appendChild(start)
+        this.i++;
+        }else if(this.i==4){
+          start.src = this.arr[this.i].src
+          this.$refs.newGame.appendChild(start)
+          this.flag = true
+          this.i++
+          if(this.flag){
             this.createHoles()
-            this.gameTimer = setInterval(() => {
-            this.controlMouses()
-            if(this.life<=0){
-                clearInterval(this.gameTimer)
-                alert('最高分是'+this.score)
-            }
-            this.maxMouse = this.score / 100 + 1;
-        } , 200);  
-
-// 倒计时  我可能有毛病~~  有空把这改掉
-      var self = this
-      setTimeout(() => {
-        // start
-        let start0 = document.createElement('img');
-        start0.src = require('../../assets/images/game1imgs/start.png')
-        console.log(self)
-        console.log(self.$refs.newGame)
-        self.$refs.newGame.appendChild(start0)
-        setTimeout(() => {
-          // 3
-        self.$refs.newGame.removeChild(start0)
-        let start1 = document.createElement('img');
-        start1.src = require('../../assets/images/game1imgs/three.png')
-        console.log(self)
-        console.log(self.$refs.newGame)
-        self.$refs.newGame.appendChild(start1)
-        setTimeout(() => {
-          // 2
-        self.$refs.newGame.removeChild(start1)
-        let start2 = document.createElement('img');
-        start2.src = require('../../assets/images/game1imgs/two.png')
-        console.log(self)
-        console.log(self.$refs.newGame)
-        self.$refs.newGame.appendChild(start2)
-         setTimeout(() => {
-          //  1
-        self.$refs.newGame.removeChild(start2)
-        let start3 = document.createElement('img');
-        start3.src = require('../../assets/images/game1imgs/one.png')
-        console.log(self)
-        console.log(self.$refs.newGame)
-        self.$refs.newGame.appendChild(start3)
-        setTimeout(() => {
-          self.$refs.newGame.removeChild(start3)
-        }, 1000);
-      }, 1000);
-      }, 1000);
-      }, 1000);
-      }, 50);    
+                this.gameTimer = setInterval(() => {
+                this.controlMouses()
+                if(this.life<=0){
+                    clearInterval(this.gameTimer)
+                    this.result = true
+                }
+                this.maxMouse = this.score / 100 + 1;
+            } , 200);
+          }
+        }
+        else{
+          clearInterval(timer1)
+        }
+      }, 1000);     
   }
 };
 </script>
@@ -295,10 +287,39 @@ export default {
 <style lang="scss" scoped>
 .nav{
   width: 100%;
-  background-image: url('../../assets/images/game1imgs/1.jpg');
+  background-image: url('../../assets/images/game-Images/game-mouse/1.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   border: 1px solid #fff;
+  .result{
+    width: 400px; 
+    position: absolute;
+    border-radius: 20px;
+    z-index: 19999999;
+    margin-left: 36%;
+    margin-top: 250px;
+    background-color: #fff;
+    p{
+      text-align: center;
+      font-size: 20px;
+      font-family: 微软雅黑;
+    }
+    img{
+      width: 250px;
+    }
+    ul{
+      display: flex;
+      justify-content: space-around;
+    }
+    ul li{
+      list-style: none;
+      display: inline-block;
+      .out,.start{
+        width: 130px;
+        cursor: pointer;
+      }
+    }
+  }
     // 组件
   .component{
     // border: 1px solid red;
@@ -311,6 +332,7 @@ export default {
       vertical-align: middle;
       .out,.start{
         width: 150px;
+        cursor: pointer;
       }
     }
   }
@@ -331,10 +353,10 @@ export default {
   height: 550px;
   margin: 100px auto;
   .ground1 {
-    cursor: url("../../assets/images/game1imgs/hammer01.png"), auto;
+    cursor: url("../../assets/images/game-Images/game-mouse/hammer01.png"), auto;
   }
   .ground2 {
-    cursor: url("../../assets/images/game1imgs/hammer02.png"), auto;
+    cursor: url("../../assets/images/game-Images/game-mouse/hammer02.png"), auto;
   }
   .ground {
     width: 700px;

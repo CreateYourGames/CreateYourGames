@@ -32,6 +32,32 @@
     <div class="info-out">
       <div class="content">
         <div class="form">
+        <!-- <form action> -->
+          <div>
+            <label for>昵称：</label>
+            <input type="text" v-model="nickName" />
+            <!-- <input type="text" v-model="this.nickName" readonly style="border:none;" /> -->
+          </div>
+          <div>
+            <label for>性别：</label>
+            <select v-model="sex">
+              <option value="0">男</option>
+              <option value="1">女</option>
+            </select>
+            <!-- <input type="text" v-model="this.nickName" readonly style="border:none;" /> -->
+          </div>
+          <el-form status-icon label-width="80px" ref="ruleForm" class="demo-ruleForm">
+            <el-form-item label prop="Birth" label-width="0">
+              <label for style="float:left">出生年月：</label>
+              <el-date-picker
+                style="margin-top:5px;"
+                v-model="birth"
+                value-format="yyyy-MM-dd"
+                type="date"
+                placeholder="选择日期"
+              ></el-date-picker>
+            </el-form-item>
+          </el-form>
           <div>
               <label for>昵称：</label>
               <input type="text" v-model="nickName" />
@@ -85,7 +111,7 @@ export default {
       // 个人信息
       picture: "",
       nickName: "",
-      radio: "", //性别
+      sex: "", //性别
       value: "", //出生日期
       email: "",
       tel: "",
@@ -110,6 +136,11 @@ export default {
       })
       .catch(err => console.log(err));
 
+  },
+  mounted() {
+    // console.log(this.$refs.upload.uploadFiles)
+    // console.log(this.$refs.upload)
+    // console.log(this.$refs.upload.value)
   },
   methods: {
     IconChange(e) {
@@ -145,9 +176,9 @@ export default {
     jumpTel() {
       this.$router.push("/Personal/ChangeTel").catch(err => console.log(err));
     },
-    fileClick() {
-      this.$refs.input.dispatchEvent(new MouseEvent("click"));
-    },
+    // fileClick() {
+    //   this.$refs.input.dispatchEvent(new MouseEvent("click"));
+    // },
     addStyle() {
       this.enable = true;
     },
@@ -160,7 +191,7 @@ export default {
       this.$api.personal.PersonalInfo({
         loginName: this.$store.state.token.loginName,//旧手机号
         nickName: this.nickName,
-        gender: this.radio,
+        gender: this.sex,
         birthDate: this.birth,
         email: this.email,
         userLoginName: this.tel,//新手机号
