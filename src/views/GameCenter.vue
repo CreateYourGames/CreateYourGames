@@ -74,211 +74,211 @@ export default {
       tabType: "all",
       active: 1,
       list: [
-        {
-          gameId: 1,
-          gameName: "飞机大战",
-          userId: "1",
-          gameType: "shoot",
-          gameDetail:
-            "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
-          gameVersion: "1.0",
-          gamePic: require('../assets/images/gameCenter/game01.jpg'),
-          gameCode: "代码正在准备中",
-          publishTime: "2019-10-09T16:00:00.000Z"
-        },
-        {
-          gameId: 2,
-          gameName: "连连看",
-          userId: "3",
-          gameType: "clever",
-          gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
-          gameVersion: "1.0",
-          gamePic: require('../assets/images/gameCenter/game02.jpg'),
-          gameCode: "代码正在准备中",
-          publishTime: "2019-10-10T16:00:00.000Z"
-        },
-        {
-          gameId: 3,
-          gameName: "贪吃蛇",
-          userId: "2",
-          gameType: "smallGame",
-          gameDetail:
-            "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
-          gameVersion: "1.0",
-          gamePic: require('../assets/images/gameCenter/game03.jpg'),
-          gameCode: "代码正在准备中",
-          publishTime: "2019-10-02T16:00:00.000Z"
-        },
-        {
-          gameId: 4,
-          gameName: "打地鼠",
-          userId: "4",
-          gameType: "smallGame",
-          gameDetail: "怀旧小游戏",
-          gameVersion: "1.0",
-          gamePic: require('../assets/images/gameCenter/game04.jpg'),
-          gameCode: "代码正在准备中",
-          publishTime: "2019-09-30T16:00:00.000Z"
-        },
-        {
-          gameId: 5,
-          gameName: "飞机大战",
-          userId: "1",
-          gameType: "shoot",
-          gameDetail:
-            "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
-          gameVersion: "1.0",
-          gamePic: require('../assets/images/gameCenter/game05.jpg'),
-          gameCode: "代码正在准备中",
-          publishTime: "2019-10-09T16:00:00.000Z"
-        },
-        {
-          gameId: 6,
-          gameName: "连连看",
-          userId: "3",
-          gameType: "clever",
-          gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
-          gameVersion: "1.0",
-          gamePic: require('../assets/images/gameCenter/game06.jpg'),
-          gameCode: "代码正在准备中",
-          publishTime: "2019-10-10T16:00:00.000Z"
-        },
-        {
-          gameId: 7,
-          gameName: "贪吃蛇",
-          userId: "2",
-          gameType: "smallGame",
-          gameDetail:
-            "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
-          gameVersion: "1.0",
-          gamePic: require('../assets/images/gameCenter/game01.jpg'),
-          gameCode: "代码正在准备中",
-          publishTime: "2019-10-02T16:00:00.000Z"
-        },
-        {
-          gameId: 8,
-          gameName: "打地鼠",
-          userId: "4",
-          gameType: "smallGame",
-          gameDetail: "怀旧小游戏",
-          gameVersion: "1.0",
-          gamePic: require('../assets/images/gameCenter/game02.jpg'),
-          gameCode: "代码正在准备中",
-          publishTime: "2019-09-30T16:00:00.000Z"
-        }
+        // {
+        //   gameId: 1,
+        //   gameName: "飞机大战",
+        //   userId: "1",
+        //   gameType: "shoot",
+        //   gameDetail:
+        //     "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
+        //   gameVersion: "1.0",
+        //   gamePic: require('../assets/images/gameCenter/game01.jpg'),
+        //   gameCode: "代码正在准备中",
+        //   publishTime: "2019-10-09T16:00:00.000Z"
+        // },
+        // {
+        //   gameId: 2,
+        //   gameName: "连连看",
+        //   userId: "3",
+        //   gameType: "clever",
+        //   gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
+        //   gameVersion: "1.0",
+        //   gamePic: require('../assets/images/gameCenter/game02.jpg'),
+        //   gameCode: "代码正在准备中",
+        //   publishTime: "2019-10-10T16:00:00.000Z"
+        // },
+        // {
+        //   gameId: 3,
+        //   gameName: "贪吃蛇",
+        //   userId: "2",
+        //   gameType: "smallGame",
+        //   gameDetail:
+        //     "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
+        //   gameVersion: "1.0",
+        //   gamePic: require('../assets/images/gameCenter/game03.jpg'),
+        //   gameCode: "代码正在准备中",
+        //   publishTime: "2019-10-02T16:00:00.000Z"
+        // },
+        // {
+        //   gameId: 4,
+        //   gameName: "打地鼠",
+        //   userId: "4",
+        //   gameType: "smallGame",
+        //   gameDetail: "怀旧小游戏",
+        //   gameVersion: "1.0",
+        //   gamePic: require('../assets/images/gameCenter/game04.jpg'),
+        //   gameCode: "代码正在准备中",
+        //   publishTime: "2019-09-30T16:00:00.000Z"
+        // },
+        // {
+        //   gameId: 5,
+        //   gameName: "飞机大战",
+        //   userId: "1",
+        //   gameType: "shoot",
+        //   gameDetail:
+        //     "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
+        //   gameVersion: "1.0",
+        //   gamePic: require('../assets/images/gameCenter/game05.jpg'),
+        //   gameCode: "代码正在准备中",
+        //   publishTime: "2019-10-09T16:00:00.000Z"
+        // },
+        // {
+        //   gameId: 6,
+        //   gameName: "连连看",
+        //   userId: "3",
+        //   gameType: "clever",
+        //   gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
+        //   gameVersion: "1.0",
+        //   gamePic: require('../assets/images/gameCenter/game06.jpg'),
+        //   gameCode: "代码正在准备中",
+        //   publishTime: "2019-10-10T16:00:00.000Z"
+        // },
+        // {
+        //   gameId: 7,
+        //   gameName: "贪吃蛇",
+        //   userId: "2",
+        //   gameType: "smallGame",
+        //   gameDetail:
+        //     "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
+        //   gameVersion: "1.0",
+        //   gamePic: require('../assets/images/gameCenter/game01.jpg'),
+        //   gameCode: "代码正在准备中",
+        //   publishTime: "2019-10-02T16:00:00.000Z"
+        // },
+        // {
+        //   gameId: 8,
+        //   gameName: "打地鼠",
+        //   userId: "4",
+        //   gameType: "smallGame",
+        //   gameDetail: "怀旧小游戏",
+        //   gameVersion: "1.0",
+        //   gamePic: require('../assets/images/gameCenter/game02.jpg'),
+        //   gameCode: "代码正在准备中",
+        //   publishTime: "2019-09-30T16:00:00.000Z"
+        // }
       ],
       gameList: [
-          {
-              gameId: 1,
-              gameName: "飞机大战",
-              userId: "1",
-              gameType: "shoot",
-              gameDetail:
-                  "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
-              gameVersion: "1.0",
-              gamePic: require('../assets/images/gameCenter/game01.jpg'),
-              gameCode: "代码正在准备中",
-              publishTime: "2019-10-09T16:00:00.000Z"
-          },
-          {
-              gameId: 2,
-              gameName: "连连看",
-              userId: "3",
-              gameType: "clever",
-              gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
-              gameVersion: "1.0",
-              gamePic: require('../assets/images/gameCenter/game02.jpg'),
-              gameCode: "代码正在准备中",
-              publishTime: "2019-10-10T16:00:00.000Z"
-          },
-          {
-              gameId: 3,
-              gameName: "贪吃蛇",
-              userId: "2",
-              gameType: "smallGame",
-              gameDetail:
-                  "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
-              gameVersion: "1.0",
-              gamePic: require('../assets/images/gameCenter/game03.jpg'),
-              gameCode: "代码正在准备中",
-              publishTime: "2019-10-02T16:00:00.000Z"
-          },
-          {
-              gameId: 4,
-              gameName: "打地鼠",
-              userId: "4",
-              gameType: "smallGame",
-              gameDetail: "怀旧小游戏",
-              gameVersion: "1.0",
-              gamePic: require('../assets/images/gameCenter/game04.jpg'),
-              gameCode: "代码正在准备中",
-              publishTime: "2019-09-30T16:00:00.000Z"
-          },
-          {
-              gameId: 5,
-              gameName: "飞机大战",
-              userId: "1",
-              gameType: "shoot",
-              gameDetail:
-                  "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
-              gameVersion: "1.0",
-              gamePic: require('../assets/images/gameCenter/game05.jpg'),
-              gameCode: "代码正在准备中",
-              publishTime: "2019-10-09T16:00:00.000Z"
-          },
-          {
-              gameId: 6,
-              gameName: "连连看",
-              userId: "3",
-              gameType: "clever",
-              gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
-              gameVersion: "1.0",
-              gamePic: require('../assets/images/gameCenter/game06.jpg'),
-              gameCode: "代码正在准备中",
-              publishTime: "2019-10-10T16:00:00.000Z"
-          },
-          {
-              gameId: 7,
-              gameName: "贪吃蛇",
-              userId: "2",
-              gameType: "smallGame",
-              gameDetail:
-                  "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
-              gameVersion: "1.0",
-              gamePic: require('../assets/images/gameCenter/game01.jpg'),
-              gameCode: "代码正在准备中",
-              publishTime: "2019-10-02T16:00:00.000Z"
-          },
-          {
-              gameId: 8,
-              gameName: "打地鼠",
-              userId: "4",
-              gameType: "smallGame",
-              gameDetail: "怀旧小游戏",
-              gameVersion: "1.0",
-              gamePic: require('../assets/images/gameCenter/game02.jpg'),
-              gameCode: "代码正在准备中",
-              publishTime: "2019-09-30T16:00:00.000Z"
-          }
+      //     {
+      //         gameId: 1,
+      //         gameName: "飞机大战",
+      //         userId: "1",
+      //         gameType: "shoot",
+      //         gameDetail:
+      //             "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
+      //         gameVersion: "1.0",
+      //         gamePic: require('../assets/images/gameCenter/game01.jpg'),
+      //         gameCode: "代码正在准备中",
+      //         publishTime: "2019-10-09T16:00:00.000Z"
+      //     },
+      //     {
+      //         gameId: 2,
+      //         gameName: "连连看",
+      //         userId: "3",
+      //         gameType: "clever",
+      //         gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
+      //         gameVersion: "1.0",
+      //         gamePic: require('../assets/images/gameCenter/game02.jpg'),
+      //         gameCode: "代码正在准备中",
+      //         publishTime: "2019-10-10T16:00:00.000Z"
+      //     },
+      //     {
+      //         gameId: 3,
+      //         gameName: "贪吃蛇",
+      //         userId: "2",
+      //         gameType: "smallGame",
+      //         gameDetail:
+      //             "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
+      //         gameVersion: "1.0",
+      //         gamePic: require('../assets/images/gameCenter/game03.jpg'),
+      //         gameCode: "代码正在准备中",
+      //         publishTime: "2019-10-02T16:00:00.000Z"
+      //     },
+      //     {
+      //         gameId: 4,
+      //         gameName: "打地鼠",
+      //         userId: "4",
+      //         gameType: "smallGame",
+      //         gameDetail: "怀旧小游戏",
+      //         gameVersion: "1.0",
+      //         gamePic: require('../assets/images/gameCenter/game04.jpg'),
+      //         gameCode: "代码正在准备中",
+      //         publishTime: "2019-09-30T16:00:00.000Z"
+      //     },
+      //     {
+      //         gameId: 5,
+      //         gameName: "飞机大战",
+      //         userId: "1",
+      //         gameType: "shoot",
+      //         gameDetail:
+      //             "这是一款飞行射击游戏，惊险刺激的大战，通过歼灭敌机的数量来计算最终得分",
+      //         gameVersion: "1.0",
+      //         gamePic: require('../assets/images/gameCenter/game05.jpg'),
+      //         gameCode: "代码正在准备中",
+      //         publishTime: "2019-10-09T16:00:00.000Z"
+      //     },
+      //     {
+      //         gameId: 6,
+      //         gameName: "连连看",
+      //         userId: "3",
+      //         gameType: "clever",
+      //         gameDetail: "经典版的连连看，一定时间内完成相同图标的连接，即可获胜",
+      //         gameVersion: "1.0",
+      //         gamePic: require('../assets/images/gameCenter/game06.jpg'),
+      //         gameCode: "代码正在准备中",
+      //         publishTime: "2019-10-10T16:00:00.000Z"
+      //     },
+      //     {
+      //         gameId: 7,
+      //         gameName: "贪吃蛇",
+      //         userId: "2",
+      //         gameType: "smallGame",
+      //         gameDetail:
+      //             "怀旧小游戏，通过上下左右键来控制方向，根据存活时间计算成绩",
+      //         gameVersion: "1.0",
+      //         gamePic: require('../assets/images/gameCenter/game01.jpg'),
+      //         gameCode: "代码正在准备中",
+      //         publishTime: "2019-10-02T16:00:00.000Z"
+      //     },
+      //     {
+      //         gameId: 8,
+      //         gameName: "打地鼠",
+      //         userId: "4",
+      //         gameType: "smallGame",
+      //         gameDetail: "怀旧小游戏",
+      //         gameVersion: "1.0",
+      //         gamePic: require('../assets/images/gameCenter/game02.jpg'),
+      //         gameCode: "代码正在准备中",
+      //         publishTime: "2019-09-30T16:00:00.000Z"
+      //     }
       ]
     };
   },
   created() {
-    //  this.$api.gameCenter.showAllGames().then(res=>{
-    //       this.gameList=res.data
-    //       //页面加载时将list存入8条数据，作为默认显示 延时是为了在数据取到后再执行该操作
-    //       if(this.gameList.length>8){
-    //           this.gameList.forEach((item,index) => {
-    //               if(index%3==0&&index<24){
-    //                 this.list.push(this.gameList[index])
-    //              }
-    //          });
-    //         }else{
-    //             this.gameList.forEach(item=>{
-    //                 this.list.push(item)
-    //             })
-    //         }
-    //       })
+     this.$api.gameCenter.showAllGames().then(res=>{
+          this.gameList=res.data
+          //页面加载时将list存入8条数据，作为默认显示 延时是为了在数据取到后再执行该操作
+          if(this.gameList.length>8){
+              this.gameList.forEach((item,index) => {
+                  if(index%3==0&&index<24){
+                    this.list.push(this.gameList[index])
+                 }
+             });
+            }else{
+                this.gameList.forEach(item=>{
+                    this.list.push(item)
+                })
+            }
+          })
   },
   methods: {
     toRanking() {

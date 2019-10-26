@@ -30,7 +30,8 @@
     <!-- 内容 -->
     <div class="info-out">
       <div class="content">
-        <form action>
+        <div class="form">
+        <!-- <form action> -->
           <div>
             <label for>昵称：</label>
             <input type="text" v-model="nickName" />
@@ -38,9 +39,9 @@
           </div>
           <div>
             <label for>性别：</label>
-            <select name="sex" v-model="radio">
-              <option value="男">男</option>
-              <option value="女">女</option>
+            <select v-model="sex">
+              <option value="0">男</option>
+              <option value="1">女</option>
             </select>
             <!-- <input type="text" v-model="this.nickName" readonly style="border:none;" /> -->
           </div>
@@ -70,7 +71,7 @@
             <label for class="special">个人简介：</label>
             <textarea cols="30" rows="10" v-model="personalInfo"></textarea>
           </div>
-        </form>
+        <!-- </form> --></div>
       </div>
     </div>
   </div>
@@ -86,7 +87,7 @@ export default {
       // 个人信息
       picture: "",
       nickName: "",
-      radio: "", //性别
+      sex: "", //性别
       value: "", //出生日期
       email: "",
       tel: "",
@@ -102,7 +103,7 @@ export default {
         // console.log(res)
         this.picture = res.userMsg[0].picture; //头像
         this.nickName = res.userMsg[0].nickName; //个人昵称
-        this.radio = res.userMsg[0].gender; //性别
+        this.sex = res.userMsg[0].gender; //性别
         (this.birth = res.userMsg[0].birthDate), //日期
           (this.email = res.userMsg[0].email); //邮箱
         this.tel = res.userMsg[0].userLoginName; //联系方式
@@ -112,9 +113,9 @@ export default {
 
   },
   mounted() {
-    console.log(this.$refs.upload.uploadFiles)
-    console.log(this.$refs.upload)
-    console.log(this.$refs.upload.value)
+    // console.log(this.$refs.upload.uploadFiles)
+    // console.log(this.$refs.upload)
+    // console.log(this.$refs.upload.value)
   },
   methods: {
      IconChange(e) {
@@ -152,9 +153,9 @@ export default {
     jumpTel() {
       this.$router.push("/Personal/ChangeTel").catch(err => console.log(err));
     },
-    fileClick() {
-      this.$refs.input.dispatchEvent(new MouseEvent("click"));
-    },
+    // fileClick() {
+    //   this.$refs.input.dispatchEvent(new MouseEvent("click"));
+    // },
     addStyle() {
       this.enable = true;
     },
@@ -169,7 +170,7 @@ export default {
         loginName: this.$store.state.token.loginName,//旧手机号
         picture: this.$refs.upload.uploadFiles,
         nickName: this.nickName,
-        gender: this.radio,
+        gender: this.sex,
         birthDate: this.birth,
         email: this.email,
         userLoginName: this.tel,//新手机号
