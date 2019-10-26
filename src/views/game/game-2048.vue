@@ -73,14 +73,36 @@ export default {
   },
   mounted() {
     this.init();
+    this.getCookie();//记住最高分
   },
   methods: {
     goRefresh() {
       this.$router.go(0);
     },
     goGame() {
-      this.$router.push("/GameCenter");
+      var _this=this;
+      // this.$router.push("/GameCenter");
+
+
+      // 退出游戏，若已登录则上传分数
+      if(_this.$store.state.token.loginName){
+          _this.$api.gameScore.uploadScore({
+              loginName: _this.$store.state.token.loginName,
+              gameScore: _this.score,
+              gameId: window.location.hash.split('/')[2]
+          }).then(res => {
+              console.log(res);
+              _this.$router.push('/GameCenter');
+          }).catch(err => {
+              console.log(err);
+          })
+      }
+      else{
+          _this.$router.push('/GameCenter');
+      }
+
     },
+
 
     // 1.初始化键盘-ok
     initBoard() {
@@ -356,14 +378,59 @@ export default {
       return true;
     },
 
+    
+     setCookie(c_score,exdays){
+            var exdate = new Date();
+            exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); 
+            window.document.cookie="score="+c_score+  ";path=/;expires=" + exdate.toGMTString();
+
+     },
+     getCookie(){
+        var _this=this;
+        if(document.cookie.length > 0){
+          var arr = document.cookie.split("; ");
+          for (var i = 0; i < arr.length; i++) {
+              var arr2 = arr[i].split("="); //再次切割 //判断查找相对应的值
+              // console.log(arr, arr2);
+              if (arr2[0] == "score") {
+                  _this.bestScore = arr2[1]; //保存到保存数据的地方
+              } 
+            }}
+          },
+
     // 4.键盘“上下左右”移动事件
     move(direction) {
       var _this = this;
       // 判断游戏是否结束
       if (_this.isOver()) {
-        // alert("Game over!");
-        return;
-      }
+
+         // 退出游戏，若已登录则上传分数
+          // if(this.$store.state.token.loginName){
+          //     this.$api.gameScore.uploadScore({
+          //         loginName: this.$store.state.token.loginName,
+          //         gameScore: this.score,
+          //         // gameId: window.location.hash.split('/')[2]
+          //     }).then(res => {
+          //         console.log(res);
+          //         this.$router.push('/GameCenter');
+          //     }).catch(err => {
+          //         console.log(err);
+          //     })
+          // }
+          // else{
+
+            // 没有账号则将最高分放置cookie
+            if(_this.score>_this.bestScore){
+                _this.bestScore=_this.score;
+                console.log(_this.bestScore);
+                _this.setCookie(_this.bestScore,1);
+             }
+            //  this.$router.push('/GameCenter');
+          }
+
+      //   // alert("Game over!");
+      //   return;
+      // }
 
       // 计算移动位置
       var newSquareSet = _this.analysisActions(direction);
@@ -382,6 +449,7 @@ export default {
 
     init() {
       var _this = this;
+
       // 初始化键盘
       _this.initBoard();
       // 生成默认小方块
