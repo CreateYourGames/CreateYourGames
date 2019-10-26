@@ -10,7 +10,7 @@
         <div class="content">
             <div class="game-content">
                 <div class="swiper1">
-                    <swiper class="swiper"></swiper>
+                    <swiper class="swiper" :swiperImage="gameImg"></swiper>
                 </div>
                 <div class="content-func">
                     <div class="name">
@@ -177,6 +177,7 @@
                 commentFlag: false,
                 qqFlag: true,
                 loadingMore: false,
+                gameImg:[],
                 loginName: this.$store.state.token.loginName,
                 // 游戏简介
                 gameDetail: '',
@@ -260,6 +261,7 @@
             this.$api.gameInfo.gameInfoApi({id: this.id, loginName: this.$store.state.token.loginName}).then(res => {
                 this.gameName = res.gameInfo[0].gameName;
                 console.log(this.gameName);
+                this.gameImg=res.gameInfo[0].gamePic.split('|')
                 this.gameDetail = res.gameInfo[0].gameDetail
                 this.hotCommentList = res.hotCommentList
                 this.rankingList = res.rankList
