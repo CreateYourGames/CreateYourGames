@@ -8,7 +8,7 @@
             <div class="to-suggest" @click="toSuggest">提交建议</div>
             <!--<div class="to-publish-game" @click="toPublishGame">发布游戏</div>-->
             <div class="user-icon" @click="toPersonal">
-                <img src="@/assets/images/home/user.png" alt="">
+                <img :src="picture" alt="">
                 个人中心
             </div>
         </div>
@@ -18,6 +18,14 @@
 <script>
     export default {
         name: "top-nav",
+        data(){
+            return{
+                picture:require('@/assets/images/home/user.png')
+            }
+        },
+        created() {
+            this.picture=this.$store.state.picture
+        },
         methods: {
             backHome() {
                 this.$router.push('/')

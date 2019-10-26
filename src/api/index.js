@@ -9,6 +9,7 @@ import updateGameInfo from './updateGameInfo'
 import developerTest from './developerTest'
 import loginInfo from './home'
 import suggest from './suggest'
+import verify from './verify'
 import safety from './safetyCenter'
 import gameScore from './gameScore'
 //将接口导出
@@ -23,6 +24,7 @@ export default{
     developerTest,
     loginInfo,
     suggest,
+    verify,
     safety,
     gameScore
 }

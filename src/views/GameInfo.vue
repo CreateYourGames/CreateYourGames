@@ -315,6 +315,10 @@
             //发表评论
             async publish() {
                 if (this.loginName) {
+                    if(this.comment==''){
+                        this.$message.error("请先输入内容")
+                        return
+                    }
                     const date = new Date();
                     const now = date.getFullYear() + "年" +
                         (date.getMonth() + 1).toString().padStart(2, '0') + "月" +
@@ -533,6 +537,7 @@
                     font-size: 14px;
                     border-right: 1px solid #ddd;
                     .name {
+                        width: 200px;
                         p {
                             margin: 0 20px;
                             font-size: 25px;
@@ -547,7 +552,7 @@
                         display: flex;
                         justify-content: space-between;
                         line-height: 25px;
-                        margin-left: 200px;
+                        margin-left: 160px;
                         .setLove {
                             width: 90px;
                             border: 1px solid #ccc;
@@ -580,6 +585,9 @@
                             height: 20px;
                             cursor: pointer;
                         }
+                    }
+                    .game-start{
+                        margin-right: 20px;
                     }
                 }
                 .content-info {

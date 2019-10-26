@@ -35,23 +35,33 @@
                     console.log('大小合适');
                     // 开始渲染选择的图片
                     // 本地路径方法 1
-                    // this.imgStr = window.URL.createObjectURL(e.target.files[0])
+                     _this.gameIcon = this.getObjectURL(file)
                     // console.log(window.URL.createObjectURL(e.target.files[0])) // 获取当前文件的信息
 
                     // base64方法 2
-                    var reader = new FileReader();
-                    reader.readAsDataURL(file); // 读出 base64
-                    reader.onloadend = function () {
-                        // 图片的 base64 格式, 可以直接当成 img 的 src 属性值
-                        var dataURL = reader.result;
-                        console.log(dataURL);
-                        _this.gameIcon = dataURL
-                        // 下面逻辑处理
-                    }
+                    // var reader = new FileReader();
+                    // reader.readAsDataURL(file); // 读出 base64
+                    // reader.onloadend = function () {
+                    //     // 图片的 base64格式, 可以直接当成 img 的 src 属性值
+                    //     var dataURL = reader.result;
+                    //     _this.gameIcon = dataURL
+                    //     // 下面逻辑处理
+                    // }
                 } else {
                     this.$message.error('图片大小不符，请重新上传大小5M以内的图片!');
                 }
-            }
+            },
+            getObjectURL (file) {
+                let url = null ;
+                if (window.createObjectURL!=undefined) { // basic
+                    url = window.createObjectURL(file) ;
+                }else if (window.webkitURL!=undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file) ;
+                }else if (window.URL!=undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file) ;
+                }
+                return url ;
+            },
         },
     }
 </script>

@@ -11,17 +11,21 @@
       >
         <p>信息完善</p>
 
-        <el-form-item label="头像" prop="userName">
-          <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+        <el-form-item label="头像" prop="userName" style="  margin-top: 15px;">
+            <!-- 头像 -->
+        <div class="upload-image">
+          <input
+            class="upload-btn"
+            type="file"
+            name="image"
+            accept="image/*"
+            @change="IconChange($event)"
+            v-bind:class="{style:enable}"
+            @mouseover="addStyle"
+            @mouseout="removeStyle"
+          />
+          <img class="img" :src="picture" alt />
+        </div>
         </el-form-item>
 
         <el-form-item label="昵称" prop="Name">
@@ -109,6 +113,9 @@ export default {
     };
 
     return {
+      enable: false,
+      picture: "",
+
       radio: "1",
       value: "",
       param: "", //表单要提交的参数
@@ -146,6 +153,45 @@ export default {
     };
   },
   methods: {
+     IconChange(e) {
+      const file = e.target.files[0];
+      console.log(file);
+      // 获取图片的大小，做大小限制有用
+      let imgSize = file.size;
+      console.log(imgSize);
+      const _this = this; // this指向问题，所以在外面先定义
+      // 比如上传头像限制5M大小，这里获取的大小单位是b
+      if (imgSize <= 5000 * 1024) {
+        // 合格
+        _this.errorStr = "";
+        console.log("大小合适");
+        // 开始渲染选择的图片
+        // 本地路径方法 1
+        // this.imgStr = window.URL.createObjectURL(e.target.files[0])
+        // console.log(window.URL.createObjectURL(e.target.files[0])) // 获取当前文件的信息
+
+        // base64方法 2
+        var reader = new FileReader();
+        reader.readAsDataURL(file); // 读出 base64
+        reader.onloadend = function() {
+          // 图片的 base64 格式, 可以直接当成 img 的 src 属性值
+          var dataURL = reader.result;
+          console.log(dataURL);
+          _this.picture = dataURL;
+          // 下面逻辑处理
+        };
+      } else {
+        this.$message.error("图片大小不符，请重新上传大小5M以内的图片!");
+      }
+    },
+    addStyle() {
+      this.enable = true;
+    },
+    removeStyle() {
+      this.enable = false;
+    },
+
+
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -156,7 +202,7 @@ export default {
       });
 
       this.$api.registerPerfect.registerPerfect({
-        pic: this.imageUrl,
+        pic: this.picture,
         name: this.ruleForm.Name,
         sex: this.radio == 1 ? "男" : "女",
         birth: this.value,
@@ -164,46 +210,54 @@ export default {
         email: this.ruleForm.Email,
         loginName: this.$store.state.token.loginName
       });
-      console.log("pic是：" + this.imageUrl);
-    
+      console.log("pic是：" + this.picture);
     },
 
-    handleAvatarSuccess(res, file) {
-      var windowURL = window.URL || window.webkitURL;
-      // this.imageUrl=windowURL.createObjectURL(file.raw)
-      // this.imageUrl=file.URL
+    // handleAvatarSuccess(res, file) {
+    //   var windowURL = window.URL || window.webkitURL;
+    //   // this.imageUrl=windowURL.createObjectURL(file.raw)
+    //   // this.imageUrl=file.URL
 
-      // this.imageUrl=res.data.url;
-      this.imageUrl = windowURL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isIMG =
-        file.type == "image/jpeg" ||
-        file.type == "image/png" ||
-        file.type == "image/jpeg" ||
-        file.type == "image/gif";
-      const isLt2M = file.size / 1024 / 1024 < 2;
+    //   // this.imageUrl=res.data.url;
+    //   this.imageUrl = windowURL.createObjectURL(file.raw);
+    // },
+    // beforeAvatarUpload(file) {
+    //   const isIMG =
+    //     file.type == "image/jpeg" ||
+    //     file.type == "image/png" ||
+    //     file.type == "image/jpeg" ||
+    //     file.type == "image/gif";
+    //   const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isIMG) {
-        this.$message.error("上传头像图片只能是 JPG/PNG/JPEG/GIF 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isIMG && isLt2M;
-    },
-    // onchange(file,fileList){
-    //   var _this=this;
-    //   var event=event||window.event;
-    //   var file=event.target.file;
-    //   var reader=new FileReader();
-    //   reader.onload=function(e){
-    //     _this.imageUrl=e.target.result;
+    //   if (!isIMG) {
+    //     this.$message.error("上传头像图片只能是 JPG/PNG/JPEG/GIF 格式!");
     //   }
-    //   reader.readAsDataURL(file);
+    //   if (!isLt2M) {
+    //     this.$message.error("上传头像图片大小不能超过 2MB!");
+    //   }
+    //   return isIMG && isLt2M;
+    // },
+    // // onchange(file,fileList){
+    // //   var _this=this;
+    // //   var event=event||window.event;
+    // //   var file=event.target.file;
+    // //   var reader=new FileReader();
+    // //   reader.onload=function(e){
+    // //     _this.imageUrl=e.target.result;
+    // //   }
+    // //   reader.readAsDataURL(file);
 
-    // }
-  }
+    // // }
+  },
+  created() {
+    // 
+    this.$api.loginInfo
+      .getLoginInfo(this.$store.state.token.loginName)
+      .then(res => {
+        this.picture = res.userMsg[0].picture; //头像
+      })
+      .catch(err => console.log(err));
+  },
 };
 </script>
 
@@ -215,9 +269,34 @@ export default {
   background-attachment: fixed;
   background-size: 100% 100%;
 
+   // 头像
+   .upload-image {
+    margin-left: 50px;
+    position: relative;
+    .upload-btn {
+      display: block;
+      opacity: 0.5;
+      width: 70px;
+      height: 70px;
+      border-radius: 100px;
+      position: absolute;
+      border: 1px dashed #d9d9d9;
+      cursor: pointer;
+      color: #fff;
+    }
+    .img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      // margin-top: 30px;
+      border-radius: 100px;
+    }
+  }
+
   .register {
     display: flex;
     justify-content: center;
+    // height:  calc(100% -150px);
     .el-form {
       width: 500px;
       height: 100%;
@@ -227,38 +306,38 @@ export default {
       margin-top: 15px;
 
       // 头像设置 start
-      .el-form-item:first-of-type {
-        margin-top: 30px;
-      }
-      .avatar-uploader .el-upload {
-        border: 1px dashed #d9d9d9;
-        border-radius: 6px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-      }
-      .avatar-uploader .el-upload:hover {
-        border-color: #409eff;
-      }
-      .avatar-uploader-icon {
-        margin-left: 60px;
-        font-size: 28px;
-        color: #8c939d;
-        width: 58px;
-        height: 58px;
-        line-height: 58px;
-        text-align: center;
-        border: solid 1px #8c939d;
-        border-radius: 50%;
-      }
-      .avatar {
-        margin-left: 60px;
-        border-radius: 50%;
-        width: 58px;
-        height: 58px;
-        display: block;
-        border: solid 1px #8c939d;
-      }
+      // .el-form-item:first-of-type {
+      //   margin-top: 30px;
+      // }
+      // .avatar-uploader .el-upload {
+      //   border: 1px dashed #d9d9d9;
+      //   border-radius: 6px;
+      //   cursor: pointer;
+      //   position: relative;
+      //   overflow: hidden;
+      // }
+      // .avatar-uploader .el-upload:hover {
+      //   border-color: #409eff;
+      // }
+      // .avatar-uploader-icon {
+      //   margin-left: 60px;
+      //   font-size: 28px;
+      //   color: #8c939d;
+      //   width: 58px;
+      //   height: 58px;
+      //   line-height: 58px;
+      //   text-align: center;
+      //   border: solid 1px #8c939d;
+      //   border-radius: 50%;
+      // }
+      // .avatar {
+      //   margin-left: 60px;
+      //   border-radius: 50%;
+      //   width: 58px;
+      //   height: 58px;
+      //   display: block;
+      //   border: solid 1px #8c939d;
+      // }
       // 头像设置 end
 
       p {

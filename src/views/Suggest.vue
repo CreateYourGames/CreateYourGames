@@ -45,6 +45,10 @@
                 }
             },
             goTo() {
+                if(this.textMessage==''){
+                    this.$message.error("请先输入您的建议")
+                    return
+                }
                 // 点击最后一个"下一步”，弹出确认提交按钮
                 this.$confirm("确认提交?", "提示", {
                     confirmButtonText: "确定",
