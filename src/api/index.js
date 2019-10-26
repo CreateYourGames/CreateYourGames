@@ -10,6 +10,7 @@ import developerTest from './developerTest'
 import loginInfo from './home'
 import suggest from './suggest'
 import safety from './safetyCenter'
+import gameScore from './gameScore'
 //将接口导出
 export default{
     gameInfo,
@@ -22,5 +23,6 @@ export default{
     developerTest,
     loginInfo,
     suggest,
-    safety
+    safety,
+    gameScore
 }
