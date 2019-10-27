@@ -1,24 +1,28 @@
 <template>
-    <div class="game" ref="game">
-        <div class="gameStart" ref="gameStart">
-            <div class="start">
-                <span @click="start">开始游戏</span>
+    <div class="container">
+        <div class="game" ref="game">
+            <div class="gameStart" ref="gameStart">
+                <div class="start">
+                    <div class="plane" ref="startPlane">
+                        <img src="../../assets/images/gamePlane/my.gif" alt="">
+                    </div>
+                    <div class="begin" @click="start">开始游戏</div><br>
+                    <div class="end" @click="end">退出游戏</div>
+                </div>
             </div>
+            <div class="gameEnter" ref="gameEnter">
+                <div class="myPlane" ref="myPlane">
+                    <img src="../../assets/images/gamePlane/my.gif" alt="">
+                </div>
+                <div class="bullets" ref="bullets">
+                </div>
+                <div class="enemys" ref="enemys"></div>
+                <div id="scores">
+                    <p>得分：<span ref="score">0</span> 分</p>
+                </div>
+            </div>
+        
         </div>
-        <div class="gameEnter" ref="gameEnter">
-             子弹的个数：{{length}}
-             敌机的个数：{{length1}}
-            <div class="myPlane" ref="myPlane">
-                <img src="../../assets/images/gamePlane/my.gif" alt="">
-            </div>
-            <div class="bullets" ref="bullets">
-            </div>
-            <div class="enemys" ref="enemys"></div>
-            <div id="scores">
-				<p>得分：<span ref="score">0</span> 分</p>
-			</div>
-        </div>
-       
     </div>
 </template>
 <script>
@@ -126,8 +130,16 @@ export default {
     methods: {
         //点击开始游戏
         start(){
-            this.$refs.gameStart.style.display='none'
-            this.$refs.gameEnter.style.display='block'
+            // console.log(document.getElementsByClassName("plane")[0])
+            document.getElementsByClassName("plane")[0].classList.add('move')
+            setTimeout(() => {
+                this.$refs.gameStart.style.display='none'
+                this.$refs.gameEnter.style.display='block' 
+            }, 1500);   
+        },
+        //结束游戏
+        end(){
+            this.$router.push('/gameCenter')
         },
         //获取样式
         getStyle(ele, attr) {
@@ -175,7 +187,7 @@ export default {
         createBullet(){
             //创建子弹
             var bullet=new Image()
-            bullet.src=require('../../assets/images/gamePlane/bullet1.png')
+            bullet.src=require('../../assets/images/game-Images/game-plane/bullet1.png')
             bullet.className='b'
             //确定子弹位置 跟随飞机位置
             var planeL=this.getStyle(this.plane,'left'),
@@ -235,7 +247,7 @@ export default {
             //得到当前敌机的数据
             var enemyData = this.enemysObj["enemy" + enemyType];
             var enemy=new Image(enemyData.width,enemyData.height)
-            enemy.src=require(`../../assets/images/gamePlane/enemy${enemyType}.png`)
+            enemy.src=require(`../../assets/images/game-Images/game-plane/enemy${enemyType}.png`)
             enemy.t = enemyType;
             enemy.score = enemyData.score;
             enemy.hp = enemyData.hp;
@@ -282,9 +294,9 @@ export default {
         //清除子弹和敌机上的定时器
         clear(child){
             for(var i=0;i<child.length;i++){
-                console.log(child[i].timer._id)
-                clearInterval(child[i].timer._id)
-                console.log(child[i].timer)
+                // console.log(child[i].timer._id)
+                clearInterval(child[i].timer)
+                // console.log(child[i].timer)
             }
         },
         // 暂停游戏之后的开始游戏
@@ -336,7 +348,7 @@ export default {
                         clearInterval(enemy.timer);
                         // 替换爆炸图片 
                         // console.log(enemy.t)
-                        enemy.src = require("../../assets/images/gamePlane/bz" + enemy.t + ".gif");
+                        enemy.src = require("../../assets/images/game-Images/game-plane/bz" + enemy.t + ".gif");
                         // 标记死亡敌机
                         enemy.dead = true;
                         // 计算得分
@@ -381,14 +393,26 @@ export default {
                     if(condition){ // 己方飞机和敌机的碰撞
                         // console.log("碰撞了...");
                         // 清除定时器：创建子弹的定时器、创建飞机的定时器、游戏背景图的定时器
+                        if(this.$store.state.token.loginName){
+                            // console.log("走了发送请求")
+                            this.$api.gameScore.uploadScore({
+                                loginName: this.$store.state.token.loginName,
+                                gameScore: this.score,
+                                gameId: window.location.hash.split('/')[2]
+                            }).then(res => {
+                                console.log(res);
+                                this.$router.go(0)
+                            }).catch(err => {
+                                console.log(err);
+                            })
+                        }
+                        else{
+                            console.log("走了发送")
+                            this.$router.go(0)
+                        }
                         clearInterval(this.a);
                         clearInterval(this.b);
                         clearInterval(this.c);
-                        // for(var i=0;i<this.bullets.length;i++){
-                        //     console.log(this.bullets[i].timer)
-                        //     // clearInterval(this.bullets[i].timer)
-                        //     // clearInterval(this.enemys[i].timer)
-                        // }
                         this.clear(this.bullets)
                         this.clear(this.enemys)
                         this.a = null;
@@ -405,11 +429,11 @@ export default {
                         // 提示得分：
                         alert("Game over: " + this.score + "分");
                         // 回到游戏开始界面
-                        this.$refs.gameStart.style.display='block'
-                        this.$refs.gameEnter.style.display='none'
+                        // this.$refs.gameStart.style.display='block'
+                        // this.$refs.gameEnter.style.display='none'
                         this.plane.style.left = "127px";
                         this.plane.style.top = this.gameH - this.planeH + "px";
-                        // this.$router.push('/game/4')
+                        // this.$router.go(0)
                     }
                 }
             }
@@ -423,41 +447,77 @@ export default {
             }
         }
     },
-    computed:{
-        length(){
-            return this.bullets.length
-        },
-        length1(){
-            return this.enemys.length
-        }
-    },
+    // computed:{
+    //     length(){
+    //         return this.bullets.length
+    //     },
+    //     length1(){
+    //         return this.enemys.length
+    //     }
+    // },
 }
 </script>
 <style lang="scss" scoped>
+.container{
+    width: 100%;height: 100%;
+    background: url(../../assets/images/game-Images/game-plane/bg2.jpg);
+    background-size: 100% 100%;
     .game{
         width: 320px;
         height: 568px;
         margin: 0 auto;
+        overflow: hidden;
         .gameStart{
             width: 100%;height: 100%;
-            background:url(../../assets/images/gamePlane/ks.png)no-repeat;
+            background:rgba(0,0,0,.5);
             position: relative;
             // display: none;
             .start{
-                width: 160px;height: 40px;
-                background-color: rgba(196, 201, 202);
-                border: 4px solid #666;
                 font-size: 18px;
                 font-weight: 600;
                 position: absolute;
-                top: 400px;
+                top: 150px;
                 left: 80px;
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                span{
+                .plane{
+                    width: 80px;height: 80px;
+                    position: absolute;
+                    top: 200px;
+                    // animation: mymove 3s
+                }
+                .move{
+                    animation: mymove 1.5s;
+                }
+                @keyframes mymove {
+                    0%{top: 200px;}
+                    25%{top: 230px}
+                    
+                    100%{top: -230px}
+                }
+                .begin{
+                    width: 160px;height: 40px;
+                    text-align: center;
+                    line-height: 2;
+                    background-color: rgb(22, 22, 22);
+                    color: white;
+                    border: 1px solid #666;
                     &:hover{
-                        color: white;
+                        color: rgb(238, 109, 3);
+                        cursor: pointer;
+                    }
+                }
+                .end{
+                    width: 160px;height: 40px;
+                    text-align: center;
+                    line-height: 40px;
+                    background-color: rgb(22, 22, 22);
+                    border: 1px solid #666;
+                    color: white;
+                    &:hover{
+                        color: rgb(238, 109, 3);
                         cursor: pointer;
                     }
                 }
@@ -465,7 +525,7 @@ export default {
         }
         .gameEnter{
             width:100%;height: 100%;
-            background-image: url(../../assets/images/gamePlane/background_1.png);
+            background-image: url(../../assets/images/game-Images/game-plane/background_1.png);
             background-position-y: 0;
             position: relative;
             display: none;
@@ -498,6 +558,8 @@ export default {
                 }
             }
             #scores{
+                position: relative;
+                z-index: 100;
                 width: 100%;
                 height: 40px;
                 line-height: 40px;
@@ -511,4 +573,6 @@ export default {
             }
         }
     }
+}
+    
 </style>
