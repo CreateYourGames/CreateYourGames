@@ -178,7 +178,7 @@
                 qqFlag: true,
                 loadingMore: false,
                 gameImg: [],
-                loginName: this.$store.state.token.loginName,
+                loginName: '',
                 // 游戏简介
                 gameDetail: '',
                 // 游戏名称
@@ -250,16 +250,18 @@
         },
         created() {
             this.url="http://10.110.5.26:8080/"+window.location.hash
-            this.id = this.$route.query.id
-            const name = this.$store.state.token.loginName
-            //进入页面判段用户是否喜欢过改游戏
-            this.$api.gameInfo.loveJudge({name: name, id: this.id}).then(res => {
-                if (res == true) {
-                    this.imgFlag = false
-                }
-            })
+            this.$store.state.token != null ? this.loginName = this.$store.state.token.loginName : '';
+            this.id = this.$route.query.id;
+            if(this.loginName){
+                //进入页面判段用户是否喜欢过改游戏
+                this.$api.gameInfo.loveJudge({name: this.loginName, id: this.id}).then(res => {
+                    if (res == true) {
+                        this.imgFlag = false
+                    }
+                })
+            }
             //请求到游戏详情页的相关数据
-            this.$api.gameInfo.gameInfoApi({id: this.id, loginName: this.$store.state.token.loginName}).then(res => {
+            this.$api.gameInfo.gameInfoApi({id: this.id, loginName: this.loginName}).then(res => {
                 this.gameName = res.gameInfo[0].gameName;
                 // console.log(this.gameName);
                 this.gameImg = res.gameInfo[0].gamePic.split('|')

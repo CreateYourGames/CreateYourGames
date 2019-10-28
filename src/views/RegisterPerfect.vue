@@ -14,17 +14,18 @@
         <el-form-item label="头像" prop="userName" style="  margin-top: 15px;">
             <!-- 头像 -->
         <div class="upload-image">
-          <input
-            class="upload-btn"
-            type="file"
-            name="image"
-            accept="image/*"
-            @change="IconChange($event)"
-            v-bind:class="{style:enable}"
-            @mouseover="addStyle"
-            @mouseout="removeStyle"
-          />
-          <img class="img" :src="picture" alt />
+          <uploadImage width="70px" height="70px"></uploadImage>
+          <!--<input-->
+            <!--class="upload-btn"-->
+            <!--type="file"-->
+            <!--name="image"-->
+            <!--accept="image/*"-->
+            <!--@change="IconChange($event)"-->
+            <!--v-bind:class="{style:enable}"-->
+            <!--@mouseover="addStyle"-->
+            <!--@mouseout="removeStyle"-->
+          <!--/>-->
+          <!--<img class="img" :src="picture" alt />-->
         </div>
         </el-form-item>
 
@@ -40,9 +41,9 @@
         <el-form-item label="出生年月" prop="Birth">
           <el-date-picker v-model="value" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
         </el-form-item>
-        <el-form-item label="手机号" prop="Phone">
-          <el-input type="text" v-model.number="ruleForm.Phone" autocomplete="off"></el-input>
-        </el-form-item>
+        <!--<el-form-item label="手机号" prop="Phone">-->
+          <!--<el-input type="text" v-model.number="ruleForm.Phone" autocomplete="off"></el-input>-->
+        <!--</el-form-item>-->
         <el-form-item label="邮箱" prop="Email">
           <el-input type="text" v-model="ruleForm.Email" autocomplete="off"></el-input>
         </el-form-item>
@@ -55,6 +56,7 @@
 </template>
 
 <script>
+  import uploadImage from '../components/upload-image';
 export default {
   data() {
     var NameValue = (rule, value, callback) => {
@@ -115,7 +117,6 @@ export default {
     return {
       enable: false,
       picture: "",
-
       radio: "1",
       value: "",
       param: "", //表单要提交的参数
@@ -258,6 +259,9 @@ export default {
       })
       .catch(err => console.log(err));
   },
+    components:{
+      uploadImage
+    }
 };
 </script>
 
@@ -271,11 +275,11 @@ export default {
 
    // 头像
    .upload-image {
-    margin-left: 50px;
+    margin-left: 25px;
     position: relative;
     .upload-btn {
       display: block;
-      opacity: 0.5;
+      opacity: 0;
       width: 70px;
       height: 70px;
       border-radius: 100px;
@@ -287,6 +291,7 @@ export default {
     .img {
       width: 70px;
       height: 70px;
+      background-color: #ababab;
       object-fit: cover;
       // margin-top: 30px;
       border-radius: 100px;
@@ -296,15 +301,15 @@ export default {
   .register {
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100%;
     // height:  calc(100% -150px);
     .el-form {
       width: 500px;
-      height: 100%;
       padding: 20px 70px;
       background: rgba(255, 255, 255, 0.6);
+      margin-bottom: 10px;
       // background-color: #fff;
-      margin-top: 15px;
-
       // 头像设置 start
       // .el-form-item:first-of-type {
       //   margin-top: 30px;

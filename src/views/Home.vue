@@ -215,9 +215,10 @@
             },
             exitLogin() {
                 // this.$store.state.token = {};
-                this.$store.commit('getToken',null)
-                this.$store.commit('getRouter',null)
-                this.$router.push('/Login');
+                this.$store.commit('getToken',null);
+                this.$store.commit('getRouter',null);
+                this.$store.commit('getPic', null);
+                this.$router.go(0);
             },
             // 游戏库跳转
             toGameCenter() {
