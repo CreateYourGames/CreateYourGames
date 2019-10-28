@@ -158,6 +158,7 @@ export default {
       } else {
         this.$message.error("图片大小不符，请重新上传大小5M以内的图片!");
       }
+      this.$refs.form.submit();
     },
     getObjectURL (file) {
         let url = null ;
@@ -186,7 +187,6 @@ export default {
       this.enable = false;
     },
     save() {
-      this.$refs.form.submit()
       //修改个人信息
       this.$api.personal.PersonalInfo({
         loginName: this.$store.state.token.loginName,//旧手机号
