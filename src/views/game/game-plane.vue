@@ -4,7 +4,7 @@
             <div class="gameStart" ref="gameStart">
                 <div class="start">
                     <div class="plane" ref="startPlane">
-                        <img src="../../assets/images/gamePlane/my.gif" alt="">
+                        <img src="../../assets/images/game-Images/game-plane/my.gif" alt="">
                     </div>
                     <div class="begin" @click="start">开始游戏</div><br>
                     <div class="end" @click="end">退出游戏</div>
@@ -12,7 +12,7 @@
             </div>
             <div class="gameEnter" ref="gameEnter">
                 <div class="myPlane" ref="myPlane">
-                    <img src="../../assets/images/gamePlane/my.gif" alt="">
+                    <img src="../../assets/images/game-Images/game-plane/my.gif" alt="">
                 </div>
                 <div class="bullets" ref="bullets">
                 </div>

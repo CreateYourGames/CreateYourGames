@@ -36,7 +36,7 @@
                     <div class="share">
                         <span>分享游戏到：</span>
                         <a
-                                :href="'https://connect.qq.com/widget/shareqq/index.html?url='+url+'&pics='+pics+'&desc='+desc+'&summary='+summary+'&flash=&site=&style=201&width=50&height=32'"
+                                :href="'https://connect.qq.com/widget/shareqq/index.html?url='+url+'&pics='+pics+'&desc='+desc+'&summary='+gameDetail+'&flash=&site=&style=201&width=50&height=32'"
                                 target="_blank"
                                 @mouseenter='qqFlag=false'
                                 @mouseleave="qqFlag=true">
@@ -178,7 +178,7 @@
                 qqFlag: true,
                 loadingMore: false,
                 gameImg: [],
-                loginName: this.$store.state.token.loginName,
+                loginName: '',
                 // 游戏简介
                 gameDetail: '',
                 // 游戏名称
@@ -186,9 +186,9 @@
                 // 当前评论
                 comment: '',
                 //分享功能动态传参
-                url: 'https://http://121.40.245.126/',
+                url:  "http://10.110.5.26:8080/"+window.location.hash,
                 pics: "https://goss1.veer.com/creative/vcg/veer/612/veer-104218671.jpg",
-                summary: "是兄弟就来砍我",
+                // summary: "",
                 desc: '快来跟我一起玩游戏吧',
                 userImg: require('../assets/images/home/user.png'),
                 //给请求来的数据加两个标识符，用来判断每个是否在点击状态
@@ -249,19 +249,23 @@
             }
         },
         created() {
-            this.id = this.$route.query.id
-            const name = this.$store.state.token.loginName
-            //进入页面判段用户是否喜欢过改游戏
-            this.$api.gameInfo.loveJudge({name: name, id: this.id}).then(res => {
-                if (res == true) {
-                    this.imgFlag = false
-                }
-            })
+            this.url="http://10.110.5.26:8080/"+window.location.hash
+            this.$store.state.token != null ? this.loginName = this.$store.state.token.loginName : '';
+            this.id = this.$route.query.id;
+            if(this.loginName){
+                //进入页面判段用户是否喜欢过改游戏
+                this.$api.gameInfo.loveJudge({name: this.loginName, id: this.id}).then(res => {
+                    if (res == true) {
+                        this.imgFlag = false
+                    }
+                })
+            }
             //请求到游戏详情页的相关数据
-            this.$api.gameInfo.gameInfoApi({id: this.id, loginName: this.$store.state.token.loginName}).then(res => {
+            this.$api.gameInfo.gameInfoApi({id: this.id, loginName: this.loginName}).then(res => {
                 this.gameName = res.gameInfo[0].gameName;
-                console.log(this.gameName);
+                // console.log(this.gameName);
                 this.gameImg = res.gameInfo[0].gamePic.split('|')
+                this.pics=res.gameInfo[0].gameLogo
                 this.gameDetail = res.gameInfo[0].gameDetail
                 this.hotCommentList = res.hotCommentList
                 this.rankingList = res.rankList
