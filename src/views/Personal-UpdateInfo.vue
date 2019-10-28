@@ -7,18 +7,7 @@
         <!-- 头像 -->
         <div class="upload-image">
           <form action="/api/updateInfo" method="post" ref="form" enctype="multipart/form-data">
-            <input type="hidden" name="loginName" :value="$store.state.token.loginName">
-            <input
-                class="upload-btn"
-                type="file"
-                name="image"
-                accept="image/*"
-                ref="upload"
-                @change="IconChange($event)"
-                v-bind:class="{style:enable}"
-                @mouseover="addStyle"
-                @mouseout="removeStyle"
-              />
+            <upload-image width='150px' height='150px'></upload-image>
             <div class="butt">
               <input type="button" @click="save()" value="保存">
               <input type="button" @click="cancel()" value="取消">
@@ -104,6 +93,7 @@
 </template>
 
 <script>
+import uploadImage from '../components/upload-image'
 export default {
   data() {
     return {
@@ -191,7 +181,7 @@ export default {
       this.$api.personal.PersonalInfo({
         loginName: this.$store.state.token.loginName,//旧手机号
         nickName: this.nickName,
-        gender: this.sex,
+        gender: this.gender,
         birthDate: this.birth,
         email: this.email,
         userLoginName: this.tel,//新手机号
@@ -206,6 +196,9 @@ export default {
     cancel() {
       this.$router.push("/Personal");
     }
+  },
+  components:{
+    uploadImage
   }
 };
 </script>
