@@ -29,6 +29,10 @@
                 this.$router.push('/PublishGame')
             }
         },
+        beforeRouteEnter(to, from, next){
+            console.log(from.name);
+            next();
+        },
         components: {
             topNav
         }

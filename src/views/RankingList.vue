@@ -60,7 +60,7 @@
         <div class="more-games">
             <div class="title">热门游戏</div>
             <div class="game-box">
-                <div class="game" v-for="item in hotGameArray">
+                <div class="game" v-for="item in hotGameArray" @click="toGame">
                     <img :src="item.url" alt="">
                     <p>{{ item.name }}</p>
                 </div>
@@ -68,7 +68,7 @@
             <div class="divide-line"></div>
             <div class="title">最新游戏</div>
             <div class="game-box">
-                <div class="game" v-for="item in newGameArray">
+                <div class="game" v-for="item in newGameArray" @click="toGame">
                     <img :src="item.url" alt="">
                     <p>{{ item.name }}</p>
                 </div>
@@ -140,43 +140,43 @@
                         data: [
                             {
                                 url: require('../assets/images/rankingList/game01.jpg'),
-                                name: '妖刀姬',
-                                value: 53138
+                                name: '消灭星星',
+                                value: 21
                             },
                             {
                                 url: require('../assets/images/rankingList/game02.jpg'),
-                                name: '不知火',
-                                value: 45611
+                                name: '2048',
+                                value: 15
                             },
                             {
                                 url: require('../assets/images/rankingList/game03.jpg'),
-                                name: '御馔津',
-                                value: 24683
+                                name: '打地鼠',
+                                value: 10
                             },
                             {
                                 url: require('../assets/images/rankingList/game04.jpg'),
-                                name: '阴阳师',
-                                value: 21434
+                                name: '飞机大战',
+                                value: 4
                             },
                             {
                                 url: require('../assets/images/rankingList/game04.jpg'),
-                                name: '阴阳师',
-                                value: 12054
+                                name: '无',
+                                value: '0'
                             },
                             {
                                 url: require('../assets/images/rankingList/game04.jpg'),
-                                name: '阴阳师',
-                                value: 5974
+                                name: '无',
+                                value: '0'
                             },
                             {
                                 url: require('../assets/images/rankingList/game04.jpg'),
-                                name: '阴阳师',
-                                value: 3454
+                                name: '无',
+                                value: '0'
                             },
                             {
                                 url: require('../assets/images/rankingList/game04.jpg'),
-                                name: '阴阳师',
-                                value: 945
+                                name: '无',
+                                value: '0'
                             },
                         ]
                     },
@@ -371,6 +371,9 @@
             },
             scrollToTop() {
                 window.scrollTo(0, 0)
+            },
+            toGame(){
+                this.$router.push('/GameCenter')
             }
         },
         computed: {

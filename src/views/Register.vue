@@ -22,15 +22,15 @@
         <span>手机号</span>
         <el-input @blur="goRUN" type="text" v-model="ruleForm.userPhone" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item class="Verification-info" label-width="0px" style="margin-top:-15px;">
-        <span>验证码</span>
-        <div class="buttonItem">
-          <input type="text" placeholder="输入验证码" />
-          <div @click="sendMessage">{{btnText}}</div>
-        </div>
+      <!--<el-form-item class="Verification-info" label-width="0px" style="margin-top:-15px;">-->
+        <!--<span>验证码</span>-->
+        <!--<div class="buttonItem">-->
+          <!--<input type="text" placeholder="输入验证码" />-->
+          <!--<div @click="sendMessage">{{btnText}}</div>-->
+        <!--</div>-->
 
-        <!-- <el-input type="text" v-model="ruleForm.userName" autocomplete="off"></el-input> -->
-      </el-form-item>
+        <!--&lt;!&ndash; <el-input type="text" v-model="ruleForm.userName" autocomplete="off"></el-input> &ndash;&gt;-->
+      <!--</el-form-item>-->
       <el-form-item prop="Pass" label-width="0" style="margin-top:-15px;">
         <span>密码</span>
         <el-input type="password" name="password" v-model="ruleForm.Pass" autocomplete="off"></el-input>
