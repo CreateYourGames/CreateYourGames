@@ -58,11 +58,11 @@
               ></el-date-picker>
             </el-form-item>
           </el-form>
-          <div>
+          <!-- <div>
               <label for>昵称：</label>
-              <input type="text" v-model="nickName" />
+              <input type="text" v-model="nickName" /> -->
               <!-- <input type="text" v-model="this.nickName" readonly style="border:none;" /> -->
-            </div>
+            <!-- </div>
             <div>
               <label for>性别：</label>
               <select name="sex" v-model="radio">
@@ -82,7 +82,7 @@
                   placeholder="选择日期"
                 ></el-date-picker>
               </el-form-item>
-            </el-form>
+            </el-form> -->
             <div>
               <label for>邮箱：</label>
               <input type="text" v-model="email" readonly style="border:none;margin-top:5px;" />
