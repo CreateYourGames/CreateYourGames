@@ -137,7 +137,7 @@ export default {
     },
     // 退出
     quit(){
-
+      this.$router.go(-1)
     },
     //   锤子
     down() {
@@ -271,6 +271,23 @@ export default {
                 if(this.life<=0){
                     clearInterval(this.gameTimer)
                     this.result = true
+                    if(this.$store.state.token.loginName){
+                            // console.log("走了发送请求")
+                            this.$api.gameScore.uploadScore({
+                                loginName: this.$store.state.token.loginName,
+                                gameScore: this.score,
+                                gameId: window.location.hash.split('/')[2]
+                            }).then(res => {
+                                console.log(res);
+                                this.$router.go(0)
+                            }).catch(err => {
+                                console.log(err);
+                            })
+                        }
+                        else{
+                            console.log("走了发送")
+                            this.$router.go(0)
+                        }
                 }
                 this.maxMouse = this.score / 100 + 1;
             } , 200);

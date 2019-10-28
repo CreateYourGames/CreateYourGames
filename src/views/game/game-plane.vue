@@ -460,12 +460,14 @@ export default {
 <style lang="scss" scoped>
 .container{
     width: 100%;height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: url(../../assets/images/game-Images/game-plane/bg2.jpg);
     background-size: 100% 100%;
     .game{
         width: 320px;
         height: 568px;
-        margin: 0 auto;
         overflow: hidden;
         .gameStart{
             width: 100%;height: 100%;
@@ -476,7 +478,7 @@ export default {
                 font-size: 18px;
                 font-weight: 600;
                 position: absolute;
-                top: 150px;
+                top: 200px;
                 left: 80px;
                 display: flex;
                 flex-direction: column;
@@ -485,17 +487,16 @@ export default {
                 .plane{
                     width: 80px;height: 80px;
                     position: absolute;
-                    top: 200px;
+                    top: 150px;
                     // animation: mymove 3s
                 }
                 .move{
                     animation: mymove 1.5s;
                 }
                 @keyframes mymove {
-                    0%{top: 200px;}
-                    25%{top: 230px}
-                    
-                    100%{top: -230px}
+                    0%{top: 150px;}
+                    25%{top: 180px}
+                    100%{top: -290px}
                 }
                 .begin{
                     width: 160px;height: 40px;

@@ -3,15 +3,15 @@
  <div class="container">
     <div class="content">
       <div class="btn">
-        <button style="margin-bottom: 5px;" @click="goRefresh()">New Game</button>
-        <button @click="goGame()" style="background-color: #76c47d">Go GameCenter</button>
+        <button style="margin-bottom: 5px;" @click="goRefresh()">新游戏</button>
+        <button @click="goGame()" style="background-color: #76c47d">退出游戏</button>
       </div>
       <div class="mid">
-        <p>SCORE</p>
+        <p>分数</p>
         <p>{{this.score}}</p>
       </div>
       <div class="mid">
-        <p>BEST</p>
+        <p>最高分</p>
         <p>{{this.bestScore}}</p>
       </div>
     </div>
@@ -21,8 +21,8 @@
 
     <div class="over" v-if="this.over">
       <p>Game Over!</p>
-      <button style="margin-bottom: 15px;" @click="goRefresh()">Try again</button>
-      <button @click="goGame()">Go GameCenter</button>
+      <button style="margin-bottom: 15px;" @click="goRefresh()">再来一次</button>
+      <button @click="goGame()">退出游戏</button>
     </div>
   </div>
 </div>
