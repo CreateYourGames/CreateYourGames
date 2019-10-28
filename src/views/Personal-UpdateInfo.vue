@@ -15,7 +15,7 @@
                 accept="image/*"
                 ref="upload"
                 @change="IconChange($event)"
-                v-bind:class="{style:enable}"
+                :class="{style:enable}"
                 @mouseover="addStyle"
                 @mouseout="removeStyle"
               />
@@ -241,7 +241,7 @@ export default {
     position: relative;
     .upload-btn {
       display: block;
-      opacity: 0.5;
+      opacity: 0;
       width: 150px;
       height: 150px;
       border-radius: 100px;
