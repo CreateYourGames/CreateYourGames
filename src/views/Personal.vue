@@ -90,7 +90,7 @@
           <div class="mid-Game" v-if="gameList.length!=0">
             <ul>
               <li v-for="(game) in gameList" :key="game.id" @click="jumpGameDetails">
-                <img :src="game.gamePic" alt />
+                <img :src="game.gameLogo" alt />
                 <p class="gameName">{{game.name}}</p>
               </li>
             </ul>

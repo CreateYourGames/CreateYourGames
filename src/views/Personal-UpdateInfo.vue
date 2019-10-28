@@ -191,7 +191,7 @@ export default {
       this.$api.personal.PersonalInfo({
         loginName: this.$store.state.token.loginName,//旧手机号
         nickName: this.nickName,
-        gender: this.sex,
+        gender: this.gender,
         birthDate: this.birth,
         email: this.email,
         userLoginName: this.tel,//新手机号
