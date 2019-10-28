@@ -16,6 +16,10 @@ const gameInfo={
             params:value
         })
     },
+    //游戏评分
+    gameStar(value){
+        return axios.post(`${www}/gameStar`,value)
+    },
     //发表评论
     comPublish(value){
         return axios.post(`${www}/comPublish`,value)

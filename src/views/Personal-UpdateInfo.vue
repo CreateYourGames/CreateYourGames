@@ -58,6 +58,31 @@
               ></el-date-picker>
             </el-form-item>
           </el-form>
+          <!-- <div>
+              <label for>昵称：</label>
+              <input type="text" v-model="nickName" /> -->
+              <!-- <input type="text" v-model="this.nickName" readonly style="border:none;" /> -->
+            <!-- </div>
+            <div>
+              <label for>性别：</label>
+              <select name="sex" v-model="radio">
+                <option value="男">男</option>
+                <option value="女">女</option>
+              </select>
+            
+            </div>
+            <el-form status-icon label-width="80px" ref="ruleForm" class="demo-ruleForm">
+              <el-form-item label prop="Birth" label-width="0">
+                <label for style="float:left">出生年月：</label>
+                <el-date-picker
+                  style="margin-top:5px;"
+                  v-model="birth"
+                  value-format="yyyy-MM-dd"
+                  type="date"
+                  placeholder="选择日期"
+                ></el-date-picker>
+              </el-form-item>
+            </el-form> -->
             <div>
               <label for>邮箱：</label>
               <input type="text" v-model="email" readonly style="border:none;margin-top:5px;" />
@@ -103,7 +128,7 @@ export default {
         // console.log(res)
         this.picture = res.userMsg[0].picture; //头像
         this.nickName = res.userMsg[0].nickName; //个人昵称
-        this.sex = res.userMsg[0].gender; //性别
+        this.radio = res.userMsg[0].gender; //性别
         this.birth = res.userMsg[0].birthDate, //日期
         this.email = res.userMsg[0].email; //邮箱
         this.tel = res.userMsg[0].userLoginName; //联系方式
