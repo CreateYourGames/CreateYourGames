@@ -16,7 +16,7 @@
                     <div class="name">
                         <p>{{ gameName }}</p>
                     </div>
-                    <div class="star">
+                    <div class="star" @click="gameStar">
                         <el-rate
                                 v-model="value"
                                 show-text>
@@ -288,6 +288,28 @@
                 const query = window.location.hash;
                 const pair = query.split("=");
                 return pair[1];
+            },
+            //上传游戏star
+            gameStar(){
+                console.log("走了上传游戏分数")
+                if(this.loginName){
+                    var value={
+                        loginName: this.loginName,
+                        gameId: this.id,
+                        star:this.value
+                    }
+                    this.$api.gameInfo.gameStar(value).then(res=>{
+                        this.$message({
+                            message:'评分成功',
+                            type:'success'
+                        })
+                    })
+                }
+                else{
+                    alert("您即将前往登录页")
+                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                    this.$router.push('/Login')
+                }
             },
             //开始游戏
             toPlaying() {
