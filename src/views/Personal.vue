@@ -53,7 +53,7 @@
               @mouseover="overStyle(index)"
               @mouseout="outStyle(index)"
             >
-              <img :src="publish.gamePic" alt />
+              <img :src="publish.gameLogo" alt />
               <!-- <img :src="publish.img" alt /> -->
               <div v-show="publish.flag">
                 <p class="details" @click="jumpGameDetails(index)">查看详情</p>
@@ -90,7 +90,7 @@
           <div class="mid-Game" v-if="gameList.length!=0">
             <ul>
               <li v-for="(game) in gameList" :key="game.id" @click="jumpGameDetails">
-                <img :src="game.gamePic" alt />
+                <img :src="game.gameLogo" alt />
                 <p class="gameName">{{game.name}}</p>
               </li>
             </ul>
@@ -119,7 +119,7 @@
                 @mouseover="addStyle(index)"
                 @mouseout="removeStyle(index)"
               >
-                <img :src="favor.gamePic" alt />
+                <img :src="favor.gameLogo" alt />
                 <div v-bind:class="{bott:!(newInd===index)}">
                   <div class="bot">
                     <p class="detail" @click="jumpGameDetails(favor.gameId)">查看详情&nbsp;</p>

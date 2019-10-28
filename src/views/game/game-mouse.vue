@@ -137,7 +137,7 @@ export default {
     },
     // 退出
     quit(){
-
+      this.$router.go(-1)
     },
     //   锤子
     down() {
