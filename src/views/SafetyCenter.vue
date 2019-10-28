@@ -56,7 +56,7 @@
           </el-form-item>
 
           <el-form-item label="手机" prop="Phone" v-if="tabType===2" class="Verification-info">
-            <el-input type="text" v-model="ruleForm.Phone" autocomplete="off"></el-input>
+            <el-input type="text" disabled v-model="ruleForm.userName" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="验证码" v-if="tabType===2" class="Verification-info">
             <div class="buttonItem">
@@ -227,10 +227,10 @@ export default {
         alert("请您先输入邮箱账号")
         return
       }
-      if(this.tabType==2&&this.ruleForm.Phone==''){
-        alert("请您先输入手机号")
-        return
-      }
+      // if(this.tabType==2&&this.ruleForm.Phone==''){
+      //   alert("请您先输入手机号")
+      //   return
+      // }
       // alert("aaa")
       //判断是手机验证还是邮箱验证
       if(this.tabType==1){
@@ -240,7 +240,7 @@ export default {
         })
       }
       else if(this.tabType==2){
-        this.$api.safety.sendSms({phone:this.ruleForm.Phone}).then(res=>{
+        this.$api.safety.sendSms({phone:this.ruleForm.userName}).then(res=>{
           console.log(res.randomNum)
           this.yzm=res.randomNum
         })

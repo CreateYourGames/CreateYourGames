@@ -72,7 +72,7 @@ export default {
       this.$api.updateGameInfo.updateGameInfo(val).then(res=>{
             console.log(res)
             this.GameInfo = res.GameInfo
-            this.pic=res.GameInfo[0].gamePic
+            this.pic=res.GameInfo[0].gameLogo
             console.log(this.GameInfo[0].gameName)
         })
     },
