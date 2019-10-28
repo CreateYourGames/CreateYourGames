@@ -49,20 +49,20 @@
                     this.$message.error("请先输入您的建议")
                     return
                 }
-                // 点击最后一个"下一步”，弹出确认提交按钮
+                // 点击，弹出确认提交按钮
                 this.$confirm("确认提交?", "提示", {
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",
                     type: "warning"
                 })
                     .then(() => {
-                        this.$api.suggest.submitSuggest({suggest:this.textMessage,loginName:this.$store.state.token.loginName}).then(()=>{
-                            this.$message({
+                          this.$message({
                                 type: "success",
                                 message: "提交成功!"
                             });
                             this.$router.push("/");
-                        }) 
+
+                        this.$api.suggest.submitSuggest({suggest:this.textMessage,loginName:this.$store.state.token.loginName});
                     })
                     .catch(() => {
                         this.$message({

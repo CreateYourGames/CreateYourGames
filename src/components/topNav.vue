@@ -7,7 +7,7 @@
             <div class="to-ranking-list" @click="toRankingList">排行榜</div>
             <div class="to-suggest" @click="toSuggest">提交建议</div>
             <!--<div class="to-publish-game" @click="toPublishGame">发布游戏</div>-->
-            <div class="user-icon" @click="toPersonal">
+            <div class="user-icon" @click="toPersonal" >
                 <img :src="picture" alt="">
                 个人中心
             </div>
