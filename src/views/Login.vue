@@ -88,7 +88,7 @@ export default {
     // console.log(this.$store.state.rememberPwd);
     this.ruleForm.rem = this.$store.state.rememberPwd;
     // 记住密码
-    if (this.$store.state.token.loginName) {
+    if (this.$store.state.token) {
       console.log("走了token");
       this.ruleForm.userPhone = this.$store.state.token.loginName;
       this.ruleForm.checkPass = this.$store.state.token.pwd;

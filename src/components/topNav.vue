@@ -28,8 +28,11 @@
             }
         },
         created() {
-            this.picture = this.$store.state.picture
-            this.loginName = this.$store.state.token.loginName
+            if(this.$store.state.token){
+                this.picture = this.$store.state.picture
+                this.loginName = this.$store.state.token.loginName
+            }
+          
         },
         methods: {
             backHome() {
