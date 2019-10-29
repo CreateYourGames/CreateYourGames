@@ -2,17 +2,27 @@
     <div class="publish-game">
         <topNav style="z-index: 1"></topNav>
         <div class="form-box">
-            <form action="/api/publishGame" ref="form" method='post' enctype='multipart/form-data'>
+            <form action="/api/publishGame" method='post'>
                 <div class="publish-title">
                     分享您的游戏
                 </div>
                 <div class="game-item game-icon">
                     <label for="" class="special">上传游戏封面图：</label>
-                    <!-- <input type="file" name="logo"> -->
+                    <!--<div class="upload-icon">-->
+                        <!--<input class="upload-btn" type="file" name="image" accept="image/*"-->
+                               <!--@change="gameIconChange($event)">-->
+                        <!--<img class="game-img" :src="gameIcon" alt="">-->
+                    <!--</div>-->
+                    <uploadImage width="150px" height="100px"></uploadImage>
                 </div>
                 <div class="game-item game-type">
                     <label for="">游戏分类：</label>
-                    <input type="text" name="clever" value="" placeholder="益智类">
+                    <select name="" id="">
+                        <option value="">益智类</option>
+                        <option value="">小游戏类</option>
+                        <option value="">射击类</option>
+                    </select>
+                    <!--<input type="text" name="clever" value="" placeholder="益智类">-->
                 </div>
                 <div class="game-item game-name">
                     <label for="">游戏名称：</label>
@@ -25,26 +35,16 @@
                 <div class="game-item game-images">
                     <label>上传游戏相关图片：</label>
                     <div class="game-images-box">
-                         <el-upload  
-                            action
-                            :limit="5"   
-                            ref="upload"  
-                            :multiple="true"
-                            :auto-upload="false" 
-                    
-                            list-type="picture-card">
-                            <el-button slot="trigger" size="small" >选取文件</el-button>
-                            <div slot="tip" class="el-upload__tip">上传图片大小不超过500kb</div>
-                        </el-upload>
+                        <uploadImage width="150px" height="100px"></uploadImage>
                     </div>
                 </div>
                 <div class="game-item game-file">
                     <label for="">游戏源码文件：</label>
-                    <input id="code" ref="code" type="file" @change="change" name="code">
+                    <input type="file" name="code">
                 </div>
                 <div class="game-item game-submit">
                     <label for=""></label>
-                    <input type="submit" class="gamePublish" value="确认发布">
+                    <input type="submit" class="gamePublish" @click="gamePublish()" value="确认发布">
                 </div>
             </form>
         </div>
@@ -57,24 +57,47 @@
     export default {
         data() {
             return {
-                 imageUrl: '',
                 gameIcon: require('../assets/images/publishGame/01.png'),
                 gameImages:[
                     require('../assets/images/publishGame/01.png')
                 ],
             }
         },
-        mounted(){
-            // console.log(this.$refs.logo)
-            // console.log(this.$refs.upload)
-            // console.log(this.$refs.upload.uploadFiles)
-        },
         methods: {
-           
-            change(){
-                console.log(this.$refs.form.file)
-                console.log(this.$refs.code.files[0])
-            }
+            gamePublish() {
+                this.$router.push('/')
+            },
+            // gameIconChange(e) {
+            //     const file = e.target.files[0];
+            //     console.log(file);
+            //     // 获取图片的大小，做大小限制有用
+            //     let imgSize = file.size;
+            //     console.log(imgSize);
+            //     const _this = this; // this指向问题，所以在外面先定义
+            //     // 比如上传头像限制5M大小，这里获取的大小单位是b
+            //     if (imgSize <= 5000 * 1024) {
+            //         // 合格
+            //         _this.errorStr = '';
+            //         console.log('大小合适');
+            //         // 开始渲染选择的图片
+            //         // 本地路径方法 1
+            //         this.imgStr = window.URL.createObjectURL(e.target.files[0])
+            //         // console.log(window.URL.createObjectURL(e.target.files[0])) // 获取当前文件的信息
+
+            //         // base64方法 2
+            //         // var reader = new FileReader();
+            //         // reader.readAsDataURL(file); // 读出 base64
+            //         // reader.onloadend = function () {
+            //         //     // 图片的 base64 格式, 可以直接当成 img 的 src 属性值
+            //         //     var dataURL = reader.result;
+            //         //     console.log(dataURL);
+            //         //     _this.gameIcon = dataURL
+            //         //     // 下面逻辑处理
+            //         // }
+            //     } else {
+            //         this.$message.error('图片大小不符，请重新上传大小5M以内的图片!');
+            //     }
+            // }
         },
         components: {
             topNav,
@@ -84,32 +107,10 @@
 </script>
 
 <style lang="scss" scoped>
- .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+
     .publish-game {
         /*height: 100%;*/
-        background-image: url('../assets/images/publishGame/publish-bg1.jpg');
+        background-image: url('../assets/images/publishGameTips/bg.jpg');
         background-size: 100% 100%;
         background-attachment: fixed;
         border: 1px solid black;
@@ -121,7 +122,7 @@
                 height: 100%;
                 display: flex;
                 flex-direction: column;
-                background-color: rgba(0, 0, 0, 0.5);
+                background-color: rgba(255, 255, 255, 0.15);
                 box-sizing: border-box;
                 padding: 10px 40px;
                 .publish-title {
@@ -163,7 +164,28 @@
                     }
                 }
             }
-            .game-type,
+            .game-type {
+                select{
+                    display: block;
+                    width: 30%;
+                    height: 30px;
+                    border: none;
+                    outline: none;
+                    color: #e6e6e6;
+                    box-sizing: border-box;
+                    padding-left: 10px;
+                    font-size: 20px;
+                    background-color: transparent;
+                    border-bottom: 2px solid #e6e6e6;
+                    &::placeholder{
+                        font-size: 14px;
+                        color: #b7b7b7;
+                    }
+                    option{
+                        color: #222;
+                    }
+                }
+            }
             .game-name {
                 input {
                     display: block;
@@ -178,6 +200,7 @@
                     background-color: transparent;
                     border-bottom: 2px solid #e6e6e6;
                     &::placeholder{
+                        font-size: 14px;
                         color: #b7b7b7;
                     }
                 }
@@ -201,9 +224,6 @@
             }
             .game-images{
                 .game-images-box{
-                    .el-upload {
-                        background: rgba(0, 0, 0, 0.5)
-                    }
                     display: flex;
                     position: relative;
                     .upload-btn {
@@ -235,7 +255,7 @@
                     outline: none;
                     border: none;
                     font-size: 25px;
-                    background-color: rgb(234,64,72);
+                    background-color: rgb(50, 194, 163);
                     color: #e6e6e6;
                 }
             }
