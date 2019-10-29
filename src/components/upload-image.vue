@@ -77,6 +77,7 @@
             left: 0;
             top: 0;
             opacity: 0;
+            cursor: pointer;
         }
         .game-img {
             object-fit: cover;

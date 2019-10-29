@@ -3,7 +3,7 @@
         <topNav></topNav>
         <div class="ranking">
             <div class="ranking-nav" :style="{backgroundColor:rankingNavColor[rankingFlag.leftRank2 == 0 ? rankingFlag.rightRank2 : rankingFlag.leftRank2]}">
-                <p class="nav-title">{{ rankingName }}</p>
+                <p class="nav-title">{{ rankingName }} <span class="info" @click="showRankingInfo"></span></p>
                 <div class="ranking-tab">
                     <p
                             v-for="item in 3"
@@ -27,7 +27,7 @@
                 }"
                      v-for="(item, index) in rankingArray" @click="rankingCardChange(index)">
                     <!--游戏榜单-->
-                    <div class="list-item game-rank" v-if="li.value" v-for="(li, index) in item.data">
+                    <div class="list-item game-rank" v-for="(li, index) in item.data">
                         <div class="list-index">
                             <p>{{ index + 1 }}</p>
                             <img class="user-icon" :src="li.url" alt="">
@@ -36,19 +36,33 @@
                         <div class="list-data">{{ li.value }}</div>
                     </div>
                     <!--达人榜单-->
-                    <div class="list-item user-top" v-if="li.gameList" v-for="(li, index) in item.data">
-                        <div class="list-index">
-                            <p>{{ index + 1 }}</p>
-                            <img class="user-icon" :src="li.url" alt="">
-                            <p>{{ li.name }}</p>
-                        </div>
-                        <div class="list-data">
-                            <img class="top-game" v-for="game in li.gameList" :src="game" alt="">
-                        </div>
-                    </div>
+                    <!--<div class="list-item user-top" v-if="li.gameList" v-for="(li, index) in item.data">-->
+                        <!--<div class="list-index">-->
+                            <!--<p>{{ index + 1 }}</p>-->
+                            <!--<img class="user-icon" :src="li.url" alt="">-->
+                            <!--<p>{{ li.name }}</p>-->
+                        <!--</div>-->
+                        <!--<div class="list-data">-->
+                            <!--<img class="top-game" v-for="game in li.gameList" :src="game" alt="">-->
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
                 <div class="ranking-right" @click="rankingRight">
                     <img src="../assets/images/rankingList/ranking-right.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div v-show="rankingInfo" class="ranking-info" @click="hideRankingInfo">
+            <div class="content">
+                <div class="title">榜单介绍</div>
+                <div>
+                    <span class="icon score-ranking-icon"></span>游戏评分榜：<p>根据用户对游戏评分的平均值进行游戏排行</p>
+                </div>
+                <div>
+                    <span class="icon hot-ranking-icon"></span>游戏热度榜：<p>根据游戏被游玩总数进行游戏排行，但是只有上传得分后才能被计算进游玩次数</p>
+                </div>
+                <div>
+                    <span class="icon star-ranking-icon"></span>游戏肝帝榜：<p>根据用户三十天内在站内游玩次数进行排行</p>
                 </div>
             </div>
         </div>
@@ -60,7 +74,7 @@
         <div class="more-games">
             <div class="title">热门游戏</div>
             <div class="game-box">
-                <div class="game" v-for="item in hotGameArray" @click="toGame">
+                <div class="game" v-for="item in hotGameArray" @click="toGameCenter">
                     <img :src="item.url" alt="">
                     <p>{{ item.name }}</p>
                 </div>
@@ -68,7 +82,7 @@
             <div class="divide-line"></div>
             <div class="title">最新游戏</div>
             <div class="game-box">
-                <div class="game" v-for="item in newGameArray" @click="toGame">
+                <div class="game" v-for="item in newGameArray" @click="toGameCenter">
                     <img :src="item.url" alt="">
                     <p>{{ item.name }}</p>
                 </div>
@@ -89,6 +103,7 @@
         name: "ranking-list",
         data() {
             return {
+                // 排行榜数据列表
                 rankingArray: [
                     {
                         name: '游戏评分榜',
@@ -181,70 +196,52 @@
                         ]
                     },
                     {
-                        name: '游戏达人榜',
+                        name: '游戏肝帝榜',
                         data: [
                             {
                                 url: require('../assets/images/rankingList/user-icon.png'),
                                 name: 'Asuna',
-                                gameList: [
-                                    require('../assets/images/rankingList/game01.jpg'),
-                                    require('../assets/images/rankingList/game02.jpg'),
-                                    require('../assets/images/rankingList/game03.jpg')
-                                ]
+                                value: 20
                             },
                             {
                                 url: require('../assets/images/rankingList/user-icon.png'),
                                 name: 'Asuna',
-                                gameList: [
-                                    require('../assets/images/rankingList/game01.jpg'),
-                                    require('../assets/images/rankingList/game02.jpg'),
-                                ]
+                                value: 20
                             },
                             {
                                 url: require('../assets/images/rankingList/user-icon.png'),
                                 name: 'Asuna',
-                                gameList: [
-                                    require('../assets/images/rankingList/game01.jpg'),
-                                ]
+                                value: 20
                             },
                             {
                                 url: require('../assets/images/rankingList/user-icon.png'),
                                 name: 'Asuna',
-                                gameList: [
-                                    require('../assets/images/rankingList/game01.jpg'),
-                                ]
+                                value: 20
                             },
                             {
                                 url: require('../assets/images/rankingList/user-icon.png'),
                                 name: 'Asuna',
-                                gameList: [
-                                    require('../assets/images/rankingList/game01.jpg'),
-                                ]
+                                value: 20
                             },
                             {
                                 url: require('../assets/images/rankingList/user-icon.png'),
                                 name: 'Asuna',
-                                gameList: [
-                                    require('../assets/images/rankingList/game01.jpg'),
-                                ]
+                                value: 20
                             },
                             {
                                 url: require('../assets/images/rankingList/user-icon.png'),
                                 name: 'Asuna',
-                                gameList: [
-                                    require('../assets/images/rankingList/game01.jpg'),
-                                ]
+                                value: 20
                             },
                             {
                                 url: require('../assets/images/rankingList/user-icon.png'),
                                 name: 'Asuna',
-                                gameList: [
-                                    require('../assets/images/rankingList/game01.jpg'),
-                                ]
+                                value: 20
                             },
                         ]
                     },
                 ],
+                // 排行榜卡片标记
                 rankingFlag: {
                     leftRank1: 1,
                     leftRank2: 2,
@@ -253,12 +250,13 @@
                     rightRank2: 2,
                     rightRank3: 3
                 },
+                // 排行榜卡片背景色
                 rankingNavColor: {
                     1: '#0B4C37',
                     2: '#3a7385',
                     3: '#123c7e',
-
                 },
+                // 热门游戏列表
                 hotGameArray: [
                     {
                         url: require('../assets/images/rankingList/game01.jpg'),
@@ -277,6 +275,7 @@
                         name: '御馔津',
                     },
                 ],
+                // 最新游戏列表
                 newGameArray: [
                     {
                         url: require('../assets/images/rankingList/game04.jpg'),
@@ -295,16 +294,20 @@
                         name: '妖刀姬',
                     },
                 ],
-
+                // 榜单介绍信息显示
+                rankingInfo: false,
             }
         },
         methods: {
+            // 返回主页
             backHome() {
                 this.$router.push('/')
             },
+            // 跳转游戏库页
             toGameCenter() {
                 this.$router.push('/GameCenter')
             },
+            // 点击排行榜导航块切换排行榜卡片
             tabChangeRank(item) {
                 const now = this.rankingFlag.leftRank2 == 0 ? this.rankingFlag.rightRank2 : this.rankingFlag.leftRank2
                 const direction = item - now;
@@ -319,6 +322,7 @@
                         break;
                 }
             },
+            // 封装切换左侧排行榜卡片方法
             rankingLeft() {
                 if (this.rankingFlag.leftRank1 == 0) {
                     this.rankingFlag.leftRank1 = this.rankingFlag.rightRank1;
@@ -340,6 +344,7 @@
                 this.rankingFlag.leftRank3 == 1 ? this.rankingFlag.leftRank3 = 3 : this.rankingFlag.leftRank3--;
                 console.log(this.rankingFlag);
             },
+            // 封装切换右侧排行榜卡片方法
             rankingRight() {
                 if (this.rankingFlag.rightRank1 == 0) {
                     this.rankingFlag.rightRank1 = this.rankingFlag.leftRank1;
@@ -361,6 +366,7 @@
                 this.rankingFlag.rightRank3 == 3 ? this.rankingFlag.rightRank3 = 1 : this.rankingFlag.rightRank3++;
                 console.log(this.rankingFlag);
             },
+            // 左右切换排行榜卡片
             rankingCardChange(index) {
                 if (this.rankingFlag.leftRank1 == (index + 1) || this.rankingFlag.rightRank1 == (index + 1)) {
                     this.rankingLeft();
@@ -369,11 +375,16 @@
                     this.rankingRight();
                 }
             },
+            // 返回顶部
             scrollToTop() {
                 window.scrollTo(0, 0)
             },
-            toGame(){
-                this.$router.push('/GameCenter')
+            // 显示榜单介绍信息
+            showRankingInfo(){
+                this.rankingInfo = true;
+            },
+            hideRankingInfo(){
+                this.rankingInfo = false;
             }
         },
         computed: {
@@ -398,6 +409,7 @@
 
 <style scoped lang="scss">
     .ranking-list {
+        position: relative;
         display: flex;
         flex-direction: column;
         background-image: url("../assets/images/rankingList/bg.jpg");
@@ -427,9 +439,23 @@
                 background-color: #3a7385;
                 border-radius: 20px;
                 .nav-title{
+                    position: relative;
+                    display: flex;
                     line-height: 55px;
                     font-size: 22px;
                     text-align: center;
+                    justify-content: center;
+                    align-items: center;
+                    .info{
+                        position: absolute;
+                        right: 20%;
+                        display: block;
+                        width: 20px;
+                        height: 20px;
+                        background-image: url("../assets/images/rankingList/rangking-info.png");
+                        background-size: 100% 100%;
+                        cursor: pointer;
+                    }
                 }
                 .ranking-tab{
                     display: flex;
@@ -496,25 +522,25 @@
                                 }
                             }
                         }
-                        &.user-top {
-                            .list-index {
-                                img {
-                                    border-radius: 50%;
-                                }
-                            }
-                            .list-data {
-                                display: flex;
-                                align-items: center;
-                                .top-game {
-                                    width: 30px;
-                                    height: 30px;
-                                    object-fit: cover;
-                                    border-radius: 5px;
-                                    box-sizing: border-box;
-                                    padding: 2px;
-                                }
-                            }
-                        }
+                        /*&.user-top {*/
+                            /*.list-index {*/
+                                /*img {*/
+                                    /*border-radius: 50%;*/
+                                /*}*/
+                            /*}*/
+                            /*.list-data {*/
+                                /*display: flex;*/
+                                /*align-items: center;*/
+                                /*.top-game {*/
+                                    /*width: 30px;*/
+                                    /*height: 30px;*/
+                                    /*object-fit: cover;*/
+                                    /*border-radius: 5px;*/
+                                    /*box-sizing: border-box;*/
+                                    /*padding: 2px;*/
+                                /*}*/
+                            /*}*/
+                        /*}*/
                     }
                     @keyframes leftR1toR2 {
                         0% {
@@ -659,6 +685,66 @@
                     }
                     &:hover {
                         background-color: rgba(0, 0, 0, 0.5);
+                    }
+                }
+            }
+        }
+        .ranking-info{
+            position: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            .content{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                width: 50%;
+                height: 60%;
+                background-color: #eff3fe;
+                background-image: url("../assets/images/rankingList/bg06.jpg");
+                background-size: cover;
+                opacity: 0.9;
+                box-sizing: border-box;
+                padding: 6%;
+                div{
+                    display: flex;
+                    align-items: center;
+                    white-space: nowrap;
+                    margin: 4% 0;
+                    &.title{
+                        display: flex;
+                        justify-content: center;
+                        font-size: 25px;
+                        margin-top: -3%;
+                        margin-bottom: 4%;
+                    }
+                    .icon{
+                        display: block;
+                        width: 40px;
+                        min-width: 40px;
+                        height: 40px;
+                        margin-right: 1%;
+                    }
+                    .hot-ranking-icon{
+                        background-image: url("../assets/images/rankingList/ranking-icon1.png");
+                        background-size: 100% 100%;
+                    }
+                    .score-ranking-icon{
+                        background-image: url("../assets/images/rankingList/ranking-icon2.png");
+                        background-size: 100% 100%;
+                    }
+                    .star-ranking-icon{
+                        background-image: url("../assets/images/rankingList/ranking-icon3.png");
+                        background-size: 100% 100%;
+                    }
+                    p{
+                        white-space: normal;
                     }
                 }
             }

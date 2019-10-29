@@ -373,6 +373,11 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  position: relative;
+  background-image: url("../assets/images/gameCenter/bg.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100%;
   .topNav{
     // background-color: white;
     background-color: rgba(27, 27, 27, 1);
@@ -410,15 +415,13 @@ export default {
       }
     }
   }
-
   .Game {
     width: 100%;
     height: 100%;
     padding-bottom: 100px;
     // background-image: url("../assets/images/home/bg.png");
-    background-color: #ffffff;
-    background-attachment: fixed;
-    background-size: 100% 100%;
+    /*background-color: #ffffff;*/
+    /*background-size: 100% 100%;*/
     display: flex;
     flex-direction: row;
     margin-top: 30px;
@@ -428,6 +431,7 @@ export default {
       // border: solid 1px red;
       .middle {
         padding: 40px 10px 30px 16px;
+        overflow: auto;
         // margin-left:100px;
         // 游戏框
         .item {
@@ -474,7 +478,6 @@ export default {
         }
       }
     }
-
     .right {
       width: 25%;
       height: 100%;

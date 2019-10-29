@@ -13,11 +13,16 @@
                                <!--@change="gameIconChange($event)">-->
                         <!--<img class="game-img" :src="gameIcon" alt="">-->
                     <!--</div>-->
-                    <uploadImage width="200px" height="100px"></uploadImage>
+                    <uploadImage width="150px" height="100px"></uploadImage>
                 </div>
                 <div class="game-item game-type">
                     <label for="">游戏分类：</label>
-                    <input type="text" name="clever" value="" placeholder="益智类">
+                    <select name="" id="">
+                        <option value="">益智类</option>
+                        <option value="">小游戏类</option>
+                        <option value="">射击类</option>
+                    </select>
+                    <!--<input type="text" name="clever" value="" placeholder="益智类">-->
                 </div>
                 <div class="game-item game-name">
                     <label for="">游戏名称：</label>
@@ -105,7 +110,7 @@
 
     .publish-game {
         /*height: 100%;*/
-        background-image: url('../assets/images/publishGame/publish-bg1.jpg');
+        background-image: url('../assets/images/publishGameTips/bg.jpg');
         background-size: 100% 100%;
         background-attachment: fixed;
         border: 1px solid black;
@@ -117,7 +122,7 @@
                 height: 100%;
                 display: flex;
                 flex-direction: column;
-                background-color: rgba(0, 0, 0, 0.5);
+                background-color: rgba(255, 255, 255, 0.15);
                 box-sizing: border-box;
                 padding: 10px 40px;
                 .publish-title {
@@ -159,7 +164,28 @@
                     }
                 }
             }
-            .game-type,
+            .game-type {
+                select{
+                    display: block;
+                    width: 30%;
+                    height: 30px;
+                    border: none;
+                    outline: none;
+                    color: #e6e6e6;
+                    box-sizing: border-box;
+                    padding-left: 10px;
+                    font-size: 20px;
+                    background-color: transparent;
+                    border-bottom: 2px solid #e6e6e6;
+                    &::placeholder{
+                        font-size: 14px;
+                        color: #b7b7b7;
+                    }
+                    option{
+                        color: #222;
+                    }
+                }
+            }
             .game-name {
                 input {
                     display: block;
@@ -174,6 +200,7 @@
                     background-color: transparent;
                     border-bottom: 2px solid #e6e6e6;
                     &::placeholder{
+                        font-size: 14px;
                         color: #b7b7b7;
                     }
                 }
@@ -228,7 +255,7 @@
                     outline: none;
                     border: none;
                     font-size: 25px;
-                    background-color: rgb(234,64,72);
+                    background-color: rgb(50, 194, 163);
                     color: #e6e6e6;
                 }
             }
