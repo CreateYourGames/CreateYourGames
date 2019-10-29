@@ -35,17 +35,6 @@
                         </div>
                         <div class="list-data">{{ li.value }}</div>
                     </div>
-                    <!--达人榜单-->
-                    <!--<div class="list-item user-top" v-if="li.gameList" v-for="(li, index) in item.data">-->
-                        <!--<div class="list-index">-->
-                            <!--<p>{{ index + 1 }}</p>-->
-                            <!--<img class="user-icon" :src="li.url" alt="">-->
-                            <!--<p>{{ li.name }}</p>-->
-                        <!--</div>-->
-                        <!--<div class="list-data">-->
-                            <!--<img class="top-game" v-for="game in li.gameList" :src="game" alt="">-->
-                        <!--</div>-->
-                    <!--</div>-->
                 </div>
                 <div class="ranking-right" @click="rankingRight">
                     <img src="../assets/images/rankingList/ranking-right.png" alt="">
@@ -56,7 +45,7 @@
             <div class="content">
                 <div class="title">榜单介绍</div>
                 <div>
-                    <span class="icon score-ranking-icon"></span>游戏评分榜：<p>根据用户对游戏评分的平均值进行游戏排行</p>
+                    <span class="icon score-ranking-icon"></span>游戏评分榜：<p>根据用户对游戏评分的平均值进行游戏排行，榜单上仅显示一位小数，可能存在同分排名不同，实际排名按照实际小数排名</p>
                 </div>
                 <div>
                     <span class="icon hot-ranking-icon"></span>游戏热度榜：<p>根据游戏被游玩总数进行游戏排行，但是只有上传得分后才能被计算进游玩次数</p>
@@ -173,26 +162,6 @@
                                 name: '飞机大战',
                                 value: 4
                             },
-                            {
-                                url: require('../assets/images/rankingList/game04.jpg'),
-                                name: '无',
-                                value: '0'
-                            },
-                            {
-                                url: require('../assets/images/rankingList/game04.jpg'),
-                                name: '无',
-                                value: '0'
-                            },
-                            {
-                                url: require('../assets/images/rankingList/game04.jpg'),
-                                name: '无',
-                                value: '0'
-                            },
-                            {
-                                url: require('../assets/images/rankingList/game04.jpg'),
-                                name: '无',
-                                value: '0'
-                            },
                         ]
                     },
                     {
@@ -297,6 +266,23 @@
                 // 榜单介绍信息显示
                 rankingInfo: false,
             }
+        },
+        created(){
+          this.$api.rankingList.getRankingList().then(res =>{
+              res.scoreList.forEach(item => {
+                  item.value = item.value.toFixed(1);
+              })
+              this.rankingArray[0].data = res.scoreList;
+              this.rankingArray[1].data = res.hotList;
+              this.rankingArray[2].data = res.bestPersonList;
+              const hotArray = [];
+              for(let i = 0; i < 4; i++){
+                  hotArray.push(res.hotList[i]);
+              }
+              this.hotGameArray = hotArray;
+              console.log('1',this.hotGameArray);
+              console.log('2',this.rankingArray);
+          }).catch(err => console.log(err))
         },
         methods: {
             // 返回主页
@@ -425,6 +411,7 @@
             opacity: 0.8;
             cursor: pointer;
         }
+        /* 排行榜 */
         .ranking {
             display: flex;
             flex-direction: column;
@@ -479,11 +466,12 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                height: 525px;
+                height: 535px;
                 margin-top: -10px;
                 .ranking-card {
                     position: absolute;
                     width: 300px;
+                    min-height: 455px;
                     display: flex;
                     flex-direction: column;
                     border-radius: 20px;
@@ -497,7 +485,7 @@
                         align-items: center;
                         justify-content: space-between;
                         box-sizing: border-box;
-                        padding: 5px 35px 5px 15px;
+                        padding: 15px 35px 5px 15px;
                         .list-index {
                             display: flex;
                             align-items: center;
@@ -522,25 +510,6 @@
                                 }
                             }
                         }
-                        /*&.user-top {*/
-                            /*.list-index {*/
-                                /*img {*/
-                                    /*border-radius: 50%;*/
-                                /*}*/
-                            /*}*/
-                            /*.list-data {*/
-                                /*display: flex;*/
-                                /*align-items: center;*/
-                                /*.top-game {*/
-                                    /*width: 30px;*/
-                                    /*height: 30px;*/
-                                    /*object-fit: cover;*/
-                                    /*border-radius: 5px;*/
-                                    /*box-sizing: border-box;*/
-                                    /*padding: 2px;*/
-                                /*}*/
-                            /*}*/
-                        /*}*/
                     }
                     @keyframes leftR1toR2 {
                         0% {
@@ -689,6 +658,7 @@
                 }
             }
         }
+        /* 排行榜介绍信息 */
         .ranking-info{
             position: fixed;
             display: flex;
@@ -749,6 +719,7 @@
                 }
             }
         }
+        /* 为您推荐分割线 */
         .divider{
             display: flex;
             margin: 0 auto;
@@ -759,6 +730,7 @@
                 margin: 0 20px;
             }
         }
+        /* 更多游戏+热门游戏 */
         .more-games{
             width: 80%;
             background-color: rgba(255, 255, 255, 0.7);
@@ -795,6 +767,7 @@
                 margin: 20px auto;
             }
         }
+        /* 返回顶部 */
         .toTop{
             display: flex;
             flex-direction: column;

@@ -19,7 +19,11 @@
                     <div class="star" @click="gameStar">
                         <el-rate
                                 v-model="value"
-                                show-text>
+                                show-text
+                                :texts="starTexts"
+                                :colors="starColors"
+                                :disabled="starDisabled"
+                        >
                         </el-rate>
                     </div>
                     <div class="love">
@@ -183,10 +187,16 @@
                 gameDetail: '',
                 // 游戏名称
                 gameName: '',
+                // 评分对应文字
+                starTexts: [1, 2, 3, 4, 5],
+                // 评分只读判断
+                starDisabled: false,
+                // 评分星星颜色数组
+                starColors: {2: '#99A9BF', 4: {value: '#F7BA2A', excluded: true}, 5: '#FF9900'},
                 // 当前评论
                 comment: '',
                 //分享功能动态传参
-                url:  "http://10.110.5.26:8080/"+window.location.hash,
+                url: "http://10.110.5.26:8080/" + window.location.hash,
                 pics: "https://goss1.veer.com/creative/vcg/veer/612/veer-104218671.jpg",
                 // summary: "",
                 desc: '快来跟我一起玩游戏吧',
@@ -249,10 +259,10 @@
             }
         },
         created() {
-            this.url="http://10.110.5.26:8080/"+window.location.hash
+            this.url = "http://10.110.5.26:8080/" + window.location.hash
             this.$store.state.token != null ? this.loginName = this.$store.state.token.loginName : '';
             this.id = this.$route.query.id;
-            if(this.loginName){
+            if (this.loginName) {
                 //进入页面判段用户是否喜欢过改游戏
                 this.$api.gameInfo.loveJudge({name: this.loginName, id: this.id}).then(res => {
                     if (res == true) {
@@ -265,7 +275,7 @@
                 this.gameName = res.gameInfo[0].gameName;
                 // console.log(this.gameName);
                 this.gameImg = res.gameInfo[0].gamePic.split('|')
-                this.pics=res.gameInfo[0].gameLogo
+                this.pics = res.gameInfo[0].gameLogo
                 this.gameDetail = res.gameInfo[0].gameDetail
                 this.hotCommentList = res.hotCommentList
                 this.rankingList = res.rankList
@@ -294,25 +304,28 @@
                 return pair[1];
             },
             //上传游戏star
-            gameStar(){
-                console.log("走了上传游戏分数")
-                if(this.loginName){
-                    var value={
-                        loginName: this.loginName,
-                        gameId: this.id,
-                        star:this.value
-                    }
-                    this.$api.gameInfo.gameStar(value).then(res=>{
-                        this.$message({
-                            message:'评分成功',
-                            type:'success'
+            gameStar() {
+                if (!this.starDisabled) {
+                    console.log("走了上传游戏分数")
+                    if (this.loginName) {
+                        var value = {
+                            loginName: this.loginName,
+                            gameId: this.id,
+                            star: this.value
+                        }
+                        this.$api.gameInfo.gameStar(value).then(res => {
+                            this.$message({
+                                message: '评分成功',
+                                type: 'success'
+                            })
+                            this.starDisabled = true;
                         })
-                    })
-                }
-                else{
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                    }
+                    else {
+                        alert("您即将前往登录页")
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
                 }
             },
             //开始游戏
