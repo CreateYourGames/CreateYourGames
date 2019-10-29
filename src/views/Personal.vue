@@ -46,30 +46,10 @@
           </div>
           <div v-else></div>
           <ul ref="ul">
-            <!-- black -->
-            <div v-if="code" class="unChecked">审核中</div>
-            <div v-else></div>
-
-            <!-- check -->
-            <div v-if="code">
-              <li 
-                v-for="(publish,index) in publishList"
-                :key="index"
-              > 
-                <img :src="publish.gameLogo" alt />
-              </li>
-            </div>
-
-            <!-- check ok -->
-            <div v-else>
-              <li 
-                v-for="(publish,index) in publishList"
-                :key="index"
-                :class="{style:i === index}"
-                @mouseover="overStyle(index)"
-                @mouseout="outStyle(index)"
-              > 
-                <img :src="publish.gameLogo" alt />
+            <li v-for="(publish,index) in publishList" :key="index">
+              <img :src="publish.gameLogo" alt />
+              <!-- check ok -->
+              <div v-if="publish.gameFlag==2">
                 <div v-show="publish.flag">
                   <p class="details" @click="jumpGameDetails(publish.gameId)">查看详情</p>
                   <div class="ud">
@@ -77,9 +57,33 @@
                     <p class="delete" @click="delGame(publish.gameId)">&nbsp;删除游戏</p>
                   </div>
                 </div>
-              </li>
-            </div>
+              </div>
 
+              <!-- checking -->
+              <div v-if="publish.gameFlag==0">
+                <div
+                  v-if="publish.gameFlag==0"
+                  class="unChecked"
+                  :class="{style:i === index}"
+                  @mouseover="overStyle(index)"
+                  @mouseout="outStyle(index)"
+                >审核中</div>
+                <div v-else></div>
+              </div>
+
+              <!-- check false -->
+              <div v-if="publish.gameFlag==1">
+                <div
+                  v-if="publish.gameFlag==1"
+                  class="checkedFalse"
+                  @mouseover="enter(index)"
+                  @mouseout="out(index)"
+                  ref="check"
+                  @click="resPublish()"
+                >审核失败</div>
+                <div v-else></div>
+              </div>
+            </li>
           </ul>
         </div>
         <!-- 无发布 -->
@@ -98,7 +102,10 @@
           <!-- 无最近game -->
           <div class="middle" v-if="gameList.length===0">
             <div class="noGame">
-              <p>亲！暂时还没有玩过游戏！<br/>快去玩游戏吧！</p>
+              <p>
+                亲！暂时还没有玩过游戏！
+                <br />快去玩游戏吧！
+              </p>
               <button @click="goGame()">前往游戏库</button>
             </div>
           </div>
@@ -122,7 +129,10 @@
           <div class="middle" v-if="favorList.length===0">
             <!-- 没有喜欢 -->
             <div class="noGame">
-              <p>亲！暂时还没有喜欢过的游戏！<br/>快去玩游戏吧！</p>
+              <p>
+                亲！暂时还没有喜欢过的游戏！
+                <br />快去玩游戏吧！
+              </p>
               <button @click="goGame()">前往游戏库</button>
             </div>
           </div>
@@ -158,14 +168,12 @@ export default {
   components: {
     Conform
   },
-  computed:{
-
-  },
+  computed: {},
   data() {
     return {
       // 审核
-      code:false,
-      
+      code: 1,
+
       isDeveloper: 0,
 
       // 删除gameid
@@ -276,7 +284,7 @@ export default {
     let val = this.$store.state.token.loginName;
     this.$api.personal.publishGame(val).then(res => {
       this.publishList = res.publishList;
-      // console.log(res)
+      console.log(res, "康康有没有code");
     }),
       this.$api.personal.recentGame(val).then(res => {
         this.gameList = res.gameList;
@@ -301,14 +309,23 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-        console.log(this.$refs.ul);
-        this.$refs.ul.style.width = 170 * this.publishList.length + "px";
+      console.log(this.$refs.ul);
+      this.$refs.ul.style.width = 170 * this.publishList.length + "px";
     }, 500);
-   
-    
   },
   methods: {
-    // 路由跳转
+    // 重新发布
+    enter(index) {
+      console.log(this.$refs.check[index].innerHTML);
+      this.$refs.check[index].innerHTML = "点击重新发布";
+    },
+    out(index) {
+      this.$refs.check[index].innerHTML = "审核失败";
+    },
+    resPublish() {
+      this.$router.push("/PublishGame");
+    },
+    /// 路由跳转
     go() {
       this.$router.push("/Personal/UpdateInfo").catch(err => console.log(err));
     },
@@ -364,14 +381,14 @@ export default {
     },
 
     //发布的游戏 手表移动事件
-    overStyle(index) {
-      this.publishList[index].flag = !this.publishList[index].flag;
-      this.i = index;
-    },
-    outStyle(index) {
-      this.publishList[index].flag = !this.publishList[index].flag;
-      this.i = "";
-    },
+    // overStyle(index) {
+    //   this.publishList[index].flag = !this.publishList[index].flag;
+    //   this.i = index;
+    // },
+    // outStyle(index) {
+    //   this.publishList[index].flag = !this.publishList[index].flag;
+    //   this.i = "";
+    // },
 
     // 点击自定义轮播推动
     left() {
@@ -542,12 +559,27 @@ export default {
           right: 50px;
           top: 80px;
         }
-        ul{
-          .unChecked{
+        ul {
+          .checkedFalse {
             height: 120px;
             width: 120px;
             border-radius: 15px;
             position: absolute;
+            top: 50px;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 99999;
+            color: red;
+            text-align: center;
+            font-size: 18px;
+            line-height: 120px;
+            cursor: pointer;
+          }
+          .unChecked {
+            height: 120px;
+            width: 120px;
+            border-radius: 15px;
+            position: absolute;
+            top: 50px;
             background-color: rgba(0, 0, 0, 0.4);
             z-index: 99999;
             color: #fff;
@@ -565,11 +597,6 @@ export default {
           // border:1px solid red;
           .cacher {
             display: none;
-          }
-          &.style {
-            opacity: 1;
-            transform: scale(1.1, 1.1);
-            transition: all 0.3s;
           }
           img {
             width: 120px;
