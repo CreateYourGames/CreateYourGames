@@ -189,7 +189,7 @@
         created() {
             console.log('退出登录');
             // 进入首页判断当前是否登录（Vuex中是否存在loginName）
-            if (this.$store.state.token.loginName) {
+            if (this.$store.state.token) {
                 this.loginFlag = true;
                 console.log(this.$store.state.token.loginName, '当前登录用户账号');
                 this.$api.loginInfo.getLoginInfo(this.$store.state.token.loginName).then(res => {
@@ -238,7 +238,21 @@
             },
             // 开发者测试跳转
             toDeveloperTest() {
-                this.$router.push('/Developer')
+                console.log("来到了跳转")
+                if(this.$store.state.token){
+                    console.log('aaa')
+                    this.$router.push('/Developer')
+                }
+                else{
+                    console.log("nnn")
+                    if(confirm("您需要先登录才能进行操作")){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
+                }
             },
             // 个人信息跳转
             toPersonal() {

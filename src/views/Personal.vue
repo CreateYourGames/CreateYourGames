@@ -315,7 +315,7 @@ export default {
     jumpGame(i) {
       console.log(i, "index");
       this.$router
-        .push("/Personal/UpdateGameInfo?id=" + this.publishList[i].gameId)
+        .push("/Personal/UpdateGameInfo?id=" + i)
         .catch(err => console.log(err));
     },
     goHome() {

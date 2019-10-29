@@ -80,9 +80,10 @@
                 var data={
                     type:this.type,
                     name:this.name,
-                    details:this.details
+                    details:this.details,
+                    loginName:this.$store.state.token.loginName
                 }
-                // console.log(data)
+                console.log(this.$refs.upload)
                 let fileArray=this.$refs.upload.uploadFiles
                 const fd=new FormData()
                 fd.append('gameFiles',this.logo)
@@ -98,7 +99,7 @@
                 }).then(res=>{
                     if(res.data==true){
                         this.$message({
-                            message:'发布成功，请耐心等耐待审核',
+                            message:'发布成功，请耐心等待审核',
                             type:'success'
                         })
                     }else{
