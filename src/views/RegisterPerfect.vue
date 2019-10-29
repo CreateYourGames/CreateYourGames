@@ -2,7 +2,7 @@
   <div class="container">
     <div class="register">
       <form action="/api/register" method="post" enctype="multipart/form-data">
-        <p>信息完善</p>
+        <p>个人信息完善</p>
 
         <div class="mid">
           <div class="title">
@@ -178,12 +178,13 @@ export default {
     p {
       margin-top: 45px;
       width: 100%;
-      height: 45px;
-      line-height: 45px;
+      height: 50px;
+      line-height: 50px;
       text-align: center;
-      font-size: 28px;
+      font-size: 36px;
       color: black;
       font-weight: bold;
+      font-family: 楷体;
     }
 
     // 头像的设置
