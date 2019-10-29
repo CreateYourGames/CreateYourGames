@@ -37,7 +37,7 @@
       </el-form-item>
       <el-form-item prop="checkPass" label-width="0" style="margin-top:-10px;">
         <span>确认密码</span>
-        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"   @keyup.enter.native="submitForm('ruleForm')"></el-input>
       </el-form-item>
 
       <el-form-item>
@@ -81,9 +81,9 @@ export default {
       btnText: "获取验证码",
       Judge: true,
       pictureList: [
-        { id: 1, img: require("@/assets/images/login/yx1.png") },
-        { id: 2, img: require("@/assets/images/login/yx2.png") },
-        { id: 3, img: require("@/assets/images/login/yx3.png") }
+        { id: 1, img: require("../assets/images/home/newGame04.jpg") },
+        { id: 2, img: require("../assets/images/home/newGame03.jpg") },
+        { id: 3, img: require("../assets/images/home/newGame02.jpg") }
       ],
       ruleForm: {
         userPhone: "",
@@ -116,7 +116,6 @@ export default {
           loginName: this.ruleForm.userPhone,
           pwd: this.ruleForm.Pass
         };
-        // console.log("xxxx:" + this.Judge);
         this.$store.commit("getToken", obj);
         this.$refs[formName].validate(valid => {
           if (valid) {

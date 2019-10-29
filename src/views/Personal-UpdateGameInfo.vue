@@ -5,22 +5,26 @@
         <label for class="special">游戏图标：</label>
         <div class="container">
           <!-- <input type="file" name="picture"> -->
-          <input type="text" name="gameId" :value="GameInfo[0].gameId" style="display:none;">
+          <input type="text" name="gameId" :value="GameInfo[0].gameId" style="display:none;" />
           <img class="game-img" name="gamePic" :src="pic" alt />
           <input type="file" ref="input" name="picture" style="display:none;" @change="changeImg()" />
-          <div class="up-gm-img" @click="fileClick"  @mouseover="addStyle"  v-bind:class="{style:enable}"
-          @mouseout="removeStyle">
-          </div>
+          <div
+            class="up-gm-img"
+            @click="fileClick"
+            @mouseover="addStyle"
+            v-bind:class="{style:enable}"
+            @mouseout="removeStyle"
+          ></div>
         </div>
         <label for>游戏名称：</label>
         <input type="text" name="gameName" id :value="GameInfo[0].gameName" />
         <br />
         <label for>游戏分类：</label>
-        <select v-model="selected" name="gameType" id="" >
-            <option value="all" >所有类型</option>
-            <option value="clever" >益智</option>
-            <option value="smallGame" >小游戏</option>
-            <option value="shoot" >射击</option>
+        <select v-model="selected" name="gameType" id>
+          <option value="all">所有类型</option>
+          <option value="clever">益智</option>
+          <option value="smallGame">小游戏</option>
+          <option value="shoot">射击</option>
         </select>
         <br />
         <label for class="special">游戏简介：</label>
@@ -36,15 +40,15 @@
             <img src="@/assets/images/personal/105.jpg" alt />
             <img class="del-img" src="@/assets/images/personal/shanchu.png" alt />
           </li>
-        </ul> -->
+        </ul>-->
         <label for>游戏源码文件：</label>
         <!-- <input ref="file" type="file" name="gameCode" id style="border:none;display:none" /> -->
         <!-- <img @click="upload" class="file" src="../assets/images/personal/anniu.png" alt=""> -->
-        <input type="text" name="gameCode" :value="GameInfo[0].gameCode" id="">
+        <input type="text" name="gameCode" :value="GameInfo[0].gameCode" id />
         <div class="btn">
-        <input class="modify" type="submit" value="确认修改" @click="defineUpdate()"/>
-        <button class="cancel" @click="go2()">取消</button>
-      </div>
+          <input class="modify" type="submit" value="确认修改" @click="defineUpdate()" />
+          <button class="cancel" @click="go2()">取消</button>
+        </div>
       </form>
     </div>
   </div>
@@ -52,53 +56,53 @@
 
 <script>
 export default {
-    data(){
-      return{
-        enable: false,
-        selected:'all',
-        inputid:"input",
-        id:'',
-        pic:'',
-        GameInfo:[
-          {
-          }
-        ]
-      }
+  data() {
+    return {
+      enable: false,
+      selected: "all",
+      inputid: "input",
+      id: "",
+      pic: "",
+      GameInfo: [{}]
+    };
+  },
+  created() {
+    this.id = this.$route.query.id;
+    let val = this.id;
+    console.log(this.id, "123");
+    this.$api.updateGameInfo.updateGameInfo(val).then(res => {
+      console.log(res);
+      this.GameInfo = res.GameInfo;
+      this.pic = res.GameInfo[0].gamePic;
+      console.log(this.GameInfo[0].gameName);
+    });
+  },
+  methods: {
+    changeImg() {
+      let event = event || window.event;
+      console.log("11" + event.target.files[0]);
+      this.pic = this.getObjectURL(event.target.files[0]);
+      console.log("22" + this.pic);
     },
-    created(){
-      this.id = this.$route.query.id
-      let val = this.id
-      console.log(this.id,"123")
-      this.$api.updateGameInfo.updateGameInfo(val).then(res=>{
-            console.log(res)
-            this.GameInfo = res.GameInfo
-            this.pic=res.GameInfo[0].gamePic
-            console.log(this.GameInfo[0].gameName)
-        })
-    },
-   methods: {
-     changeImg(){
-      let event=event||window.event
-      console.log(event.target.files[0])
-      this.pic=this.getObjectURL(event.target.files[0])
-      console.log(this.pic)
-     },
-     getObjectURL (file) {
-      let url = null ;
-      if (window.createObjectURL!=undefined) { // basic
-        url = window.createObjectURL(file) ;
-      }else if (window.webkitURL!=undefined) { // webkit or chrome
-        url = window.webkitURL.createObjectURL(file) ;
-      }else if (window.URL!=undefined) { // mozilla(firefox)
-        url = window.URL.createObjectURL(file) ;
+    getObjectURL(file) {
+      let url = null;
+      if (window.createObjectURL != undefined) {
+        // basic
+        url = window.createObjectURL(file);
+      } else if (window.webkitURL != undefined) {
+        // webkit or chrome
+        url = window.webkitURL.createObjectURL(file);
+      } else if (window.URL != undefined) {
+        // mozilla(firefox)
+        url = window.URL.createObjectURL(file);
       }
-      return url ;
+      return url;
     },
     fileClick() {
       this.$refs.input.dispatchEvent(new MouseEvent("click"));
     },
-    upload(){
-        this.$refs.file.dispatchEvent(new MouseEvent("click"));
+    upload() {
+      this.$refs.file.dispatchEvent(new MouseEvent("click"));
     },
     defineUpdate() {
       // this.$router.push("/Personal").catch(err => console.log(err));
@@ -113,7 +117,7 @@ export default {
     },
     removeStyle() {
       this.enable = false;
-    },
+    }
   }
 };
 </script>
@@ -125,7 +129,7 @@ export default {
   align-items: center;
   // background-image: url('../assets/images/personal/gameupdate.jpg');
   background-repeat: no-repeat;
-  background-size:100% 100%;
+  background-size: 100% 100%;
   // border: 1px solid black;
 }
 .nav-game {
@@ -141,7 +145,8 @@ export default {
   label {
     font-size: 20px;
   }
-  input,select {
+  input,
+  select {
     width: 290px;
     height: 40px;
     border: 1px solid gray;
@@ -230,10 +235,10 @@ export default {
     }
   }
   .btn {
-      margin-top: 20px;
-      width: 300px;
-      height: 50px;
-      position: relative;
+    margin-top: 20px;
+    width: 300px;
+    height: 50px;
+    position: relative;
     .modify {
       width: 100px;
       height: 35px;

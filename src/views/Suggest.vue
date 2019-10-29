@@ -94,6 +94,9 @@
         background-size: 100% 100%;
         // display: flex;
         // flex-direction: column;
+        .topNav{
+            z-index: 0;
+        }
         .content {
             height: calc(100% - 60px);
             display: flex;
