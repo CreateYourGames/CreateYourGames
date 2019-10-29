@@ -3,15 +3,15 @@
  <div class="container">
     <div class="content">
       <div class="btn">
-        <button style="margin-bottom: 5px;" @click="goRefresh()">New Game</button>
-        <button @click="goGame()" style="background-color: #76c47d">Go GameCenter</button>
+        <button style="margin-bottom: 6px;" @click="goRefresh()">重新开始</button>
+        <button @click="goGame()" style="background-color: #76c47d">退出游戏</button>
       </div>
       <div class="mid">
-        <p>SCORE</p>
+        <p>分数</p>
         <p>{{this.score}}</p>
       </div>
       <div class="mid">
-        <p>BEST</p>
+        <p>最高分</p>
         <p>{{this.bestScore}}</p>
       </div>
     </div>
@@ -21,8 +21,8 @@
 
     <div class="over" v-if="this.over">
       <p>Game Over!</p>
-      <button style="margin-bottom: 15px;" @click="goRefresh()">Try again</button>
-      <button @click="goGame()">Go GameCenter</button>
+      <button style="margin-bottom: 15px;" @click="goRefresh()">再来一次</button>
+      <button @click="goGame()">退出游戏</button>
     </div>
   </div>
 </div>
@@ -92,13 +92,13 @@ export default {
               gameId: window.location.hash.split('/')[2]
           }).then(res => {
               console.log(res);
-              _this.$router.push('/GameCenter');
+              _this.$router.go(-1);
           }).catch(err => {
               console.log(err);
           })
       }
       else{
-          _this.$router.push('/GameCenter');
+          _this.$router.go(-1);
       }
 
     },
@@ -379,24 +379,24 @@ export default {
     },
 
     
-     setCookie(c_score,exdays){
-            var exdate = new Date();
-            exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); 
-            window.document.cookie="score="+c_score+  ";path=/;expires=" + exdate.toGMTString();
-
-     },
-     getCookie(){
-        var _this=this;
-        if(document.cookie.length > 0){
-          var arr = document.cookie.split("; ");
-          for (var i = 0; i < arr.length; i++) {
-              var arr2 = arr[i].split("="); //再次切割 //判断查找相对应的值
-              // console.log(arr, arr2);
-              if (arr2[0] == "score") {
-                  _this.bestScore = arr2[1]; //保存到保存数据的地方
-              } 
-            }}
-          },
+    setCookie(c_score,exdays){
+      var exdate = new Date();
+      exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); 
+      window.document.cookie="score="+c_score+  ";path=/;expires=" + exdate.toGMTString();
+    },
+    getCookie(){
+      var _this=this;
+      if(document.cookie.length > 0){
+        var arr = document.cookie.split("; ");
+        for (var i = 0; i < arr.length; i++) {
+          var arr2 = arr[i].split("="); //再次切割 //判断查找相对应的值
+          // console.log(arr, arr2);
+          if (arr2[0] == "score") {
+            _this.bestScore = arr2[1]; //保存到保存数据的地方
+          } 
+        }
+      }
+    },
 
     // 4.键盘“上下左右”移动事件
     move(direction) {
@@ -565,13 +565,13 @@ export default {
         text-align: center;
         color: #eee4da;
         font-size: 18px;
-        line-height: 45px;
+        line-height: 40px;
         font-weight: bold;
       }
       p:last-of-type {
         color: white;
         font-size: 18px;
-        line-height: 10px;
+        line-height: 15px;
       }
     }
   }

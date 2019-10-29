@@ -23,7 +23,8 @@
         </el-form-item>
         <el-form-item prop="checkPass" class="form" label-width="38px">
           <span>密码</span>
-          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+          <!-- 回车自动登录 -->
+          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"  @keyup.enter.native="submitForm('ruleForm')"></el-input>
         </el-form-item>
 
         <p class="check">

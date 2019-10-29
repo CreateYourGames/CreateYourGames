@@ -71,9 +71,9 @@
               > 
                 <img :src="publish.gameLogo" alt />
                 <div v-show="publish.flag">
-                  <p class="details" @click="jumpGameDetails(index)">查看详情</p>
+                  <p class="details" @click="jumpGameDetails(publish.gameId)">查看详情</p>
                   <div class="ud">
-                    <p class="update" @click="jumpGame(index)">修改信息&nbsp;</p>
+                    <p class="update" @click="jumpGame(publish.gameId)">修改信息&nbsp;</p>
                     <p class="delete" @click="delGame(publish.gameId)">&nbsp;删除游戏</p>
                   </div>
                 </div>
@@ -106,8 +106,8 @@
           <!-- 有最近game -->
           <div class="mid-Game" v-if="gameList.length!=0">
             <ul>
-              <li v-for="(game) in gameList" :key="game.id" @click="jumpGameDetails">
-                <img :src="game.gamePic" alt />
+              <li v-for="(game) in gameList" :key="game.id" @click="jumpGameDetails(game.gameId)">
+                <img :src="game.gameLogo" alt />
                 <p class="gameName">{{game.name}}</p>
               </li>
             </ul>

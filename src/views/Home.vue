@@ -124,29 +124,29 @@
                 active4: false,
                 newGameArr: [
                     {
-                        name: '妖刀姬',
-                        description: '12月10日震撼上线',
+                        name: '贪吃蛇',
+                        description: '11月15日震撼上线',
                         url: require('../assets/images/home/newGame01.jpg'),
                         inverseFlag: false,
                         inverseInfo: '人类和我完全不一样，他们很弱。但我却觉得有些熟悉。我平时很少说话，也不知道要怎么诉说。可是我想试着和他们交谈，也想试着靠近他们，还想试着去理解他们。也许那么做之后，我就能知道为什么我会觉得那么熟悉了。'
                     },
                     {
-                        name: '不知火',
-                        description: '12月10日震撼上线',
+                        name: '超级马里奥',
+                        description: '12月1日敬请期待',
                         url: require('../assets/images/home/newGame02.jpg'),
                         inverseFlag: false,
                         inverseInfo: '原本黑寂的海面上，突然出现了一束火光。火光分裂，滋生，最终成百上千，沿着海面直达天际。这便是大妖怪不知火的传说，它深深地烙印在每一个杏原人的脑海里。每过数十年，不知火便会降临在杏原的海面，带来福祉抑或灾难。'
                     },
                     {
-                        name: '阴阳师',
-                        description: '12月10日震撼上线',
+                        name: '愤怒的小鸡',
+                        description: '12月10日敬请期待',
                         url: require('../assets/images/home/newGame03.jpg'),
                         inverseFlag: false,
                         inverseInfo: '原本黑寂的海面上，突然出现了一束火光。火光分裂，滋生，最终成百上千，沿着海面直达天际。这便是大妖怪不知火的传说，它深深地烙印在每一个杏原人的脑海里。每过数十年，不知火便会降临在杏原的海面，带来福祉抑或灾难。不知火便会降临在杏原的海面，带来福祉抑或灾难。不知火便会降临在杏原的海面，带来福祉抑或灾难。'
                     },
                     {
-                        name: '御馔津',
-                        description: '12月10日震撼上线',
+                        name: '坦克大战',
+                        description: '12月15日敬请期待',
                         url: require('../assets/images/home/newGame04.jpg'),
                         inverseFlag: false,
                         inverseInfo: '在出发前，那位大人曾问我，平和美好的京都已经不在了，你所要前往的地方是人间地狱，你做好准备了吗 ？。我看着他威严而冷酷的面庞，坚定地答道，我明白。可我的手心却忍不住出了汗、连弓箭也差一点滑落。'
@@ -479,6 +479,7 @@
                                     opacity: 0.75;
                                     overflow: hidden;
                                     text-indent: 1em;
+                                    margin-top: 5px;
                                 }
                             }
                         }
