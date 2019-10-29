@@ -3,8 +3,9 @@
     <div class="left">
       <div class="txt">
         <p>Welcome Back!</p>
+         <p>To keep connected with please login with your presonal ifon</p>
         <button @click="backHome">我要回主页！</button>
-        <p>To keep connected with please login with your presonal ifon</p>
+       
       </div>
     </div>
 
@@ -308,7 +309,8 @@ export default {
       p:last-of-type {
         color: rgb(221, 179, 144);
         font-size: 16px;
-        margin-top: 60px;
+        // margin-top: 60px;
+        margin-bottom: 60px;
         text-align: center;
       }
 
