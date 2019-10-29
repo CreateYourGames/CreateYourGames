@@ -2,18 +2,13 @@
     <div class="publish-game">
         <topNav style="z-index: 1"></topNav>
         <div class="form-box">
-            <form action="/api/publishGame" method='post'>
+            <form action="/api/publishGame" ref="form" method='post' enctype='multipart/form-data'>
                 <div class="publish-title">
                     分享您的游戏
                 </div>
                 <div class="game-item game-icon">
                     <label for="" class="special">上传游戏封面图：</label>
-                    <!--<div class="upload-icon">-->
-                        <!--<input class="upload-btn" type="file" name="image" accept="image/*"-->
-                               <!--@change="gameIconChange($event)">-->
-                        <!--<img class="game-img" :src="gameIcon" alt="">-->
-                    <!--</div>-->
-                    <uploadImage width="200px" height="100px"></uploadImage>
+                    <!-- <input type="file" name="logo"> -->
                 </div>
                 <div class="game-item game-type">
                     <label for="">游戏分类：</label>
@@ -30,16 +25,26 @@
                 <div class="game-item game-images">
                     <label>上传游戏相关图片：</label>
                     <div class="game-images-box">
-                        <uploadImage width="150px" height="100px"></uploadImage>
+                         <el-upload  
+                            action
+                            :limit="5"   
+                            ref="upload"  
+                            :multiple="true"
+                            :auto-upload="false" 
+                    
+                            list-type="picture-card">
+                            <el-button slot="trigger" size="small" >选取文件</el-button>
+                            <div slot="tip" class="el-upload__tip">上传图片大小不超过500kb</div>
+                        </el-upload>
                     </div>
                 </div>
                 <div class="game-item game-file">
                     <label for="">游戏源码文件：</label>
-                    <input type="file" name="code">
+                    <input id="code" ref="code" type="file" @change="change" name="code">
                 </div>
                 <div class="game-item game-submit">
                     <label for=""></label>
-                    <input type="submit" class="gamePublish" @click="gamePublish()" value="确认发布">
+                    <input type="submit" class="gamePublish" value="确认发布">
                 </div>
             </form>
         </div>
@@ -52,47 +57,24 @@
     export default {
         data() {
             return {
+                 imageUrl: '',
                 gameIcon: require('../assets/images/publishGame/01.png'),
                 gameImages:[
                     require('../assets/images/publishGame/01.png')
                 ],
             }
         },
+        mounted(){
+            // console.log(this.$refs.logo)
+            // console.log(this.$refs.upload)
+            // console.log(this.$refs.upload.uploadFiles)
+        },
         methods: {
-            gamePublish() {
-                this.$router.push('/')
-            },
-            // gameIconChange(e) {
-            //     const file = e.target.files[0];
-            //     console.log(file);
-            //     // 获取图片的大小，做大小限制有用
-            //     let imgSize = file.size;
-            //     console.log(imgSize);
-            //     const _this = this; // this指向问题，所以在外面先定义
-            //     // 比如上传头像限制5M大小，这里获取的大小单位是b
-            //     if (imgSize <= 5000 * 1024) {
-            //         // 合格
-            //         _this.errorStr = '';
-            //         console.log('大小合适');
-            //         // 开始渲染选择的图片
-            //         // 本地路径方法 1
-            //         this.imgStr = window.URL.createObjectURL(e.target.files[0])
-            //         // console.log(window.URL.createObjectURL(e.target.files[0])) // 获取当前文件的信息
-
-            //         // base64方法 2
-            //         // var reader = new FileReader();
-            //         // reader.readAsDataURL(file); // 读出 base64
-            //         // reader.onloadend = function () {
-            //         //     // 图片的 base64 格式, 可以直接当成 img 的 src 属性值
-            //         //     var dataURL = reader.result;
-            //         //     console.log(dataURL);
-            //         //     _this.gameIcon = dataURL
-            //         //     // 下面逻辑处理
-            //         // }
-            //     } else {
-            //         this.$message.error('图片大小不符，请重新上传大小5M以内的图片!');
-            //     }
-            // }
+           
+            change(){
+                console.log(this.$refs.form.file)
+                console.log(this.$refs.code.files[0])
+            }
         },
         components: {
             topNav,
@@ -102,7 +84,29 @@
 </script>
 
 <style lang="scss" scoped>
-
+ .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
     .publish-game {
         /*height: 100%;*/
         background-image: url('../assets/images/publishGame/publish-bg1.jpg');
@@ -197,6 +201,9 @@
             }
             .game-images{
                 .game-images-box{
+                    .el-upload {
+                        background: rgba(0, 0, 0, 0.5)
+                    }
                     display: flex;
                     position: relative;
                     .upload-btn {

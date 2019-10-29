@@ -3,6 +3,9 @@
         <div class="game" ref="game">
             <div class="gameStart" ref="gameStart">
                 <div class="start">
+                    <div class="describe">
+                        <span>点击空格键开始游戏，通过鼠标控制飞机的移动</span>
+                    </div>
                     <div class="plane" ref="startPlane">
                         <img src="../../assets/images/game-Images/game-plane/my.gif" alt="">
                     </div>
@@ -484,6 +487,13 @@ export default {
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
+                .describe{
+                    width: 200px;height: 60px;
+                    text-align: center;
+                    color: rgba(238, 109, 3,.9);
+                    position: absolute;
+                    top: -90px;
+                }
                 .plane{
                     width: 80px;height: 80px;
                     position: absolute;
