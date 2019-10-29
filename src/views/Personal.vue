@@ -21,7 +21,6 @@
     <div>
       <conform ref="delGame"></conform>
     </div>
-
     <div class="content">
       <!-- 开发者部分 -->
       <div class="publish" v-if="isDeveloper===1">
@@ -46,7 +45,10 @@
           </div>
           <div v-else></div>
           <ul ref="ul">
-            <li v-for="(publish,index) in publishList" :key="index">
+            <li v-for="(publish,index) in publishList" :key="index"
+                v-bind:class="{style:i === index}"
+                @mouseover="overStyle(index)"
+                @mouseout="outStyle(index)">
               <img :src="publish.gameLogo" alt />
               <!-- check ok -->
               <div v-if="publish.gameFlag==2">
@@ -63,17 +65,14 @@
               <div v-if="publish.gameFlag==0">
                 <div
                   v-if="publish.gameFlag==0"
-                  class="unChecked"
-                  :class="{style:i === index}"
-                  @mouseover="overStyle(index)"
-                  @mouseout="outStyle(index)"
+                  class="unChecked"     
                 >审核中</div>
                 <div v-else></div>
               </div>
 
               <!-- check false -->
               <div v-if="publish.gameFlag==1">
-                <div
+                 <div
                   v-if="publish.gameFlag==1"
                   class="checkedFalse"
                   @mouseover="enter(index)"
@@ -168,7 +167,6 @@ export default {
   components: {
     Conform
   },
-  computed: {},
   data() {
     return {
       // 审核
@@ -197,84 +195,10 @@ export default {
       ind: "",
       img104: require("../assets/images/personal/104.jpg"),
       publishList: [
-        // {
-        //   id: 1,
-        //   img: require("@/assets/images/personal/104.jpg"),
-        //   flag: false
-        // },
-        // {
-        //   id: 2,
-        //   img: require("@/assets/images/personal/105.jpg"),
-        //   flag: false
-        // },
-        // {
-        //   id: 3,
-        //   img: require("@/assets/images/personal/103.jpg"),
-        //   flag: false
-        // },
-        // {
-        //   id: 4,
-        //   img: require("@/assets/images/personal/01.png"),
-        //   flag: false
-        // },
-        // {
-        //   id: 5,
-        //   img: require("@/assets/images/personal/game1.png"),
-        //   flag: false
-        // },
-        // {
-        //   id: 6,
-        //   img: require("@/assets/images/personal/info2.jpg"),
-        //   flag: false
-        // }
       ],
       gameList: [
-        // {
-        //   id: 1,
-        //   name: "游戏1",
-        //   img: require("@/assets/images/personal/game1.png")
-        // },
-        // {
-        //   id: 2,
-        //   name: "游戏2",
-        //   img: require("@/assets/images/personal/game2.png")
-        // },
-        // {
-        //   id: 3,
-        //   name: "游戏3",
-        //   img: require("@/assets/images/personal/game3.png")
-        // },
-        // {
-        //   id: 4,
-        //   name: "游戏4",
-        //   img: require("@/assets/images/personal/game4.png")
-        // }
       ],
       favorList: [
-        // {
-        //   id: 1,
-        //   name: "游戏1",
-        //   img: require("@/assets/images/personal/love1.jpg"),
-        //   flag: false
-        // },
-        // {
-        //   id: 4,
-        //   name: "游戏4",
-        //   img: require("@/assets/images/personal/love4.jpg"),
-        //   flag: false
-        // },
-        // {
-        //   id: 1,
-        //   name: "游戏1",
-        //   img: require("@/assets/images/personal/love1.jpg"),
-        //   flag: false
-        // },
-        // {
-        //   id: 4,
-        //   name: "游戏4",
-        //   img: require("@/assets/images/personal/love4.jpg"),
-        //   flag: false
-        // }
       ]
     };
   },
@@ -381,14 +305,15 @@ export default {
     },
 
     //发布的游戏 手表移动事件
-    // overStyle(index) {
-    //   this.publishList[index].flag = !this.publishList[index].flag;
-    //   this.i = index;
-    // },
-    // outStyle(index) {
-    //   this.publishList[index].flag = !this.publishList[index].flag;
-    //   this.i = "";
-    // },
+    overStyle(index) {
+      this.publishList[index].flag = !this.publishList[index].flag;
+      this.i = index;
+      console.log('123')
+    },
+    outStyle(index) {
+      this.publishList[index].flag = !this.publishList[index].flag;
+      this.i = "";
+    },
 
     // 点击自定义轮播推动
     left() {
@@ -543,8 +468,6 @@ export default {
         overflow: hidden;
         padding-left: 30px;
         padding-top: 20px;
-
-        // border: solid 1px red;
         .left {
           position: absolute;
           width: 40px;
@@ -594,7 +517,19 @@ export default {
           display: inline-block;
           margin-right: 45px;
           vertical-align: middle;
-          // border:1px solid red;
+          &.style {
+            opacity: 1;
+            transform: scale(1.1, 1.1);
+            transition: all 0.3s;
+            .checkedFalse{
+              position: absolute;
+              top:0px;
+            }
+            .unChecked{
+              position: absolute;
+              top:0px;
+            }
+          }
           .cacher {
             display: none;
           }
