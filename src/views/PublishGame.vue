@@ -2,49 +2,53 @@
     <div class="publish-game">
         <topNav style="z-index: 1"></topNav>
         <div class="form-box">
-            <form action="/api/publishGame" method='post'>
+            <form action='' method='post'>
                 <div class="publish-title">
                     分享您的游戏
                 </div>
                 <div class="game-item game-icon">
                     <label for="" class="special">上传游戏封面图：</label>
-                    <!--<div class="upload-icon">-->
-                        <!--<input class="upload-btn" type="file" name="image" accept="image/*"-->
-                               <!--@change="gameIconChange($event)">-->
-                        <!--<img class="game-img" :src="gameIcon" alt="">-->
-                    <!--</div>-->
-                    <uploadImage width="150px" height="100px"></uploadImage>
+                    <uploadImage @getPic='getPic' width="150px" height="100px"></uploadImage>
                 </div>
                 <div class="game-item game-type">
                     <label for="">游戏分类：</label>
-                    <select name="" id="">
-                        <option value="">益智类</option>
-                        <option value="">小游戏类</option>
-                        <option value="">射击类</option>
+                    <select name="" id="" v-model="type">
+                        <option value="clever">益智类</option>
+                        <option value="smallGame">小游戏类</option>
+                        <option value="shoot">射击类</option>
                     </select>
                     <!--<input type="text" name="clever" value="" placeholder="益智类">-->
                 </div>
                 <div class="game-item game-name">
                     <label for="">游戏名称：</label>
-                    <input type="text" name="gameName" value="" placeholder="请输入您要发布的游戏名称">
+                    <input type="text" v-model="name" name="gameName" value="" placeholder="请输入您要发布的游戏名称">
                 </div>
                 <div class="game-item game-info">
                     <label for="">游戏简介：</label>
-                    <textarea name="gameDetail" cols="30" rows="10" placeholder="请输入您要发布的游戏简介，如果游戏内未说明则还应包括游戏中的一些操作方式等"></textarea>
+                    <textarea name="gameDetail" v-model="details" cols="30" rows="10" placeholder="请输入您要发布的游戏简介，如果游戏内未说明则还应包括游戏中的一些操作方式等"></textarea>
                 </div>
                 <div class="game-item game-images">
                     <label>上传游戏相关图片：</label>
                     <div class="game-images-box">
-                        <uploadImage width="150px" height="100px"></uploadImage>
+                        <el-upload
+                            action="#"  
+                            :limit="5"  
+                            ref="upload" 
+                            :multiple="true"  
+                            :auto-upload="false"  
+                            list-type="picture-card">
+                            <el-button slot="trigger" size="small">选取文件</el-button>
+                            <div slot="tip" class="el-upload__tip">上传图片大小不超过500kb</div>
+                        </el-upload>
                     </div>
                 </div>
                 <div class="game-item game-file">
                     <label for="">游戏源码文件：</label>
-                    <input type="file" name="code">
+                    <input type="file" ref="code" name="code">
                 </div>
                 <div class="game-item game-submit">
                     <label for=""></label>
-                    <input type="submit" class="gamePublish" @click="gamePublish()" value="确认发布">
+                    <input type="button" class="gamePublish" @click="gamePublish()" value="确认发布">
                 </div>
             </form>
         </div>
@@ -57,6 +61,11 @@
     export default {
         data() {
             return {
+                //form表单的值
+                logo:'',
+                type:'',
+                name:'',
+                details:'',
                 gameIcon: require('../assets/images/publishGame/01.png'),
                 gameImages:[
                     require('../assets/images/publishGame/01.png')
@@ -64,40 +73,41 @@
             }
         },
         methods: {
-            gamePublish() {
-                this.$router.push('/')
+            getPic(value){
+                this.logo=value
             },
-            // gameIconChange(e) {
-            //     const file = e.target.files[0];
-            //     console.log(file);
-            //     // 获取图片的大小，做大小限制有用
-            //     let imgSize = file.size;
-            //     console.log(imgSize);
-            //     const _this = this; // this指向问题，所以在外面先定义
-            //     // 比如上传头像限制5M大小，这里获取的大小单位是b
-            //     if (imgSize <= 5000 * 1024) {
-            //         // 合格
-            //         _this.errorStr = '';
-            //         console.log('大小合适');
-            //         // 开始渲染选择的图片
-            //         // 本地路径方法 1
-            //         this.imgStr = window.URL.createObjectURL(e.target.files[0])
-            //         // console.log(window.URL.createObjectURL(e.target.files[0])) // 获取当前文件的信息
+            gamePublish() {
+                var data={
+                    type:this.type,
+                    name:this.name,
+                    details:this.details
+                }
+                // console.log(data)
+                let fileArray=this.$refs.upload.uploadFiles
+                const fd=new FormData()
+                fd.append('gameFiles',this.logo)
+                fd.append('gameFiles',this.$refs.code.files[0])
+                for(let i=0;i<fileArray.length;i++){
+                    fd.append('gameFiles',fileArray[i].raw)
+                }
+                axios({
+                    url:'/api/publishGame',
+                    method:'post',
+                    data:fd,
+                    params:data
+                }).then(res=>{
+                    if(res.data==true){
+                        this.$message({
+                            message:'发布成功，请耐心等耐待审核',
+                            type:'success'
+                        })
+                    }else{
+                        this.$message.error("发布失败，请检查您上传的代码是否规范")
+                    }
+                })
 
-            //         // base64方法 2
-            //         // var reader = new FileReader();
-            //         // reader.readAsDataURL(file); // 读出 base64
-            //         // reader.onloadend = function () {
-            //         //     // 图片的 base64 格式, 可以直接当成 img 的 src 属性值
-            //         //     var dataURL = reader.result;
-            //         //     console.log(dataURL);
-            //         //     _this.gameIcon = dataURL
-            //         //     // 下面逻辑处理
-            //         // }
-            //     } else {
-            //         this.$message.error('图片大小不符，请重新上传大小5M以内的图片!');
-            //     }
-            // }
+                // this.$router.push('/')
+            },
         },
         components: {
             topNav,

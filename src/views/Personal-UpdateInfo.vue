@@ -8,6 +8,13 @@
         <div class="upload-image">
           <form action="/api/updateInfo" method="post" ref="form" enctype="multipart/form-data">
             <input type="hidden" name="loginName" :value="$store.state.token.loginName">
+            
+            <img class="img" name="gamePic" :src="picture" alt />
+            <input type="file" ref="input" name="image" style="display:none;" @change="IconChange($event)" />
+            <div class="up-gm-img" @click="fileClick"  @mouseover="addStyle"  v-bind:class="{style:enable}"
+            @mouseout="removeStyle">
+            </div>
+<!--  
             <input
                 class="upload-btn"
                 type="file"
@@ -18,13 +25,13 @@
                 :class="{style:enable}"
                 @mouseover="addStyle"
                 @mouseout="removeStyle"
-              />
+              /> -->
             <div class="butt">
               <input type="button" @click="save()" value="保存">
               <input type="button" @click="cancel()" value="取消">
             </div>
           </form>
-          <img class="img" :src="picture" alt />
+          <!-- <img class="img" :src="picture" alt /> -->
         </div>
       </div> 
     </div>
@@ -41,8 +48,8 @@
           <div>
             <label for>性别：</label>
             <select v-model="sex">
-              <option value="0">男</option>
-              <option value="1">女</option>
+              <option value="男">男</option>
+              <option value="女">女</option>
             </select>
             <!-- <input type="text" v-model="this.nickName" readonly style="border:none;" /> -->
           </div>
@@ -58,31 +65,6 @@
               ></el-date-picker>
             </el-form-item>
           </el-form>
-          <!-- <div>
-              <label for>昵称：</label>
-              <input type="text" v-model="nickName" /> -->
-              <!-- <input type="text" v-model="this.nickName" readonly style="border:none;" /> -->
-            <!-- </div>
-            <div>
-              <label for>性别：</label>
-              <select name="sex" v-model="radio">
-                <option value="男">男</option>
-                <option value="女">女</option>
-              </select>
-            
-            </div>
-            <el-form status-icon label-width="80px" ref="ruleForm" class="demo-ruleForm">
-              <el-form-item label prop="Birth" label-width="0">
-                <label for style="float:left">出生年月：</label>
-                <el-date-picker
-                  style="margin-top:5px;"
-                  v-model="birth"
-                  value-format="yyyy-MM-dd"
-                  type="date"
-                  placeholder="选择日期"
-                ></el-date-picker>
-              </el-form-item>
-            </el-form> -->
             <div>
               <label for>邮箱：</label>
               <input type="text" v-model="email" readonly style="border:none;margin-top:5px;" />
@@ -128,7 +110,7 @@ export default {
         // console.log(res)
         this.picture = res.userMsg[0].picture; //头像
         this.nickName = res.userMsg[0].nickName; //个人昵称
-        this.radio = res.userMsg[0].gender; //性别
+        this.sex = res.userMsg[0].gender; //性别
         this.birth = res.userMsg[0].birthDate, //日期
         this.email = res.userMsg[0].email; //邮箱
         this.tel = res.userMsg[0].userLoginName; //联系方式
@@ -177,9 +159,10 @@ export default {
     jumpTel() {
       this.$router.push("/Personal/ChangeTel").catch(err => console.log(err));
     },
-    // fileClick() {
-    //   this.$refs.input.dispatchEvent(new MouseEvent("click"));
-    // },
+    fileClick() {
+      console.log(this.$refs.input)
+      this.$refs.input.dispatchEvent(new MouseEvent("click"));
+    },
     addStyle() {
       this.enable = true;
     },
@@ -257,6 +240,21 @@ export default {
       object-fit: cover;
       // margin-top: 30px;
       border-radius: 100px;
+    }
+    .up-gm-img{ margin-top: 20px;
+      width: 150px;
+      height: 150px;
+      color: #fff;
+      text-align: center;
+      line-height: 100px;
+      position: absolute;
+      top: 0;
+      cursor: pointer;
+      img {
+        width: 50px;
+        height: 50px;
+        vertical-align: middle;
+      }
     }
   }
 

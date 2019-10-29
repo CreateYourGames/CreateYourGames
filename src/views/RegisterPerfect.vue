@@ -1,190 +1,133 @@
 <template>
   <div class="container">
     <div class="register">
-      <el-form
-        :model="ruleForm"
-        status-icon
-        :rules="rules"
-        label-width="80px"
-        ref="ruleForm"
-        class="demo-ruleForm"
-      >
+      <form action="/api/register" method="post" enctype="multipart/form-data">
         <p>信息完善</p>
 
-        <el-form-item label="头像" prop="userName" style="  margin-top: 15px;">
-            <!-- 头像 -->
-        <div class="upload-image">
-          <uploadImage width="70px" height="70px"></uploadImage>
-          <!--<input-->
-            <!--class="upload-btn"-->
-            <!--type="file"-->
-            <!--name="image"-->
-            <!--accept="image/*"-->
-            <!--@change="IconChange($event)"-->
-            <!--v-bind:class="{style:enable}"-->
-            <!--@mouseover="addStyle"-->
-            <!--@mouseout="removeStyle"-->
-          <!--/>-->
-          <!--<img class="img" :src="picture" alt />-->
+        <div class="mid">
+          <div class="title">
+            <label for>头像：</label>
+          </div>
+          <div class="pic">
+            <input type="text" name="Picture" style="display:none;" />
+            <img class="img" name="picture" :src="pic" alt />
+            <input type="file" ref="input" name="pic" style="display:none;" @change="changeImg()" />
+            <div
+              class="up-img"
+              @click="fileClick"
+              @mouseover="addStyle"
+              v-bind:class="{style:enable}"
+              @mouseout="removeStyle"
+            ></div>
+          </div>
         </div>
-        </el-form-item>
 
-        <el-form-item label="昵称" prop="Name">
-          <el-input type="text" v-model="ruleForm.Name" autocomplete="off"></el-input>
-        </el-form-item>
+        <div class="mid">
+          <div class="title">
+            <label for>昵称:</label>
+          </div>
+          <div class="mid-em">
+            <input
+              type="text"
+              name="name"
+              v-model="Name"
+              autocomplete="off"
+              @blur="nameBlur"
+              placeholder="请输入您的昵称"
+            />
+            <span class="emil-tips" v-if="!nameFlag">昵称不能为空,且在3-10个字符内</span>
+          </div>
+        </div>
 
-        <el-form-item label="性别" prop="Sex">
-          <el-radio v-model="radio" label="1" name="radio">男</el-radio>
-          <el-radio v-model="radio" label="2" name="radio">女</el-radio>
-        </el-form-item>
+        <div class="mid">
+          <div class="title">
+            <label for>性别:</label>
+          </div>
+          <div class="mid-em">
+            <select v-model="radio" name="sex" style="display: inline;">
+              <option value="男">男</option>
+              <option value="女">女</option>
+            </select>
+          </div>
+        </div>
 
-        <el-form-item label="出生年月" prop="Birth">
-          <el-date-picker v-model="value" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
-        </el-form-item>
-        <!--<el-form-item label="手机号" prop="Phone">-->
-          <!--<el-input type="text" v-model.number="ruleForm.Phone" autocomplete="off"></el-input>-->
-        <!--</el-form-item>-->
-        <el-form-item label="邮箱" prop="Email">
-          <el-input type="text" v-model="ruleForm.Email" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
-        </el-form-item>
-      </el-form>
+        <div class="mid">
+          <div class="title">
+            <label for>出生年月:</label>
+          </div>
+          <div class="mid-em">
+            <input type="date" name="birth" />
+          </div>
+        </div>
+
+        <div class="mid">
+          <div class="title">
+            <label for>邮箱:</label>
+          </div>
+          <div class="mid-em">
+            <input
+              type="text"
+              name="email"
+              v-model="Email"
+              id
+              autocomplete="off"
+              @blur="emailBlur"
+              placeholder="请输入您的邮箱"
+            />
+            <span class="emil-tips" v-if="!regFlag">邮箱格式不对</span>
+          </div>
+        </div>
+
+        <div class="mid">
+          <input type="hidden" name="loginName" :value="this.$store.state.token.loginName" />
+        </div>
+        <div class="mid-btn">
+          <input type="submit" value="注册" class="btn" @click="submitForm()" />
+        </div>
+      </form>
     </div>
   </div>
 </template>
 
 <script>
-  import uploadImage from '../components/upload-image';
 export default {
   data() {
-    var NameValue = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error("昵称不能为空"));
-      } else {
-        callback();
-      }
-      //   判断条件
-      // if (!Number.isInteger(value)) {
-      //   callback(new Error("请输入数字值"));
-      // }
-      // // else {
-      // //   if (value < 18) {
-      // //     callback(new Error("必须年满18岁"));
-      // //   }
-      //   else {
-      //     callback();
-      //   }
-      // // }
-    };
-    var PhoneValue = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error("手机号不能为空"));
-      }
-      setTimeout(() => {
-        //   判断条件
-        if (!value) {
-          return callback(new Error("手机号不能为空！"));
-        } else {
-          const reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
-          if (reg.test(value)) {
-            callback();
-          } else {
-            return callback(new Error("请输入正确的手机号"));
-          }
-        }
-      }, 1000);
-    };
-    var EmailValue = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error("邮箱不能为空"));
-      }
-      setTimeout(() => {
-        if (!value) {
-          return callback(new Error("邮箱不能为空！"));
-        } else {
-          const reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
-          if (reg.test(value)) {
-            callback();
-          } else {
-            return callback(new Error("请输入正确的手机号"));
-          }
-        }
-      }, 1000);
-    };
-
     return {
+      regFlag: true, //判断邮箱的正确与否
+      nameFlag: true, //判断昵称有没有输入
       enable: false,
-      picture: "",
-      radio: "1",
-      value: "",
-      param: "", //表单要提交的参数
-      imageUrl: "", //图片地址
-      // uploadeURL: base.dev + base.proxy + base.uploadeURL,
-      ruleForm: {
-        Name: "",
-        Phone: "",
-        Email: ""
-      },
-
-      rules: {
-        Name: [
-          {
-            validator: NameValue,
-            required: true,
-            trigger: "blur"
-          }
-        ],
-        Phone: [
-          {
-            validator: PhoneValue,
-            required: true,
-            trigger: "blur"
-          }
-        ],
-        Email: [
-          {
-            validator: EmailValue,
-            required: true,
-            trigger: "blur"
-          }
-        ]
-      }
+      pic: "", //头像图片
+      radio: "男", //性别
+      loginName: this.$store.state.token.loginName
     };
   },
-  methods: {
-     IconChange(e) {
-      const file = e.target.files[0];
-      console.log(file);
-      // 获取图片的大小，做大小限制有用
-      let imgSize = file.size;
-      console.log(imgSize);
-      const _this = this; // this指向问题，所以在外面先定义
-      // 比如上传头像限制5M大小，这里获取的大小单位是b
-      if (imgSize <= 5000 * 1024) {
-        // 合格
-        _this.errorStr = "";
-        console.log("大小合适");
-        // 开始渲染选择的图片
-        // 本地路径方法 1
-        // this.imgStr = window.URL.createObjectURL(e.target.files[0])
-        // console.log(window.URL.createObjectURL(e.target.files[0])) // 获取当前文件的信息
 
-        // base64方法 2
-        var reader = new FileReader();
-        reader.readAsDataURL(file); // 读出 base64
-        reader.onloadend = function() {
-          // 图片的 base64 格式, 可以直接当成 img 的 src 属性值
-          var dataURL = reader.result;
-          console.log(dataURL);
-          _this.picture = dataURL;
-          // 下面逻辑处理
-        };
-      } else {
-        this.$message.error("图片大小不符，请重新上传大小5M以内的图片!");
-      }
+  methods: {
+    // 头像
+    changeImg() {
+      let event = event || window.event;
+      console.log("11" + event.target.files[0]);
+      this.pic = this.getObjectURL(event.target.files[0]);
+      console.log("22" + this.pic);
     },
+    getObjectURL(file) {
+      let url = null;
+      if (window.createObjectURL != undefined) {
+        // basic
+        url = window.createObjectURL(file);
+      } else if (window.webkitURL != undefined) {
+        // webkit or chrome
+        url = window.webkitURL.createObjectURL(file);
+      } else if (window.URL != undefined) {
+        // mozilla(firefox)
+        url = window.URL.createObjectURL(file);
+      }
+      return url;
+    },
+    fileClick() {
+      this.$refs.input.dispatchEvent(new MouseEvent("click"));
+    },
+    // 鼠标移入移出
     addStyle() {
       this.enable = true;
     },
@@ -192,174 +135,158 @@ export default {
       this.enable = false;
     },
 
-
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$router.push("/login").catch(err => console.log(err));
-        } else {
-          return false;
-        }
-      });
-
-      this.$api.registerPerfect.registerPerfect({
-        pic: this.picture,
-        name: this.ruleForm.Name,
-        sex: this.radio == 1 ? "男" : "女",
-        birth: this.value,
-        phone: this.ruleForm.Phone,
-        email: this.ruleForm.Email,
-        loginName: this.$store.state.token.loginName
-      });
-      console.log("pic是：" + this.picture);
+    emailBlur() {
+      var emilReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+      this.regFlag = emilReg.test(this.Email);
+    },
+    nameBlur() {
+      var nameReg =/^\S{3,10}$/;
+      this.nameFlag = nameReg.test(this.Name);
     },
 
-    // handleAvatarSuccess(res, file) {
-    //   var windowURL = window.URL || window.webkitURL;
-    //   // this.imageUrl=windowURL.createObjectURL(file.raw)
-    //   // this.imageUrl=file.URL
-
-    //   // this.imageUrl=res.data.url;
-    //   this.imageUrl = windowURL.createObjectURL(file.raw);
-    // },
-    // beforeAvatarUpload(file) {
-    //   const isIMG =
-    //     file.type == "image/jpeg" ||
-    //     file.type == "image/png" ||
-    //     file.type == "image/jpeg" ||
-    //     file.type == "image/gif";
-    //   const isLt2M = file.size / 1024 / 1024 < 2;
-
-    //   if (!isIMG) {
-    //     this.$message.error("上传头像图片只能是 JPG/PNG/JPEG/GIF 格式!");
-    //   }
-    //   if (!isLt2M) {
-    //     this.$message.error("上传头像图片大小不能超过 2MB!");
-    //   }
-    //   return isIMG && isLt2M;
-    // },
-    // // onchange(file,fileList){
-    // //   var _this=this;
-    // //   var event=event||window.event;
-    // //   var file=event.target.file;
-    // //   var reader=new FileReader();
-    // //   reader.onload=function(e){
-    // //     _this.imageUrl=e.target.result;
-    // //   }
-    // //   reader.readAsDataURL(file);
-
-    // // }
+    submitForm() {}
   },
   created() {
-    // 
-    this.$api.loginInfo
-      .getLoginInfo(this.$store.state.token.loginName)
-      .then(res => {
-        this.picture = res.userMsg[0].picture; //头像
-      })
-      .catch(err => console.log(err));
+    console.log(this.loginName);
   },
-    components:{
-      uploadImage
-    }
+  components: {}
 };
 </script>
 
 <style lang="scss" scoped>
 .container {
   width: 100%;
-  height: 100%;
+  height: calc(100% +100px);
   background-image: url("../assets/images/login/bg.jpg");
   background-attachment: fixed;
   background-size: 100% 100%;
 
-   // 头像
-   .upload-image {
-    margin-left: 25px;
-    position: relative;
-    .upload-btn {
-      display: block;
-      opacity: 0;
-      width: 70px;
-      height: 70px;
-      border-radius: 100px;
-      position: absolute;
-      border: 1px dashed #d9d9d9;
-      cursor: pointer;
-      color: #fff;
-    }
-    .img {
-      width: 70px;
-      height: 70px;
-      background-color: #ababab;
-      object-fit: cover;
-      // margin-top: 30px;
-      border-radius: 100px;
-    }
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .register {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 560px;
     height: 100%;
-    // height:  calc(100% -150px);
-    .el-form {
-      width: 500px;
-      padding: 20px 70px;
-      background: rgba(255, 255, 255, 0.6);
-      margin-bottom: 10px;
-      // background-color: #fff;
-      // 头像设置 start
-      // .el-form-item:first-of-type {
-      //   margin-top: 30px;
-      // }
-      // .avatar-uploader .el-upload {
-      //   border: 1px dashed #d9d9d9;
-      //   border-radius: 6px;
-      //   cursor: pointer;
-      //   position: relative;
-      //   overflow: hidden;
-      // }
-      // .avatar-uploader .el-upload:hover {
-      //   border-color: #409eff;
-      // }
-      // .avatar-uploader-icon {
-      //   margin-left: 60px;
-      //   font-size: 28px;
-      //   color: #8c939d;
-      //   width: 58px;
-      //   height: 58px;
-      //   line-height: 58px;
-      //   text-align: center;
-      //   border: solid 1px #8c939d;
-      //   border-radius: 50%;
-      // }
-      // .avatar {
-      //   margin-left: 60px;
-      //   border-radius: 50%;
-      //   width: 58px;
-      //   height: 58px;
-      //   display: block;
-      //   border: solid 1px #8c939d;
-      // }
-      // 头像设置 end
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.6);
+    display: flex;
+    flex-direction: columns;
+    justify-content: center;
 
-      p {
-        width: 100%;
-        height: 42px;
-        line-height: 42px;
-        text-align: center;
-        font-size: 24px;
-        color: black;
-        font-weight: bold;
+    p {
+      margin-top: 45px;
+      width: 100%;
+      height: 45px;
+      line-height: 45px;
+      text-align: center;
+      font-size: 28px;
+      color: black;
+      font-weight: bold;
+    }
+
+    // 头像的设置
+    .mid {
+      // 头像的设置
+      .pic {
+        width: 120px;
+        height: 110px;
+        position: relative;
+        .style {
+          width: 120px;
+          height: 110px;
+          background-color: rgba(128, 128, 128, 0.4);
+          background-image: url("../assets/images/personal/z.png");
+          background-size: 50px 50px;
+          background-repeat: no-repeat;
+          background-position: 50% 50%;
+          cursor: pointer;
+        }
+        .img {
+          // margin-top: 20px;
+          width: 120px;
+          height: 120px;
+          position: absolute;
+          border-radius: 50%;
+          margin-left: -10px;
+          background-image: url("../assets/images/personal/z.png");
+          background-size: 115px 115px;
+          border: solid 1px rgb(153, 0, 255);
+        }
+        .up-img {
+          margin-left: 50px;
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          color: #fff;
+          text-align: center;
+          line-height: 100px;
+          position: absolute;
+          cursor: pointer;
+          img {
+            width: 50px;
+            height: 50px;
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+
+    .mid {
+      width: 350px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      margin: 30px 0;
+      .title {
+        width: 80px;
+        float: left;
+        text-align: right;
+        margin-left: -20px;
+        margin-right: 10px;
+        margin-top: -28px;
+      }
+      input,
+      select {
+        width: 240px;
+        height: 36px;
+        margin-left: 20px;
+        border-radius: 5px;
+        padding-left: 15px;
+        border: none;
       }
 
-      .el-button {
-        width: 200px;
+      // 邮箱信息
+      .mid-em {
+        height: 60px;
+        display: flex;
+        flex-direction: column;
+        span {
+          color: red;
+          font-size: bold;
+          margin-top: 5px;
+          margin-left: -100px;
+        }
+      }
+    }
+
+    // 按钮的设置
+    .mid-btn {
+      margin-top: -30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      input {
+        height: 36px;
+        border: none;
+        width: 160px;
         border-radius: 50px;
-        margin-top: 10px;
-        // margin-left: 90px;
+        color: #fff;
+        text-align: center;
+        background-color: #409eff;
+        margin-bottom: 30px;
+        cursor: pointer;
       }
     }
   }
