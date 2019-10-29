@@ -46,23 +46,40 @@
           </div>
           <div v-else></div>
           <ul ref="ul">
-            <li
-              v-for="(publish,index) in publishList"
-              :key="index"
-              :class="{style:i === index}"
-              @mouseover="overStyle(index)"
-              @mouseout="outStyle(index)"
-            >
-              <img :src="publish.gameLogo" alt />
-              <!-- <img :src="publish.img" alt /> -->
-              <div v-show="publish.flag">
-                <p class="details" @click="jumpGameDetails(index)">查看详情</p>
-                <div class="ud">
-                  <p class="update" @click="jumpGame(index)">修改信息&nbsp;</p>
-                  <p class="delete" @click="delGame(publish.gameId)">&nbsp;删除游戏</p>
+            <!-- black -->
+            <div v-if="code" class="unChecked">审核中</div>
+            <div v-else></div>
+
+            <!-- check -->
+            <div v-if="code">
+              <li 
+                v-for="(publish,index) in publishList"
+                :key="index"
+              > 
+                <img :src="publish.gameLogo" alt />
+              </li>
+            </div>
+
+            <!-- check ok -->
+            <div v-else>
+              <li 
+                v-for="(publish,index) in publishList"
+                :key="index"
+                :class="{style:i === index}"
+                @mouseover="overStyle(index)"
+                @mouseout="outStyle(index)"
+              > 
+                <img :src="publish.gameLogo" alt />
+                <div v-show="publish.flag">
+                  <p class="details" @click="jumpGameDetails(index)">查看详情</p>
+                  <div class="ud">
+                    <p class="update" @click="jumpGame(index)">修改信息&nbsp;</p>
+                    <p class="delete" @click="delGame(publish.gameId)">&nbsp;删除游戏</p>
+                  </div>
                 </div>
-              </div>
-            </li>
+              </li>
+            </div>
+
           </ul>
         </div>
         <!-- 无发布 -->
@@ -141,8 +158,14 @@ export default {
   components: {
     Conform
   },
+  computed:{
+
+  },
   data() {
     return {
+      // 审核
+      code:false,
+      
       isDeveloper: 0,
 
       // 删除gameid
@@ -519,7 +542,21 @@ export default {
           right: 50px;
           top: 80px;
         }
-
+        ul{
+          .unChecked{
+            height: 120px;
+            width: 120px;
+            border-radius: 15px;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 99999;
+            color: #fff;
+            text-align: center;
+            font-size: 18px;
+            line-height: 120px;
+            cursor: pointer;
+          }
+        }
         ul li {
           height: 200px;
           display: inline-block;
