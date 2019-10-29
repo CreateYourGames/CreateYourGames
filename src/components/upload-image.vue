@@ -23,16 +23,17 @@
         methods: {
             gameIconChange(e) {
                 const file = e.target.files[0];
-                console.log(file);
+                // console.log(file);
+                this.$emit('getPic',file)
                 // 获取图片的大小，做大小限制有用
                 let imgSize = file.size;
-                console.log(imgSize);
+                // console.log(imgSize);
                 const _this = this; // this指向问题，所以在外面先定义
                 // 比如上传头像限制5M大小，这里获取的大小单位是b
                 if (imgSize <= 5000 * 1024) {
                     // 合格
                     _this.errorStr = '';
-                    console.log('大小合适');
+                    // console.log('大小合适');
                     // 开始渲染选择的图片
                     // 本地路径方法 1
                      _this.gameIcon = this.getObjectURL(file)
