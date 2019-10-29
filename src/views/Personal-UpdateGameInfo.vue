@@ -32,14 +32,14 @@
           <div class="title">
             <label for>游戏名称：</label>
           </div>
-          <input type="text" name="gameName" id :value="GameInfo[0].gameName" />
+          <input type="text" name="gameName" id :value="GameInfo[0].gameName" autocomplete="off"/>
         </div>
 
         <div class="mid">
           <div class="title">
             <label for>游戏分类：</label>
           </div>
-          <select v-model="selected" name="gameType" id>
+          <select  name="gameType" :value="GameInfo[0].gameType" id>
             <option value="all">所有类型</option>
             <option value="clever">益智</option>
             <option value="smallGame">小游戏</option>
@@ -52,30 +52,15 @@
           <div class="title">
             <label for class="special">游戏简介：</label>
           </div>
-          <textarea name="gameDetail" id cols="30" rows="10" :value="GameInfo[0].gameDetail"></textarea>
+          <textarea name="gameDetail" id cols="30" rows="10"  :value="GameInfo[0].gameDetail" autocomplete="off"></textarea>
           <br />
         </div>
-
-        <!-- <label for>游戏相关截图：</label> -->
-        <!-- <ul>
-          <li>
-            <img src="@/assets/images/personal/103.jpg" alt />
-            <img class="del-img" src="@/assets/images/personal/shanchu.png" alt />
-          </li>
-          <li>
-            <img src="@/assets/images/personal/105.jpg" alt />
-            <img class="del-img" src="@/assets/images/personal/shanchu.png" alt />
-          </li>
-        </ul>-->
 
         <div class="mid">
           <div class="title">
             <label for>游戏源码文件：</label>
           </div>
-          <input ref="file" type="file" name="gameCode" id  style="border:none;margin-top:45px"/>
-          <!-- <img @click="upload" class="file" src="../assets/images/personal/anniu.png" alt=""> -->
-          <!-- <input type="text" name="gameCode" :value="GameInfo[0].gameCode" id /> -->
-          <!-- <input type="file" name="code"> -->
+          <input ref="file" type="file" name="picture" id  style="border:none;margin-top:45px"/>
         </div>
 
         <div class="btn">
@@ -91,6 +76,12 @@
 export default {
   data() {
     return {
+      // 表单的值
+      pic:'',
+
+
+
+
       enable: false,
       selected: "all",
       inputid: "input",

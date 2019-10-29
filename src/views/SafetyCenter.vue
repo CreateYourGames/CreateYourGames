@@ -179,6 +179,9 @@ export default {
   },
 
   methods: {
+    goHome(){
+      this.$router.push("/Login");
+    },
     next(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
