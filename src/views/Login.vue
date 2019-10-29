@@ -3,6 +3,7 @@
     <div class="left">
       <div class="txt">
         <p>Welcome Back!</p>
+        <button @click="backHome">我要回主页！</button>
         <p>To keep connected with please login with your presonal ifon</p>
       </div>
     </div>
@@ -24,13 +25,18 @@
         <el-form-item prop="checkPass" class="form" label-width="38px">
           <span>密码</span>
           <!-- 回车自动登录 -->
-          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"  @keyup.enter.native="submitForm('ruleForm')"></el-input>
+          <el-input
+            type="password"
+            v-model="ruleForm.checkPass"
+            autocomplete="off"
+            @keyup.enter.native="submitForm('ruleForm')"
+          ></el-input>
         </el-form-item>
 
         <p class="check">
           <input type="checkbox" id="check-pwd" v-model="ruleForm.rem" />
           <span>记住密码</span>
-          <span @click="Password">找回密码</span>
+          <span @click="Password" style="cursor: pointer;">找回密码</span>
         </p>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
@@ -91,6 +97,22 @@ export default {
     }
   },
   methods: {
+    backHome() {
+      this.$router.push("/");
+    },
+    // 游戏库跳转
+    toGameCenter() {
+      this.$router.push("/GameCenter");
+    },
+    // 排行榜跳转
+    toRankingList() {
+      this.$router.push("/RankingList");
+    },
+    // 提交建议跳转
+    toSuggest() {
+      this.$router.push("/Suggest");
+    },
+
     submitForm(formName) {
       // this.$api.login
       //   .login({ Id: this.ruleForm.userPhone, Pwd: this.ruleForm.checkPass })
@@ -262,7 +284,7 @@ export default {
   .left {
     background: rgba(255, 255, 255, 0.6);
     width: 380px;
-    height: 480px;
+    height: 520px;
     // background-color: white;
     border-right: solid 0.2px #d1d1d1;
     // margin-right: 30px;
@@ -281,20 +303,34 @@ export default {
         color: #c8a080;
         font-size: 32px;
         font-weight: bold;
-        margin-bottom: 75px;
+        margin-bottom: 60px;
       }
       p:last-of-type {
-        color: #a7856b;
-        font-size: 14px;
+        color: rgb(221, 179, 144);
+        font-size: 16px;
+        margin-top: 60px;
         text-align: center;
-        line-height: 28px;
+      }
+
+      button {
+        width: 200px;
+        height: 38px;
+        border-radius: 25px;
+        border: none;
+        background-color: rgb(240, 191, 150);
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        &:hover {
+          background-color: rgba(240, 191, 150, 0.9);
+        }
       }
     }
   }
   .right {
     .el-form {
       width: 380px;
-      height: 480px;
+      height: 520px;
       padding: 20px 20px 20px 0;
       background: rgba(255, 255, 255, 0.6);
       // background-color: #fff;
@@ -302,7 +338,7 @@ export default {
       //文字：createyourgames
       p:first-of-type {
         width: 100%;
-        margin-top: 10px;
+        margin-top: 30px;
         height: 100px;
         line-height: 100px;
         text-align: center;
@@ -314,7 +350,7 @@ export default {
 
       //input的设置:账号距离上面的距离
       .el-form-item:first-of-type {
-        margin-top: 35px;
+        margin-top: 42px;
       }
       //   .el-form-item__error {
       //     margin-left: 125px !important;
@@ -333,7 +369,7 @@ export default {
 
       //文字：记住密码，找回密码的设置
       p.check {
-        margin-top: 30px;
+        margin-top: 35px;
         width: 100%;
         height: 42px;
         line-height: 42px;
@@ -358,7 +394,7 @@ export default {
 
       //button按钮的设置,signin register
       .el-form-item:last-of-type {
-        margin-top: 30px;
+        margin-top: 35px;
         margin-left: -20px;
       }
       .el-button {

@@ -65,6 +65,10 @@ export default {
   background: url("../assets/images/login/tp.jpg");
   background-attachment: fixed;
   background-size: 100% 100%;
+  
+  .topNav{
+    z-index: 0;
+  }
 
   .content {
     width: 100%;
