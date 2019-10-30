@@ -37,7 +37,7 @@
       </el-form-item>
       <el-form-item prop="checkPass" label-width="0" style="margin-top:-10px;">
         <span>确认密码</span>
-        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"   @keyup.enter.native="submitForm('ruleForm')"></el-input>
+        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" @keyup.enter.native="submitForm('ruleForm')"></el-input>
       </el-form-item>
 
       <el-form-item>
@@ -81,6 +81,7 @@ export default {
     return {
       btnText: "获取验证码",
       Judge: true,
+      // 轮播图
       pictureList: [
         { id: 1, img: require("../assets/images/home/newGame04.jpg") },
         { id: 2, img: require("../assets/images/home/newGame03.jpg") },
@@ -185,6 +186,7 @@ export default {
         }, 1000);
       }
     },
+    // 输入电话号码时进行验证
     goRUN() {
       return this.$api.register
         .registerJudge(this.ruleForm.userPhone)

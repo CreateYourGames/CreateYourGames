@@ -106,9 +106,10 @@ export default {
     // 头像
     changeImg() {
       let event = event || window.event;
-      console.log("11" + event.target.files[0]);
+      // console.log("00:"+event);
+      // console.log("11:" + event.target.files[0]);
       this.pic = this.getObjectURL(event.target.files[0]);
-      console.log("22" + this.pic);
+      // console.log("22:" + this.pic);
     },
     getObjectURL(file) {
       let url = null;

@@ -115,24 +115,6 @@ export default {
     },
 
     submitForm(formName) {
-      // this.$api.login
-      //   .login({ Id: this.ruleForm.userPhone, Pwd: this.ruleForm.checkPass })
-      //   .then(res => {
-      //     if (res == true) {
-      //       var obj = {
-      //         loginName: this.ruleForm.userPhone,
-      //         pwd: this.ruleForm.checkPass
-      //       };
-      //       this.$store.commit("getToken", obj);
-      //       this.$message({
-      //         message: "登录成功",
-      //         type: "success"
-      //       });
-      //       this.$router.push("/").catch(err => console.log(err));
-      //     } else {
-      //       this.$message.error("该用户不存在或密码错误");
-      //     }
-      //   });
 
       // 记住密码
       this.$refs[formName].validate(valid => {
@@ -140,7 +122,7 @@ export default {
           // 判断复选框是否被勾选 勾选则调用配置cookie方法
           if (this.ruleForm.rem == true) {
             this.$store.state.rememberPwd = true;
-            console.log("checked == true");
+            // console.log("checked == true");
             // 传入账号名，密码，和保存天数3个参数
             this.setCookie(
               this.ruleForm.userPhone,
@@ -204,11 +186,11 @@ export default {
                 }
               });
 
-            // this.$router.push("/").catch(err => console.log(err));
+            // 未保存密码则清空cookie
             console.log("清空Cookie");
             // 清空Cookie
             this.clearCookie();
-            console.log("清空Tookie");
+            console.log("清空Token");
             // 清空token
             var obj = {
               loginName: this.ruleForm.userPhone,
@@ -225,22 +207,25 @@ export default {
     setCookie(c_name, c_pwd, c_status, exdays) {
       var exdate = new Date(); //获取时间
       exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
-      //字符串拼接cookie`
+      //字符串拼接cookie
       window.document.cookie =
-        "userPhone=" + c_name + ";path=/;expires=" + exdate.toGMTString();
+        "userPhone=" + c_name + ";path=/;expires=" + exdate.toGMTString();//账号
+      // 名字+路径+时间
       window.document.cookie =
-        "userPwd=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
+        "userPwd=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();//密码
       window.document.cookie =
-        "userPwdStatus=" + c_status + ";path/;expires=" + exdate.toGMTString();
+        "userPwdStatus=" + c_status + ";path/;expires=" + exdate.toGMTString();//是否保存密码
     },
     //读取cookie
     getCookie() {
       if (document.cookie.length > 0) {
         // 先获取cookie字符串，再将字符串切割
-        var arr = document.cookie.split("; "); //这里显示的格式需要切割// console.log(arr)
+        var arr = document.cookie.split("; "); //这里显示的格式需要切割
+        // console.log("arr:"+arr)//userPwd=123123,userPwdStatus=true,userPhone=15852486370
+        // console.log("长度:"+arr.length)
         for (var i = 0; i < arr.length; i++) {
           var arr2 = arr[i].split("="); //再次切割 //判断查找相对应的值
-          // console.log(arr, arr2);
+          console.log("两个数组:"+arr, arr2);
           if (arr2[0] == "userPhone") {
             this.ruleForm.userPhone = arr2[1]; //保存到保存数据的地方
           } else if (arr2[0] == "userPwd") {

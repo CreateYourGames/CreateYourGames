@@ -78,10 +78,6 @@ export default {
     return {
       // 表单的值
       pic:'',
-
-
-
-
       enable: false,
       selected: "all",
       inputid: "input",

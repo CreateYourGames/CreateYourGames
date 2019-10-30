@@ -14,8 +14,7 @@
             <div class="up-gm-img" @click="fileClick"  @mouseover="addStyle"  v-bind:class="{style:enable}"
             @mouseout="removeStyle">
             </div>
-<!--  
-            <input
+            <!--<input
                 class="upload-btn"
                 type="file"
                 name="image"

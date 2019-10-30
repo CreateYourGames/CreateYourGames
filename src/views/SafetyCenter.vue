@@ -52,7 +52,7 @@
             <el-form-item label="验证码" v-if="tabType===1" class="Verification-info">
               <div class="buttonItem">
                 <input v-model="vercode" type="text" placeholder="输入验证码" />
-                <div class="red sendCode" @click="sendMessage">{{btnText}}</div>
+                <div class="red sendCode" @click="sendMessage1">{{btnText1}}</div>
               </div>
             </el-form-item>
 
@@ -62,7 +62,7 @@
             <el-form-item label="验证码" v-if="tabType===2" class="Verification-info">
               <div class="buttonItem">
                 <input v-model="vercode" type="text" placeholder="输入验证码" />
-                <div class="red sendCode" @click="sendMessage">{{btnText}}</div>
+                <div class="red sendCode" @click="sendMessage2">{{btnText2}}</div>
               </div>
             </el-form-item>
           </el-form>
@@ -125,7 +125,9 @@ export default {
     return {
       vercode: "",
       btnDisabled: false,
-      btnText: "获取验证码",
+      btnText1: "获取验证码",
+      btnText2: "获取验证码",
+      disabled:false,
       yzm: "",
       active: 1,
       tabType: 1,
@@ -227,26 +229,26 @@ export default {
       this.tabType = index;
     },
     // 验证码的点击事件
-    sendMessage() {
+    sendMessage1() {
       if (this.btnDisabled) {
         return;
       }
-      if (this.tabType == 1 && this.ruleForm.Email == "") {
-        alert("请您先输入邮箱账号");
+      if (this.tabType === 1 && this.ruleForm.Email == "") {
+        // alert("请您先输入邮箱账号");
+         this.$notify({
+          title: '警告',
+          message: '请先输入邮箱账号',
+          type: 'warning'
+        })
         return;
       }
-      // if(this.tabType==2&&this.ruleForm.Phone==''){
-      //   alert("请您先输入手机号")
-      //   return
-      // }
-      // alert("aaa")
       //判断是手机验证还是邮箱验证
-      if (this.tabType == 1) {
+      if (this.tabType === 1) {
         this.$api.safety.sendEmail({ email: this.ruleForm.Email }).then(res => {
           console.log(res.emailCode);
           this.yzm = res.emailCode;
         });
-      } else if (this.tabType == 2) {
+      } else if (this.tabType === 2) {
         this.$api.safety
           .sendSms({ phone: this.ruleForm.userName })
           .then(res => {
@@ -254,37 +256,79 @@ export default {
             this.yzm = res.randomNum;
           });
       }
-      this.getSecond(60);
+      this.getSecond1(60);
+    },
+    sendMessage2() {
+      if (this.btnDisabled) {
+        return;
+      }
+      if (this.tabType === 1 && this.ruleForm.Email == "") {
+        // alert("请您先输入邮箱账号");
+         this.$notify({
+          title: '警告',
+          message: '请先输入邮箱账号',
+          type: 'warning'
+        })
+        return;
+      }
+      //判断是手机验证还是邮箱验证
+      if (this.tabType === 1) {
+        this.$api.safety.sendEmail({ email: this.ruleForm.Email }).then(res => {
+          console.log(res.emailCode);
+          this.yzm = res.emailCode;
+        });
+      } else if (this.tabType === 2) {
+        this.$api.safety
+          .sendSms({ phone: this.ruleForm.userName })
+          .then(res => {
+            console.log(res.randomNum);
+            this.yzm = res.randomNum;
+          });
+      }
+      this.getSecond2(60);
     },
     //发送验证码
-    getSecond(wait) {
+    getSecond1(wait) {
       let _this = this;
       let _wait = wait;
 
       if (wait == 0) {
         this.btnDisabled = false;
-        this.btnText = "获取验证码";
+        this.btnText1 = "获取验证码";
         wait = _wait;
       } else {
         this.btnDisabled = true;
-
-        this.btnText = "验证码(" + wait + "s)";
+        this.btnText1 = "验证码(" + wait + "s)";
         wait--;
         setTimeout(function() {
-          _this.getSecond(wait);
+          _this.getSecond1(wait);
+        }, 1000);
+      }
+    },
+    getSecond2(wait) {
+      let _this = this;
+      let _wait = wait;
+
+      if (wait == 0) {
+        this.btnDisabled = false;
+        this.btnText2 = "获取验证码";
+        wait = _wait;
+      } else {
+        this.btnDisabled = true;
+        this.btnText2 = "验证码(" + wait + "s)";
+        wait--;
+        setTimeout(function() {
+          _this.getSecond2(wait);
         }, 1000);
       }
     }
-    // next() {
-    //   this.$router.push("/Login/FindPassword2");
-    // }
   },
   components: {
     Header
   }
 };
 </script>
-  <style>
+<style>
 .el-step__head {
   width: 150px;
 }
