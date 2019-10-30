@@ -43,15 +43,15 @@
         </div>
         <div v-show="rankingInfo" class="ranking-info" @click="hideRankingInfo">
             <div class="content">
+                <div>
+                    <span class="icon star-ranking-icon"></span>游戏肝帝榜：<p>根据用户三十天内在站内游玩次数进行排行</p>
+                </div>
                 <div class="title">榜单介绍</div>
                 <div>
                     <span class="icon score-ranking-icon"></span>游戏评分榜：<p>根据用户对游戏评分的平均值进行游戏排行，榜单上仅显示一位小数，可能存在同分排名不同，实际排名按照实际小数排名</p>
                 </div>
                 <div>
                     <span class="icon hot-ranking-icon"></span>游戏热度榜：<p>根据游戏被游玩总数进行游戏排行，但是只有上传得分后才能被计算进游玩次数</p>
-                </div>
-                <div>
-                    <span class="icon star-ranking-icon"></span>游戏肝帝榜：<p>根据用户三十天内在站内游玩次数进行排行</p>
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@
         <div class="more-games">
             <div class="title">热门游戏</div>
             <div class="game-box">
-                <div class="game" v-for="item in hotGameArray" @click="toGameCenter">
+                <div class="game" v-for="item in hotGameArray" @click="toGameInfo(item.gameId)">
                     <img :src="item.url" alt="">
                     <p>{{ item.name }}</p>
                 </div>
@@ -71,9 +71,9 @@
             <div class="divide-line"></div>
             <div class="title">最新游戏</div>
             <div class="game-box">
-                <div class="game" v-for="item in newGameArray" @click="toGameCenter">
-                    <img :src="item.url" alt="">
-                    <p>{{ item.name }}</p>
+                <div class="game" v-for="item in newGameArray" @click="toGameInfo(item.gameId)">
+                    <img :src="item.gameLogo" alt="">
+                    <p>{{ item.gameName }}</p>
                 </div>
             </div>
         </div>
@@ -275,13 +275,19 @@
               this.rankingArray[0].data = res.scoreList;
               this.rankingArray[1].data = res.hotList;
               this.rankingArray[2].data = res.bestPersonList;
+              // 存放热门游戏前四位
               const hotArray = [];
+              // 存放最新游戏前四位
+              const newArray = [];
               for(let i = 0; i < 4; i++){
                   hotArray.push(res.hotList[i]);
               }
+              for(let i = 0; i < 4; i++){
+                  newArray.push(res.newGame[i]);
+              }
               this.hotGameArray = hotArray;
-              console.log('1',this.hotGameArray);
-              console.log('2',this.rankingArray);
+              this.newGameArray = newArray;
+              console.log(res);
           }).catch(err => console.log(err))
         },
         methods: {
@@ -290,8 +296,8 @@
                 this.$router.push('/')
             },
             // 跳转游戏库页
-            toGameCenter() {
-                this.$router.push('/GameCenter')
+            toGameInfo(id) {
+                this.$router.push('/GameInfo?id=' + id);
             },
             // 点击排行榜导航块切换排行榜卡片
             tabChangeRank(item) {
