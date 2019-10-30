@@ -235,7 +235,7 @@ export default {
     setTimeout(() => {
       console.log(this.$refs.ul);
       this.$refs.ul.style.width = 170 * this.publishList.length + "px";
-    }, 500);
+    }, 1500);
   },
   methods: {
     // 重新发布

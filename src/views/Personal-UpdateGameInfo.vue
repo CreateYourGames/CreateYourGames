@@ -256,6 +256,7 @@ export default {
       width: 120px;
       height: 110px;
       background-color: pink;
+      margin-top: -15px;
       position: absolute;
     }
     .up-gm-img {
@@ -265,10 +266,12 @@ export default {
       text-align: center;
       line-height: 100px;
       position: absolute;
+      margin-top: -15px;
       cursor: pointer;
       img {
         width: 50px;
         height: 50px;
+        // margin-top: 100px;
         vertical-align: middle;
       }
     }
@@ -312,23 +315,25 @@ export default {
     .modify {
       width: 120px;
       height: 35px;
-      background-color: #fec003;
+      background-color: rgba(29, 51, 64, 0.8);
       border: none;
       border-radius: 25px;
       margin-right: 45px;
       font-size: 14px;
       outline: none;
+      color: #fff;
       cursor: pointer;
     }
     .cancel {
       width: 120px;
       height: 35px;
       margin-right: -20px;
-      background-color: #fec003;
+      background-color: rgba(29, 51, 64, 0.8);
       border: none;
       border-radius: 25px;
       font-size: 14px;
       outline: none;
+      color: #fff;
       cursor: pointer;
     }
   }

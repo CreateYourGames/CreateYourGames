@@ -91,7 +91,7 @@
 
         <!-- 设置成功 -->
         <div class="personal-Finish" v-if="active===4">
-          <p>恭喜！密码设置成功！</p>
+          <p>恭喜！密码重置成功！</p>
           <el-button @click="submitForm()">设置成功</el-button>
         </div>
       </div>
@@ -193,7 +193,7 @@ export default {
                   this.active++;
                   console.log(this.active);
                 } else if (res.success == false) {
-                  this.$message.error("您的验证码无效");
+                  this.$message.error("该账号不存在");
                 }
               })
               .catch(err => console.log(err));
@@ -284,7 +284,7 @@ export default {
   }
 };
 </script>
-<style>
+  <style>
 .el-step__head {
   width: 150px;
 }
@@ -340,7 +340,7 @@ export default {
       width: 800px;
       height: 500px;
       position: relative;
-      background: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.6);
       border-radius: 8px;
 
       // 步骤条
@@ -355,7 +355,7 @@ export default {
 
       .el-form {
         width: 420px;
-        padding: 20px 20px 20px 0;
+        padding: 20px 20px 20px 10px;
         background: rgba(255, 255, 255, 0.2);
         position: absolute;
         margin-top: 30px;
@@ -376,12 +376,12 @@ export default {
             font-size: 18px;
           }
           span:first-of-type {
-            border-right: solid 1px #fdc003;
+            border-right: solid 1px #409EFF;
             padding-right: 18px;
             margin-right: 18px;
           }
           .active {
-            color: #fdc003;
+            color: #409EFF;
             font-weight: bold;
             font-size: 21px;
           }
