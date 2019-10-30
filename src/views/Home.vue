@@ -189,7 +189,7 @@
         created() {
             console.log('退出登录');
             // 进入首页判断当前是否登录（Vuex中是否存在loginName）
-            if (this.$store.state.token) {
+            if (this.$store.state.token.loginName) {
                 this.loginFlag = true;
                 console.log(this.$store.state.token.loginName, '当前登录用户账号');
                 this.$api.loginInfo.getLoginInfo(this.$store.state.token.loginName).then(res => {

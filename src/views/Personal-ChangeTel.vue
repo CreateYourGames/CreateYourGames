@@ -106,6 +106,11 @@ export default {
           oldPhone: this.oldPhone
         }).then(res=>{
           if(res==true){
+            var obj={
+              loginName:this.newPhone,
+              pwd:this.$store.state.token.pwd
+            }
+            this.$store.commit('getToken',obj)
             this.$message({
               message:'修改手机号成功',
               type:'success'
