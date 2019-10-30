@@ -33,7 +33,7 @@
                             <span v-if="imgFlag">设为喜欢</span>
                             <span v-else>取消喜欢</span>
                         </div>
-                        <div class="searchCode">
+                        <div class="searchCode" @click="download">
                             <span>查看代码</span>
                         </div>
                     </div>
@@ -185,6 +185,8 @@
                 loginName: '',
                 // 游戏简介
                 gameDetail: '',
+                //源码
+                code:'',
                 // 游戏名称
                 gameName: '',
                 // 评分对应文字
@@ -277,6 +279,7 @@
                 this.gameImg = res.gameInfo[0].gamePic.split('|')
                 this.pics = res.gameInfo[0].gameLogo
                 this.gameDetail = res.gameInfo[0].gameDetail
+                this.code=res.gameInfo[0].gameCode
                 this.hotCommentList = res.hotCommentList
                 this.rankingList = res.rankList
                 this.commentList = res.newCommentList
@@ -322,9 +325,13 @@
                         })
                     }
                     else {
-                        alert("您即将前往登录页")
-                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                        this.$router.push('/Login')
+                        if (confirm("您需要先登录才能进行操作")) {
+                            this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                            this.$router.push('/Login')
+                        }
+                        else {
+                            return
+                        }
                     }
                 }
             },
@@ -359,9 +366,29 @@
                     }
                 }
                 else {
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                    if(confirm("您需要先登录才能进行操作")){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
+
+                }
+            },
+            // //查看代码
+            download(){
+                if(this.loginName){
+                    location.href=this.code
+                }
+                else{
+                    if(confirm("您需要先登录才能进行操作")){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
                 }
             },
             //发表评论
@@ -405,9 +432,13 @@
                     })
                 }
                 else {
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                    if(confirm("您需要先登录再进行操作")){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
                 }
             },
             //点赞
@@ -432,9 +463,13 @@
                     }
                 }
                 else {
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                    if(confirm("您需要先登录才能进行操作")){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
                 }
 
             },
@@ -457,9 +492,13 @@
                     }
                 }
                 else {
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                    if(confirm("您需要先登录才能进行操作")){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
                 }
 
             },
@@ -485,9 +524,13 @@
                     }
                 }
                 else {
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                    if(confirm('您需要先登录才能进行操作')){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
                 }
 
             },
@@ -510,9 +553,13 @@
                     }
                 }
                 else {
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                   if(confirm('您需要先登录才能进行操作')){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                   }
+                    else{
+                        return
+                    }
                 }
 
             }
@@ -524,7 +571,6 @@
 </script>
 <style lang="scss" scoped>
     @import '../assets/scss/base.scss';
-
     .gameInfo {
         width: 100%;
         text-align: center;
@@ -599,12 +645,12 @@
                         width: 200px;
                     }
                     .love {
-                        width: 200px;
+                        width: 230px;
                         height: 25px;
                         display: flex;
                         justify-content: space-between;
                         line-height: 25px;
-                        margin-left: 160px;
+                        margin-left: 140px;
                         .setLove {
                             width: 90px;
                             border: 1px solid #ccc;

@@ -41,6 +41,7 @@
       </el-form-item>
 
       <el-form-item>
+        <el-button type="primary" @click="goLogin()">返回</el-button>
         <el-button type="primary" @click="submitForm('ruleForm')">下一步</el-button>
       </el-form-item>
     </el-form>
@@ -106,8 +107,17 @@ export default {
     };
   },
   methods: {
+
     submitForm(formName) {
       if (this.Judge === true) {
+
+        // 提示信息
+        this.$notify({
+          title: '注册成功',
+          message: '前往完善个人信息',
+          type: 'success'
+        })
+
         this.$api.register.register({
           loginName: this.ruleForm.userPhone,
           pwd: this.ruleForm.Pass
@@ -148,6 +158,9 @@ export default {
           });
       }
     },
+    goLogin(){
+        this.$router.push("/login")
+    },
     // 验证码的点击事件
     sendMessage() {
       if (this.btnDisabled) {
@@ -187,6 +200,7 @@ export default {
 };
 </script>
 
+
 <style lang="scss" scoped>
 .container {
   width: 100%;
@@ -210,11 +224,9 @@ export default {
       //   line-height: 600px;
       margin: 0;
     }
-
     .el-carousel__item:nth-child(2n) {
       background-color: #99a9bf;
     }
-
     .el-carousel__item:nth-child(2n + 1) {
       background-color: #d3dce6;
     }
@@ -234,6 +246,13 @@ export default {
       margin-top: 15px;
     }
 
+    .el-form-item:last-of-type{
+      width: 500px;
+      display: flex;
+      flex-direction: row;
+      margin-left: -75px;
+    }
+
     p {
       width: 100%;
       height: 80px;
@@ -245,11 +264,13 @@ export default {
     }
 
     .el-button {
-      width: 200px;
+      width: 150px;
+      margin-right: 35px;
       border-radius: 50px;
-      margin-top: 24px;
+      margin-top: 30px;
     }
   }
+  
 
   // 手机验证、邮箱验证-内容
   .Verification-info {
@@ -268,7 +289,7 @@ export default {
         width: 210px;
         height: 40px;
         font-size: 1rem;
-        padding-left: 10px;
+        // padding-left: 10px;
         border: 0;
         outline: none;
       }
