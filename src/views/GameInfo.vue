@@ -19,7 +19,11 @@
                     <div class="star" @click="gameStar">
                         <el-rate
                                 v-model="value"
-                                show-text>
+                                show-text
+                                :texts="starTexts"
+                                :colors="starColors"
+                                :disabled="starDisabled"
+                        >
                         </el-rate>
                     </div>
                     <div class="love">
@@ -29,7 +33,7 @@
                             <span v-if="imgFlag">设为喜欢</span>
                             <span v-else>取消喜欢</span>
                         </div>
-                        <div class="searchCode">
+                        <div class="searchCode" @click="download">
                             <span>查看代码</span>
                         </div>
                     </div>
@@ -181,12 +185,20 @@
                 loginName: '',
                 // 游戏简介
                 gameDetail: '',
+                //源码
+                code:'',
                 // 游戏名称
                 gameName: '',
+                // 评分对应文字
+                starTexts: [1, 2, 3, 4, 5],
+                // 评分只读判断
+                starDisabled: false,
+                // 评分星星颜色数组
+                starColors: {2: '#99A9BF', 4: {value: '#F7BA2A', excluded: true}, 5: '#FF9900'},
                 // 当前评论
                 comment: '',
                 //分享功能动态传参
-                url:  "http://10.110.5.26:8080/"+window.location.hash,
+                url: "http://10.110.5.26:8080/" + window.location.hash,
                 pics: "https://goss1.veer.com/creative/vcg/veer/612/veer-104218671.jpg",
                 // summary: "",
                 desc: '快来跟我一起玩游戏吧',
@@ -249,10 +261,10 @@
             }
         },
         created() {
-            this.url="http://10.110.5.26:8080/"+window.location.hash
+            this.url = "http://10.110.5.26:8080/" + window.location.hash
             this.$store.state.token != null ? this.loginName = this.$store.state.token.loginName : '';
             this.id = this.$route.query.id;
-            if(this.loginName){
+            if (this.loginName) {
                 //进入页面判段用户是否喜欢过改游戏
                 this.$api.gameInfo.loveJudge({name: this.loginName, id: this.id}).then(res => {
                     if (res == true) {
@@ -265,8 +277,9 @@
                 this.gameName = res.gameInfo[0].gameName;
                 // console.log(this.gameName);
                 this.gameImg = res.gameInfo[0].gamePic.split('|')
-                this.pics=res.gameInfo[0].gameLogo
+                this.pics = res.gameInfo[0].gameLogo
                 this.gameDetail = res.gameInfo[0].gameDetail
+                this.code=res.gameInfo[0].gameCode
                 this.hotCommentList = res.hotCommentList
                 this.rankingList = res.rankList
                 this.commentList = res.newCommentList
@@ -294,25 +307,32 @@
                 return pair[1];
             },
             //上传游戏star
-            gameStar(){
-                console.log("走了上传游戏分数")
-                if(this.loginName){
-                    var value={
-                        loginName: this.loginName,
-                        gameId: this.id,
-                        star:this.value
-                    }
-                    this.$api.gameInfo.gameStar(value).then(res=>{
-                        this.$message({
-                            message:'评分成功',
-                            type:'success'
+            gameStar() {
+                if (!this.starDisabled) {
+                    console.log("走了上传游戏分数")
+                    if (this.loginName) {
+                        var value = {
+                            loginName: this.loginName,
+                            gameId: this.id,
+                            star: this.value
+                        }
+                        this.$api.gameInfo.gameStar(value).then(res => {
+                            this.$message({
+                                message: '评分成功',
+                                type: 'success'
+                            })
+                            this.starDisabled = true;
                         })
-                    })
-                }
-                else{
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                    }
+                    else {
+                        if (confirm("您需要先登录才能进行操作")) {
+                            this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                            this.$router.push('/Login')
+                        }
+                        else {
+                            return
+                        }
+                    }
                 }
             },
             //开始游戏
@@ -346,9 +366,29 @@
                     }
                 }
                 else {
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                    if(confirm("您需要先登录才能进行操作")){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
+
+                }
+            },
+            // //查看代码
+            download(){
+                if(this.loginName){
+                    location.href=this.code
+                }
+                else{
+                    if(confirm("您需要先登录才能进行操作")){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
                 }
             },
             //发表评论
@@ -392,9 +432,13 @@
                     })
                 }
                 else {
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                    if(confirm("您需要先登录再进行操作")){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
                 }
             },
             //点赞
@@ -419,9 +463,13 @@
                     }
                 }
                 else {
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                    if(confirm("您需要先登录才能进行操作")){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
                 }
 
             },
@@ -444,9 +492,13 @@
                     }
                 }
                 else {
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                    if(confirm("您需要先登录才能进行操作")){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
                 }
 
             },
@@ -472,9 +524,13 @@
                     }
                 }
                 else {
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                    if(confirm('您需要先登录才能进行操作')){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
                 }
 
             },
@@ -497,9 +553,13 @@
                     }
                 }
                 else {
-                    alert("您即将前往登录页")
-                    this.$store.commit('getRouter', this.$router.history.current.fullPath)
-                    this.$router.push('/Login')
+                   if(confirm('您需要先登录才能进行操作')){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                   }
+                    else{
+                        return
+                    }
                 }
 
             }
@@ -511,7 +571,6 @@
 </script>
 <style lang="scss" scoped>
     @import '../assets/scss/base.scss';
-
     .gameInfo {
         width: 100%;
         text-align: center;
@@ -586,12 +645,12 @@
                         width: 200px;
                     }
                     .love {
-                        width: 200px;
+                        width: 230px;
                         height: 25px;
                         display: flex;
                         justify-content: space-between;
                         line-height: 25px;
-                        margin-left: 160px;
+                        margin-left: 140px;
                         .setLove {
                             width: 90px;
                             border: 1px solid #ccc;

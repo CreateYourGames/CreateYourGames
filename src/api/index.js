@@ -12,6 +12,7 @@ import suggest from './suggest'
 import verify from './verify'
 import safety from './safetyCenter'
 import gameScore from './gameScore'
+import rankingList from './rankingList'
 //将接口导出
 export default{
     gameInfo,
@@ -26,5 +27,6 @@ export default{
     suggest,
     verify,
     safety,
-    gameScore
+    gameScore,
+    rankingList
 }

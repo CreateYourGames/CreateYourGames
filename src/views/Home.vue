@@ -25,6 +25,7 @@
             </div>
         </div>
         <div class="content">
+            <!--主体区域-->
             <div class="banner">
                 <div class="main-msg">
                     <h6 class="text-color">来尝试几款游戏，</h6>
@@ -35,6 +36,7 @@
                     <img src="@/assets/images/home/el.gif" alt="">
                 </div>
             </div>
+            <!--功能导航区域-->
             <div class="nav">
                 <div class="nav-item game" @click="toGameCenter">
                     <img src="@/assets/images/home/icon-game.png" alt="">
@@ -57,21 +59,25 @@
                     成为开发者
                 </div>
             </div>
+            <!--新游预告-->
             <div class="new-games">
                 <p class="title">新游预告</p>
                 <div class="progress-bar">
                     <div class="progress-now"></div>
                 </div>
+                <!--新游预告卡片翻转-->
                 <div class="new-game-list">
                     <div class="game-card" v-for="(item, index) in newGameArr" @click="inverseCard(index)"
                          :class="{inverse: item.inverseFlag}">
+                        <!--卡片正面-->
                         <div class="front-info">
-                            <img :src="item.url" alt="" v-show="!item.inverseFlag">
-                            <div class="game-info" v-show="!item.inverseFlag">
+                            <img :src="item.url" alt="">
+                            <div class="game-info">
                                 <p class="game-name">{{ item.name }}</p>
                                 <p class="game-desc">{{ item.description }}</p>
                             </div>
                         </div>
+                        <!--卡片背面-->
                         <div class="inverse-info">
                             <img :src="item.url" alt="">
                             <div class="inverse-game-info">
@@ -81,6 +87,7 @@
                     </div>
                 </div>
             </div>
+            <!--特色模块-->
             <div class="feature">
                 <div class="finger"></div>
                 <div class="feature-card" v-for="(item, index) in featureArr">
@@ -94,6 +101,7 @@
                 </div>
             </div>
         </div>
+        <!--底部信息-->
         <div class="footer">
             <div class="tips">
                 抵制不良游戏，拒绝盗版游戏，注意自我保护，谨防上当受骗，适度游戏益脑，沉迷游戏伤身，合理安排时间，享受健康生活。
@@ -189,7 +197,7 @@
         created() {
             console.log('退出登录');
             // 进入首页判断当前是否登录（Vuex中是否存在loginName）
-            if (this.$store.state.token.loginName) {
+            if (this.$store.state.token) {
                 this.loginFlag = true;
                 console.log(this.$store.state.token.loginName, '当前登录用户账号');
                 this.$api.loginInfo.getLoginInfo(this.$store.state.token.loginName).then(res => {
@@ -238,7 +246,21 @@
             },
             // 开发者测试跳转
             toDeveloperTest() {
-                this.$router.push('/Developer')
+                console.log("来到了跳转")
+                if(this.$store.state.token){
+                    console.log('aaa')
+                    this.$router.push('/Developer')
+                }
+                else{
+                    console.log("nnn")
+                    if(confirm("您需要先登录才能进行操作")){
+                        this.$store.commit('getRouter', this.$router.history.current.fullPath)
+                        this.$router.push('/Login')
+                    }
+                    else{
+                        return
+                    }
+                }
             },
             // 个人信息跳转
             toPersonal() {
@@ -442,6 +464,7 @@
                     margin-top: 30px;
                     perspective: 1000px;
                     transform-style: preserve-3d;
+                    //  新游卡片
                     .game-card {
                         position: relative;
                         display: flex;
@@ -452,18 +475,21 @@
                         border-radius: 7px;
                         transform-style: preserve-3d;
                         cursor: pointer;
+                        // 卡片正面
                         .front-info {
                             height: 100%;
                             display: flex;
                             flex-direction: column;
                             z-index: 2;
                             backface-visibility: hidden;
+                            // 卡片正面展示图
                             img {
                                 width: 100%;
                                 height: 250px;
                                 border-radius: 7px 7px 0 0;
                                 /*backface-visibility: hidden;*/
                             }
+                            // 卡片正面显示信息
                             .game-info {
                                 flex: 1;
                                 background-color: #eaeaea;
@@ -483,6 +509,7 @@
                                 }
                             }
                         }
+                        // 卡片背面信息
                         .inverse-info {
                             height: 100%;
                             width: 100%;
@@ -492,6 +519,7 @@
                             background-color: rgba(0, 0, 0, 0.5);
                             border-radius: 7px;
                             box-sizing: border-box;
+                            // 卡片背面背景图
                             img {
                                 position: absolute;
                                 width: 100%;
@@ -500,6 +528,7 @@
                                 border-radius: 7px;
                                 opacity: 0.4;
                             }
+                            // 卡片背面文字
                             .inverse-game-info {
                                 height: 100%;
                                 box-sizing: border-box;
@@ -519,11 +548,13 @@
                                 }
                             }
                         }
+                        // 鼠标悬浮外部发光
                         &:hover {
                             transform: scale(1.05);
                             transition: all 0.3s;
                             box-shadow: 0 0 20px 1px #dedede;
                         }
+                        // 点击添加该翻转类使卡片旋转
                         &.inverse {
                             transform: rotateY(-180deg);
                             transition: all 0.3s;
