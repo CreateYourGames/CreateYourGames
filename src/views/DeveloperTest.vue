@@ -92,29 +92,56 @@ export default {
       TopicsList: [
         {
           question:
-            "1.我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一我是题目一",
-          option: ["xxx", "xxx", "xxx", "xxx"],
-          ans: "A"
+            "1.模糊查询中，可以获取千位数是 5 的是（）",
+          option: ["5%", "%5%", "5 _ _ _", "%5 _ _ _"],
+          ans: "D"
         },
         {
           question:
-            "2.我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二我是题目二",
-          option: ["xxx", "xxx", "xxx", "xxx"],
+            "2.关于子查询描述正确的是（）",
+          option: ["子查询可以作为数据源出现在 where 子句中", "子查询可以出现在 from 子句中，作为数据源", "子查询可以出现在 where 子句中，作为查询条件 ", "以上说法都不正确"],
+          ans: "B"
+        },
+        {
+          question: "3.能统计出记录总数的函数是（）",
+          option: ["count", "total", "all", "sum"],
           ans: "A"
         },
         {
-          question: "3.我是题目三xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-          option: ["xxx", "xxx", "xxx", "xxx"],
+          question: "4.以下用于处理重复数据的关键字是（）",
+          option: ["distinct", "while", "repeat", "all"],
           ans: "A"
         },
         {
-          question: "4.我是题目四xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-          option: ["xxx", "xxx", "xxx", "xxx"],
-          ans: "A"
+          question: "5.以下不属于 SQL 查询语句的子句是（）",
+          option: ["select", "where", "having", "sort by"],
+          ans: "D"
         },
         {
-          question: "5.我是题目五xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-          option: ["xxx", "xxx", "xxx", "xxx"],
+          question:
+            "6.select * from student where stuId in(select stuId from score group by stuId having count(1) > 2),以上查询语句获取的数据是 （） ",
+          option: ["获取考试成绩前两名之后的所有学生信息", "获取成绩表中前两名的学生信息", "获取考试数量超过两门的所有学生信息", "以上语法都不正确"],
+          ans: "C"
+        },
+        {
+          question:
+            "7.以下关于视图说法正确的是 （）",
+          option: ["视图是一个虚拟表，包含了一个查询结果数据", "视图是一个虚拟表，所以针对视图的修改对物理表不会产生影响", "视图来源于数据表，也可以来源于视图", "视图可以包含查询语句，但不可以包含子查询"],
+          ans: "C"
+        },
+        {
+          question: "8.哪种输入类型用于定义周和年控件（无时区）？",
+          option: ["date", "week", "year", "以上全不正确"],
+          ans: "B"
+        },
+        {
+          question: "9.哪个 HTML5 元素用于显示已知范围内的标量测量？（） ",
+          option: ["<gauge>", "<range>", "<measure>", "<meter>"],
+          ans: "D"
+        },
+        {
+          question: "10.在 HTML5 中，contextmenu 和 spellcheck 是（）",
+          option: ["HTML 属性", "HTML 元素", "事件属性", "样式属性"],
           ans: "A"
         }
       ],
