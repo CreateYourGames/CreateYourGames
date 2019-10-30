@@ -5,10 +5,10 @@
             <div class="tip">
                 <div class="info">
                     <p class="intro">
-                        你他娘的传压缩文件啊.zip.rar传上来啊<span class="span1"></span>
+                        游戏代码文件请使用压缩文件.zip.rar上传，如果使用Vue等方式编写游戏，不要上传node_modules文件夹，压缩包大小限制在10M以内<span class="span1"></span>
                     </p>
                     <p class="welcome">
-                        憨批吗变量写规范一点，功能都封装起来行吗<span @click="goPublishRules" class="span2"></span>
+                        游戏变量声明请尽量语义化，同时添加必要的注释，游戏内相关方法请合理封装，若已按照规范上传游戏，出现审核问题请联系我们： yugiasuna@foxmail.com
                     </p>
                 </div>
                 <div class="start-publish">
