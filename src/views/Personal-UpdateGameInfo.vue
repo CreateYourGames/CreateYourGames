@@ -32,14 +32,14 @@
           <div class="title">
             <label for>游戏名称：</label>
           </div>
-          <input type="text" name="gameName" id :value="GameInfo[0].gameName" autocomplete="off"/>
+          <input type="text" name="gameName" :value="GameInfo[0].gameName" autocomplete="off"/>
         </div>
 
         <div class="mid">
           <div class="title">
             <label for>游戏分类：</label>
           </div>
-          <select  name="gameType" :value="GameInfo[0].gameType" id>
+          <select  name="gameType" :value="GameInfo[0].gameType" >
             <option value="all">所有类型</option>
             <option value="clever">益智</option>
             <option value="smallGame">小游戏</option>
@@ -52,7 +52,7 @@
           <div class="title">
             <label for class="special">游戏简介：</label>
           </div>
-          <textarea name="gameDetail" id cols="30" rows="10"  :value="GameInfo[0].gameDetail" autocomplete="off"></textarea>
+          <textarea name="gameDetail" cols="30" rows="10"  :value="GameInfo[0].gameDetail" autocomplete="off"></textarea>
           <br />
         </div>
 
@@ -60,7 +60,7 @@
           <div class="title">
             <label for>游戏源码文件：</label>
           </div>
-          <input ref="file" type="file" name="picture" id  style="border:none;margin-top:45px"/>
+          <input ref="file" type="file" name="picture"  style="border:none;margin-top:45px"/>
         </div>
 
         <div class="btn">
@@ -93,7 +93,7 @@ export default {
     this.$api.updateGameInfo.updateGameInfo(val).then(res => {
       console.log(res);
       this.GameInfo = res.GameInfo;
-      this.pic = res.GameInfo[0].gamePic;
+      this.pic = res.GameInfo[0].gameLogo;
       console.log(this.GameInfo[0].gameName);
     });
   },
