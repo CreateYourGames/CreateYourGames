@@ -275,6 +275,7 @@
             //请求到游戏详情页的相关数据
             this.$api.gameInfo.gameInfoApi({id: this.id, loginName: this.loginName}).then(res => {
                 this.gameName = res.gameInfo[0].gameName;
+                console.log(res);
                 // console.log(this.gameName);
                 this.gameImg = res.gameInfo[0].gamePic.split('|')
                 this.pics = res.gameInfo[0].gameLogo
@@ -282,6 +283,7 @@
                 this.code=res.gameInfo[0].gameCode
                 this.hotCommentList = res.hotCommentList
                 this.rankingList = res.rankList
+                console.log(res.rankingList, this.rankingList);
                 this.commentList = res.newCommentList
                 if (res.userMsg) {
                     this.userImg = res.userMsg[0].picture

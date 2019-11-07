@@ -43,10 +43,10 @@
         </div>
         <div v-show="rankingInfo" class="ranking-info" @click="hideRankingInfo">
             <div class="content">
+                <div class="title">榜单介绍</div>
                 <div>
                     <span class="icon star-ranking-icon"></span>游戏肝帝榜：<p>根据用户三十天内在站内游玩次数进行排行</p>
                 </div>
-                <div class="title">榜单介绍</div>
                 <div>
                     <span class="icon score-ranking-icon"></span>游戏评分榜：<p>根据用户对游戏评分的平均值进行游戏排行，榜单上仅显示一位小数，可能存在同分排名不同，实际排名按照实际小数排名</p>
                 </div>

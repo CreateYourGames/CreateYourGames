@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <div class="nav-game">
-      <form action="/api/updateGame" method="post" enctype="multipart/form-data">
+      <form action="http://121.40.245.126:3000/api/updateGame" method="post" enctype="multipart/form-data">
         <h3>修改上线游戏信息</h3>
         <div class="mid">
           <div class="title">

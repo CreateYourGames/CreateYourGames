@@ -91,8 +91,18 @@
                 for(let i=0;i<fileArray.length;i++){
                     fd.append('gameFiles',fileArray[i].raw)
                 }
+                // this.$api.publish.publish(fd,data).then(res=>{
+                //     if(res.data==true){
+                //         this.$message({
+                //             message:'发布成功，请耐心等待审核',
+                //             type:'success'
+                //         })
+                //     }else{
+                //         this.$message.error("发布失败，请检查您上传的代码是否规范")
+                //     }
+                // })
                 axios({
-                    url:'/api/publishGame',
+                    url:'http://121.40.245.126:3000/api/publishGame',
                     method:'post',
                     data:fd,
                     params:data
@@ -102,12 +112,13 @@
                             message:'发布成功，请耐心等待审核',
                             type:'success'
                         })
+                        this.$router.push('/')
                     }else{
                         this.$message.error("发布失败，请检查您上传的代码是否规范")
                     }
                 })
 
-                // this.$router.push('/')
+
             },
         },
         components: {

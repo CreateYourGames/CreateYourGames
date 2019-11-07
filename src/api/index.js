@@ -13,6 +13,7 @@ import verify from './verify'
 import safety from './safetyCenter'
 import gameScore from './gameScore'
 import rankingList from './rankingList'
+import publish from './publish'
 //将接口导出
 export default{
     gameInfo,
@@ -28,5 +29,6 @@ export default{
     verify,
     safety,
     gameScore,
-    rankingList
+    rankingList,
+    publish
 }

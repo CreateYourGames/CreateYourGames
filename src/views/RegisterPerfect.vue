@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="register">
-      <form action="/api/register" method="post" enctype="multipart/form-data">
+      <form action="http://121.40.245.126:3000/api/register" method="post" enctype="multipart/form-data">
         <p>个人信息完善</p>
 
         <div class="mid">

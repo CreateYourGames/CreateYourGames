@@ -247,7 +247,7 @@
             // 开发者测试跳转
             toDeveloperTest() {
                 console.log("来到了跳转")
-                if(this.$store.state.token){
+                if(this.$store.state.token.loginName){
                     console.log('aaa')
                     this.$router.push('/Developer')
                 }

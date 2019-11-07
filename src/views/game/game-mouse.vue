@@ -167,7 +167,7 @@ export default {
             hide.style.position = 'absolute'
             hide.style.width = '110px'
             hide.style.height = '110px'
-            hide.style.border = '1px solid red'
+            // hide.style.border = '1px solid red'
             hide.style.zIndex = 3*i+1
             // hide.style.backgroundColor='pink'
             console.log(3*i+1)

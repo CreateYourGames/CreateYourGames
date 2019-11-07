@@ -6,7 +6,7 @@
       <div>
         <!-- 头像 -->
         <div class="upload-image">
-          <form action="/api/updateInfo" method="post" ref="form" enctype="multipart/form-data">
+          <form action="http://121.40.245.126:3000/api/updateInfo" method="post" ref="form" enctype="multipart/form-data">
             <input type="hidden" name="loginName" :value="$store.state.token.loginName">
             
             <img class="img" name="gamePic" :src="picture" alt />
